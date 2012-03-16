@@ -9,6 +9,7 @@ class PeopleIndex(indexes.SearchIndex, indexes.Indexable):
     first_name = indexes.CharField(model_attr='first_name')
     last_name = indexes.CharField(model_attr='last_name')
     department = indexes.CharField(model_attr='profile__dept')
+    office = indexes.CharField(model_attr='profile__office')
     content_auto = indexes.EdgeNgramField(model_attr='get_full_name')
 
     def get_model(self):

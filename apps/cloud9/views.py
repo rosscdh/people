@@ -1,3 +1,4 @@
+# encoding: utf-8
 from django.utils.translation import ugettext_lazy as _
 from django.template.context import RequestContext
 from django.contrib.auth.decorators import login_required
@@ -51,6 +52,7 @@ class EmployeeEdit(Setup):
             'first_name': user.first_name,
             'last_name': user.last_name,
             'department': user.profile.department,
+            'workplace': user.profile.workplace,
             'contact_phone': user.profile.contact_phone,
             'profile_picture': user.profile.profile_picture,
         }

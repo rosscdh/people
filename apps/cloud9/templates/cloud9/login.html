@@ -20,7 +20,7 @@
 			<h1 class="pull-left">{% trans 'Login to People' %}</h1>
 			<div class="pull-left offset1">
 			{% with STATIC_URL|add:'cloud9/google.png' as logo_google %}
-				{% openid_form 'https://www.google.com/accounts/o8/id' logo_google %}
+				{% openid_form 'https://www.google.com/accounts/o8/site-xrds?hd=adcloud.com' logo_google %}
 			{% endwith %}
 			</div>
 		</div>

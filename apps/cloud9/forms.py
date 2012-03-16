@@ -1,3 +1,4 @@
+# encoding: utf-8
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
@@ -14,6 +15,7 @@ class AccountSetupForm(UserForm):
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
     department = forms.ChoiceField(choices=AdcloudInfo.DEPARTMENTS.get_choices())
+    workplace = forms.ChoiceField(choices=AdcloudInfo.OFFICES.get_choices())
     contact_phone = forms.CharField(required=False)
     profile_picture = forms.ImageField(required=False)
 
@@ -23,7 +25,7 @@ class AccountEditForm(UserForm):
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
     department = forms.ChoiceField(choices=AdcloudInfo.DEPARTMENTS.get_choices())
-    office = forms.ChoiceField(choices=AdcloudInfo.OFFICES.get_choices())
+    workplace = forms.ChoiceField(choices=AdcloudInfo.OFFICES.get_choices())
     contact_phone = forms.CharField(required=False)
     profile_picture = forms.ImageField(required=False)
 
@@ -36,6 +38,7 @@ class AccountEditForm(UserForm):
         user.first_name = self.cleaned_data.get('first_name')
         user.last_name = self.cleaned_data.get('last_name')
         user.profile.department = self.cleaned_data.get('department')
+        user.profile.workplace = self.cleaned_data.get('workplace')
         user.profile.contact_phone = self.cleaned_data.get('contact_phone')
 
         default_pic = '%s%s' % (PROFILE_PIC_PATH,DEFAULT_PIC,)
