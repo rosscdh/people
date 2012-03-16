@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
-{% load openid %}
+{% load openid cloud9_tags %}
 
-{% block body %}
+{% block pre-body %}
+<div id="search-people">
+{% people_search_form %}
+</div>
 {% endblock %}
+
+{% block body %}{% endblock %}

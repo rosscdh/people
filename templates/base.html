@@ -70,12 +70,15 @@
 
     <div class="container">
 		<div id="lang-selector" class="row">
+            {% get_available_languages as available_languages %}
+            {% get_language_info_list for available_languages as langs %}
 			<ul>
-				<li><a href="">EN</a></li>
-				<li><a href="">DE</a></li>
-				<li><a href="">ES</a></li>
+			    {% for lang in langs %}
+				<li><a href="">{{ lang.code }}</a></li>
+				{% endfor %}
 			</ul>
 		</div>
+		{% block content-head %}{% endblock %}
 		{% block pre-body %}{% endblock %}
         {% block body %}{% endblock %}
     </div> <!-- /container -->

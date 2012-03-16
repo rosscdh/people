@@ -1,0 +1,43 @@
+{% load i18n %}
+<form action="{% url cloud9:people_search %}" method="GET" id="form-people-search" class="well form-search">
+{{ search_form }}
+<button id="search_button" class="btn" type="submit">{% trans 'Search' %}</button>
+</form>
+<script>
+$(document).ready(function(){
+
+    $('#id_q').live("click", function(){
+        if ($('#id_q').val() == 'Search')
+        {
+            $('#id_q').val('')
+        }
+    });
+    $('#id_q').live("blur", function(){
+        if ($('#id_q').val() == '')
+        {
+            $('#id_q').val('Search')
+        }
+    });
+    $('button#search_button').live("mouseover", function(){
+        $(this).addClass('go-hvr');
+    })
+    $('button#search_button').live("mouseout", function(){
+        $(this).removeClass('go-hvr');
+    })
+    $('button#search_button').live("click", function(event){
+        if ($('input#id_q').val() == '' || $('input#id_q').val() == 'Search')
+        {
+            event.preventDefault()
+        }
+    });
+    
+    $('ul.ui-autocomplete li a').live("click", function(event){
+        event.preventDefault();
+        $('form#form-celeb-search').submit();
+    });
+    
+    $("input#id_q").autocomplete({
+        source: '{% url cloud9:people_search %}'
+    });
+});
+</script>

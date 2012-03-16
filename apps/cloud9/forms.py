@@ -1,9 +1,13 @@
 from django import forms
-from django.utils.translation import gettext as _
+from django.utils.translation import ugettext_lazy as _
 
 from socialregistration.forms import UserForm
 from models import AdcloudInfo
 from models import DEFAULT_PIC, PROFILE_PIC_PATH
+
+
+class SimpleSearchForm(forms.Form):
+    q = forms.CharField(label='', required=True, initial=_('Search'))
 
 
 class AccountSetupForm(UserForm):
@@ -13,11 +17,13 @@ class AccountSetupForm(UserForm):
     contact_phone = forms.CharField(required=False)
     profile_picture = forms.ImageField(required=False)
 
+
 class AccountEditForm(UserForm):
     """ Used to edit the user object without interfering with the base UserForm """
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
     department = forms.ChoiceField(choices=AdcloudInfo.DEPARTMENTS.get_choices())
+    office = forms.ChoiceField(choices=AdcloudInfo.OFFICES.get_choices())
     contact_phone = forms.CharField(required=False)
     profile_picture = forms.ImageField(required=False)
 

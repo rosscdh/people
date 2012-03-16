@@ -1,6 +1,10 @@
+# encoding: utf-8
 from django.conf import settings
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
+from sorl.thumbnail import get_thumbnail
+
 from apps.util import get_namedtuple_choices
 
 DEFAULT_PIC_PATH = 'employees/pics/'
@@ -13,14 +17,26 @@ class AdcloudInfo(models.Model):
     SALES = 2
     MARKETING = 4
     DEPARTMENTS = get_namedtuple_choices('DEPARTMENTS', (
-                        (TECH,'TECH','Tech'),
-                        (SALES,'SALES','Sales'),
-                        (MARKETING,'MARKETING','Marketing'),
+                        (TECH,'TECH',_('Tech')),
+                        (SALES,'SALES',_('Sales')),
+                        (MARKETING,'MARKETING',_('Marketing')),
+                    ))
+    COLOGNE = 1
+    MADRID = 2
+    ZURICH = 4
+    OFFICES = get_namedtuple_choices('OFFICES', (
+                        (COLOGNE,'COLOGNE',_('Köln')),
+                        (MADRID,'MADRID',_('Madrid')),
+                        (ZURICH,'ZURICH',_('Zurich')),
                     ))
     user = models.OneToOneField(User, parent_link=True, related_name='profile')
     department = models.IntegerField(choices=DEPARTMENTS.get_choices(), default=DEPARTMENTS.TECH)
+    workplace = models.IntegerField(choices=OFFICES.get_choices(), default=OFFICES.COLOGNE)
     contact_phone = models.CharField(max_length=24,blank=True,null=True)
     profile_picture = models.ImageField(upload_to=PROFILE_PIC_PATH, default=DEFAULT_PIC, blank=True, null=True)
+
+    def __unicode__(self):
+        return u'%s - %s (%s)' % (self.user.username, self.dept, self.office)
 
     @property
     def dept(self):
@@ -28,7 +44,12 @@ class AdcloudInfo(models.Model):
         return u'%s' % (department[0],)
 
     @property
+    def office(self):
+        office = [workplace for o,workplace in self.OFFICES.get_choices() if o == self.workplace]
+        return u'%s' % (office[0],)
+
+    @property
     def thumbnail(self):
-        thumb = self.profile_picture if self.profile_picture else DEFAULT_PIC
+        thumb = get_thumbnail(self.profile_picture, '100x100', crop='center', quality=70)
         return '%s' % (thumb,)
 

@@ -4,8 +4,11 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.core.urlresolvers import reverse
 from django.views.generic.detail import DetailView
+from django.views.generic.base import View
 from django.http import Http404
 from django.contrib.auth.models import User
+
+from haystack.query import SearchQuerySet
 from socialregistration.views import Setup
 
 from forms import AccountEditForm
@@ -92,3 +95,25 @@ class EmployeeEdit(Setup):
 
         return redirect(self.get_next(request))
 
+
+class PeopleSearch(View):
+    """
+    Search for people
+    """
+    template_name = 'cloud9/employee_list.html'
+
+    def get(self, request):
+        query = request.GET.get('q', '')
+
+        queryset = SearchQuerySet().using('default').filter(content=query)
+
+        if queryset.count() == 1:
+            person = queryset[0]
+            return redirect(reverse('cloud9:employee_detail', kwargs={ 'slug': person.username }))
+        else:
+            return render_to_response(
+              'cloud9/employee_list.html', {
+                'object_list': queryset,
+              },
+              context_instance=RequestContext(request)
+            )

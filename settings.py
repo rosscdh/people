@@ -123,6 +123,7 @@ TEMPLATE_DIRS = (
 from django.conf import global_settings
 TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
     'django.core.context_processors.request',
+    'django.core.context_processors.i18n',
 )
 
 INSTALLED_APPS = (
@@ -135,8 +136,10 @@ INSTALLED_APPS = (
     'django.contrib.admin',
 
     'django_extensions',
+    'haystack',
     'socialregistration',
     'socialregistration.contrib.openid',
+    'sorl.thumbnail',
 
     'apps.cloud9',
 )
@@ -164,6 +167,32 @@ LOGGING = {
     }
 }
 
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(PROJECT_DIR, '../data/search/people_index'),
+        'STORAGE': 'file',
+        'POST_LIMIT': 128 * 1024 * 1024,
+        'INCLUDE_SPELLING': True,
+        'BATCH_SIZE': 100,
+        'SILENTLY_FAIL': True,
+    },
+}
+
+ugettext = lambda s: s
+
+LANGUAGES = (
+    ('en', ugettext('English')),
+    ('de', ugettext('German')),
+    ('es', ugettext('Spanish')),
+)
 
 SOCIALREGISTRATION_SETUP_FORM = 'apps.cloud9.forms.AccountSetupForm'
 #SOCIALREGISTRATION_INITIAL_DATA_FUNCTION = ''
+
+# Include local_settings.py for local overrides
+try:
+    from local_settings import *
+except ImportError:
+    pass
+
