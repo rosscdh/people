@@ -1,0 +1,29 @@
+{% extends 'cloud9/base.html' %}
+{% load i18n openid %}
+
+{% block pre-body %}
+<div id="search-people">
+	{{ form_search }}
+	Search Form
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="row row-fluid">
+<h1>{% trans 'People @ Adcoud' %}</h1>
+</div>
+
+<table class="table table-striped table-bordered">
+{% for u in object_list %}
+<tr>
+    <td><a href="{% url cloud9:employee_detail slug=u.username %}">{{ u.get_full_name|default:u.username }}</a></td>
+	<td>{{ u.profile.dept }}</td>
+    <td><img src="{{ MEDIA_URL }}{{ u.profile.thumbnail }}" alt="" title="" border="0"/></td>
+</tr>
+{% empty %}
+<tr><td>No Results</td></tr>
+{% endfor %}
+</table>
+    
+{% endblock %}
+

@@ -1,0 +1,36 @@
+{% extends 'cloud9/base.html' %}
+
+{% block title %}Please Setup your Account{% endblock %}
+
+{% block body %}
+<h1>Setup</h1>
+
+{% if error %}
+	<p>{{ error }}</p>
+{% else %}
+	<form action="." method="post">{% csrf_token %}
+	    <table>
+	        {{ form }}
+	    </table>
+
+		<div class="form-actions">
+		<button class="btn btn-primary" type="submit">Save</button>
+		<button id="signup-cancel" class="btn">Cancel</button>
+		</div>
+	</form>
+{% endif %}
+
+{% endblock %}
+
+{% block js %}
+<script>
+$(document).ready(function(){
+
+	$('#signup-cancel').live('click', function(event) {
+		event.preventDefault();
+		document.location = '{% url cloud9:logout%}';
+	});
+
+});
+</script>
+{% endblock %}

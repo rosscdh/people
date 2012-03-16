@@ -1,0 +1,32 @@
+{% extends 'cloud9/base.html' %}
+{% load i18n openid %}
+
+{% block css %}
+<style>
+	
+	form input[type="image"]{
+		width:64px;
+		height:64px;
+	}
+	
+</style>
+{% endblock %}
+
+{% block title %}Please Login{% endblock %}
+
+{% block body %}
+	<div class="hero-unit">
+		<div class="row">
+			<h1 class="pull-left">{% trans 'Login to People' %}</h1>
+			<div class="pull-left offset1">
+			{% with STATIC_URL|add:'cloud9/google.png' as logo_google %}
+				{% openid_form 'https://www.google.com/accounts/o8/site-xrds?hd=adcloud.com' logo_google %}
+			{% endwith %}
+			</div>
+		</div>
+		<div class="row">
+			{% trans 'Simply click the logo and login with your adcloud.com account details' %}
+		</div>
+	</div>
+{% endblock %}
+

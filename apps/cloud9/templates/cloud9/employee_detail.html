@@ -1,0 +1,24 @@
+{% extends 'cloud9/base.html' %}
+{% load i18n openid cloud9_tags %}
+
+{% block title %}{% trans 'Now viewing' %} - {{ object.username }}{% endblock %}
+
+{% block body %}
+<div class="control-group pull-right">
+{% user_can_edit %}
+</div>
+<div class="pull-right">
+	<img src="{{ MEDIA_URL }}{{ object.profile.thumbnail }}" alt="" title="" border="0"/>
+</div>
+<div class="row">
+	<div class="span_5">
+	<p><label class="label">{% trans 'Username' %}</label>{{ object.username }}</p>
+	<p><label class="label">{% trans 'Firstname' %}</label>{{ object.first_name }}</p>
+	<p><label class="label">{% trans 'Last Name' %}</label>{{ object.last_name }}</p>
+	<p><label class="label">{% trans 'Department' %}</label>{{ object.profile.dept }}</p>
+	<p><label class="label">{% trans 'Contact Phone' %}</label>{{ object.profile.contact_phone|default:"None" }}</p>
+	<div>
+<div>
+
+{% endblock %}
+

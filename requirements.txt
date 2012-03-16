@@ -1,0 +1,5 @@
+Django
+django-extensions
+Werkzeug
+PIL
+-e git+https://github.com/flashingpumpkin/django-socialregistration.git#egg=django-socialregistration
