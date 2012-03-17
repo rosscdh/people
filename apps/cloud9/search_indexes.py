@@ -2,7 +2,7 @@ from haystack import indexes
 from django.contrib.auth.models import User
 
 
-class PeopleIndex(indexes.SearchIndex, indexes.Indexable):
+class PeopleIndex(indexes.RealTimeSearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     username = indexes.CharField(model_attr='username')
     full_name = indexes.CharField(model_attr='get_full_name')
