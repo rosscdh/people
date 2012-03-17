@@ -139,7 +139,7 @@ INSTALLED_APPS = (
     'haystack',
     'socialregistration',
     'socialregistration.contrib.openid',
-    'sorl.thumbnail',
+    'cuddlybuddly.thumbnail',
 
     'apps.cloud9',
 )
@@ -186,6 +186,10 @@ LANGUAGES = (
     ('de', ugettext('German')),
     ('es', ugettext('Spanish')),
 )
+
+CUDDLYBUDDLY_THUMBNAIL_BASEDIR = '_thumbs'
+CUDDLYBUDDLY_REMOTE_BASEDIR = '_remote'
+CUDDLYBUDDLY_NOIMAGE_IMAGE = MEDIA_ROOT + 'employees/pics/default-pic.jpg'
 
 SOCIALREGISTRATION_SETUP_FORM = 'apps.cloud9.forms.AccountSetupForm'
 #SOCIALREGISTRATION_INITIAL_DATA_FUNCTION = ''

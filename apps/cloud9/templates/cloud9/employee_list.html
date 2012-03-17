@@ -1,5 +1,5 @@
 {% extends 'cloud9/base.html' %}
-{% load i18n openid thumbnail %}
+{% load i18n openid thumbnail_tags %}
 
 {% block content-head %}
 <h1>{% trans 'A List of People' %}</h1>
@@ -14,9 +14,7 @@
 	<td>{{ u.profile.dept }}</td>
 	<td>{{ u.profile.office }}</td>
     <td>
-        {% thumbnail u.profile.profile_picture "120x120" crop="center" as thumb %}
-            <img src="{{ MEDIA_URL }}{{ thumb }}" alt="" title="" border="0"/>
-        {% endthumbnail %}
+        <img src="{{ MEDIA_URL }}{% thumbnail u.profile.profile_picture 120 120 %}" alt="" title="" border="0"/>
     </td>
 </tr>
 {% empty %}
