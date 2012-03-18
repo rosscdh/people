@@ -40,3 +40,5 @@ def get_namedtuple_choices(name, choices_tuple):
             return zip(tuple(self), self._choices)
 
     return Choices._make([val for val,name,desc in choices_tuple])
+
+

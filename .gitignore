@@ -9,3 +9,4 @@ apps/tailor/management/commands/*.png
 media/*
 log/*
 /socialregistration
+/openid

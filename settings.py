@@ -195,7 +195,7 @@ SOCIALREGISTRATION_AX_URLS = (
     ('http://openid.net/schema/contact/email',True),
     ('http://openid.net/schema/namePerson/first',True),
     ('http://openid.net/schema/namePerson/last',True),
-    ('http://openid.net/schema/media/image',False),
+    ('http://openid.net/schema/media/image',True),
     ('http://openid.net/schema/gender',False),
     ('http://openid.net/schema/contact/phone/cell',False),
     ('http://openid.net/schema/company/name',False),
