@@ -5,16 +5,16 @@ from django.core.urlresolvers import reverse
 from openid.extensions import ax
 
 
-""" Tuple of allowed_domains """
-ALLOWED_DOMAINS = getattr(settings, 'SOCIALREGISTRATION_ALLOWED_DOMAINS',
-    (Site.objects.get_current(),))
-
 """ Tuple of requested AX urls ((string)<ax_url>, (bool)<is_required>)"""
 AX_URLS = getattr(settings, 'SOCIALREGISTRATION_AX_URLS',
     None)
 
 """ ensure that the openid email comes from one of required domains """
 def is_valid_domain(domain):
+    """ Tuple of allowed_domains """
+    ALLOWED_DOMAINS = getattr(settings, 'SOCIALREGISTRATION_ALLOWED_DOMAINS',
+        (Site.objects.get_current(),))
+
     """ method to ensure that the email provided by teopenid provider is allowed """
     if domain in ALLOWED_DOMAINS:
         return True
@@ -24,10 +24,11 @@ def is_valid_domain(domain):
 
 def socialregistration_initial_data(request, user, profile, client):
     args = normalize_openid_keys(client.result.message.getArgs('http://openid.net/srv/ax/1.0'))
+
     email_parts = parse_email(args['http://openid.net/schema/contact/email'])
-    
     if not is_valid_domain(email_parts['host']):
         assert False
+        #@TODO write redirect cos of not matching email
 
     user_data = {
         'username': email_parts['username'],
