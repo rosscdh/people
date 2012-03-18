@@ -189,9 +189,10 @@ LANGUAGES = (
 
 SOCIALREGISTRATION_SETUP_FORM = 'apps.cloud9.forms.AccountSetupForm'
 SOCIALREGISTRATION_INITIAL_DATA_FUNCTION = 'apps.cloud9.socialregistration_initial_data'
-SOCIALREGISTRATION_ALLOWED_DOMAINS = ('adcloud.com',)
+SOCIALREGISTRATION_ADD_AX_REQUEST_FUNCTION = 'apps.cloud9.socialregistration_ax_request'
 SOCIALREGISTRATION_AX_URLS = (
-    ('http://schema.openid.net/contact/email',True),
+#schema.openid.net
+    ('http://openid.net/schema/contact/email',True),
     ('http://openid.net/schema/namePerson/first',True),
     ('http://openid.net/schema/namePerson/last',True),
     ('http://openid.net/schema/media/image',False),
@@ -199,6 +200,7 @@ SOCIALREGISTRATION_AX_URLS = (
     ('http://openid.net/schema/contact/phone/cell',False),
     ('http://openid.net/schema/company/name',False),
 )
+SOCIALREGISTRATION_ALLOWED_DOMAINS = ('adcloud.com',)
 # Include local_settings.py for local overrides
 try:
     from local_settings import *
