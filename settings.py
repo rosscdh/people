@@ -139,7 +139,7 @@ INSTALLED_APPS = (
     'haystack',
     'socialregistration',
     'socialregistration.contrib.openid',
-    'cuddlybuddly.thumbnail',
+    'sorl.thumbnail',
 
     'apps.cloud9',
 )
@@ -187,13 +187,18 @@ LANGUAGES = (
     ('es', ugettext('Spanish')),
 )
 
-CUDDLYBUDDLY_THUMBNAIL_BASEDIR = '_thumbs'
-CUDDLYBUDDLY_REMOTE_BASEDIR = '_remote'
-CUDDLYBUDDLY_NOIMAGE_IMAGE = MEDIA_ROOT + 'employees/pics/default-pic.jpg'
-
 SOCIALREGISTRATION_SETUP_FORM = 'apps.cloud9.forms.AccountSetupForm'
-#SOCIALREGISTRATION_INITIAL_DATA_FUNCTION = ''
-
+SOCIALREGISTRATION_INITIAL_DATA_FUNCTION = 'apps.cloud9.socialregistration_initial_data'
+SOCIALREGISTRATION_ALLOWED_DOMAINS = ('adcloud.com',)
+SOCIALREGISTRATION_AX_URLS = (
+    ('http://schema.openid.net/contact/email',True),
+    ('http://openid.net/schema/namePerson/first',True),
+    ('http://openid.net/schema/namePerson/last',True),
+    ('http://openid.net/schema/media/image',False),
+    ('http://openid.net/schema/gender',False),
+    ('http://openid.net/schema/contact/phone/cell',False),
+    ('http://openid.net/schema/company/name',False),
+)
 # Include local_settings.py for local overrides
 try:
     from local_settings import *
