@@ -85,10 +85,10 @@ class EmployeeEdit(Setup):
             profile = OpenIDProfile.objects.get_or_create(user=user)
         client = None
 
-        form = self.get_form()(request.POST, request.FILES)
+        form = self.get_form()(request.POST, request.FILES, initial={'profile_picture': user.profile.profile_picture})
 
         if not form.is_valid():
-            return self.render_to_response(dict(form=form))
+            return self.render_to_response(dict(form=self.get_form()(request.POST, initial={'profile_picture': user.profile.profile_picture})))
 
         user, profile = form.save(request, user, profile, client)
 

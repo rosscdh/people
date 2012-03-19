@@ -39,6 +39,8 @@ class AccountSetupForm(UserForm):
         if self.cleaned_data.get('profile_picture'):
             user.profile.profile_picture = self.cleaned_data.get('profile_picture')
         user.profile.save()
+        if not is_new:
+            user.save()
 
         profile.user = user
         profile.save()
