@@ -12,11 +12,11 @@ class SimpleSearchForm(forms.Form):
 
 
 class AccountSetupForm(UserForm):
-    username = forms.RegexField(r'^[\w.@+-]+$', max_length=32) # overriden username regex
+    username = forms.RegexField(r'^[\w.@+-]+$', max_length=32, required=True) # overriden username regex
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
     department = forms.ChoiceField(choices=AdcloudInfo.DEPARTMENTS.get_choices())
-    workplace = forms.ChoiceField(choices=AdcloudInfo.OFFICES.get_choices())
+    workplace = forms.ChoiceField(label='Office',choices=AdcloudInfo.OFFICES.get_choices())
     contact_phone = forms.CharField(required=False)
     profile_picture = forms.ImageField(required=True)
 
@@ -36,16 +36,14 @@ class AccountSetupForm(UserForm):
         user.profile.workplace = self.cleaned_data.get('workplace')
         user.profile.contact_phone = self.cleaned_data.get('contact_phone')
 
-        default_pic = '%s/%s' % (PROFILE_PIC_PATH,DEFAULT_PIC,)
-        
-        if self.cleaned_data.get('profile_picture') and (isinstance(self.cleaned_data.get('profile_picture'), InMemoryUploadedFile) or self.cleaned_data.get('profile_picture').path != default_pic):
+        if self.cleaned_data.get('profile_picture'):
             user.profile.profile_picture = self.cleaned_data.get('profile_picture')
-
         user.profile.save()
 
         profile.user = user
         profile.save()
         return user, profile
+
 
 class AccountEditForm(AccountSetupForm):
     """ Used to edit the user object without interfering with the base UserForm """

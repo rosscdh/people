@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib.sites.models import Site
 from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
+from django.http import Http404
 from openid.extensions import ax
 
 
@@ -27,7 +28,7 @@ def socialregistration_initial_data(request, user, profile, client):
 
     email_parts = parse_email(args['http://openid.net/schema/contact/email'])
     if not is_valid_domain(email_parts['host']):
-        assert False
+        raise Http404
         #@TODO write redirect cos of not matching email
 
     user_data = {
@@ -70,3 +71,4 @@ def normalize_openid_keys(openid_args):
            normalized_data[v] = openid_args[key]
 
     return normalized_data
+    

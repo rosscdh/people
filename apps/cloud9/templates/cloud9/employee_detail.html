@@ -1,5 +1,5 @@
 {% extends 'cloud9/base.html' %}
-{% load i18n openid cloud9_tags %}
+{% load i18n openid thumbnail cloud9_tags %}
 
 {% block title %}{% trans 'Now viewing' %} - {{ object.username }}{% endblock %}
 
@@ -9,7 +9,7 @@
 </div>
 
 <div class="row span">
-<form class="span5 well pull-left">
+<div class="span7 well pull-left">
 <h2>{% if object.get_full_name %}{{ object.get_full_name}}{% else %}{{ object.first_name }} {{ object.last_name }}{% endif %}</h2>
 <formset class="">
 <label class="label">{% trans 'Username' %}</label>{{ object.username }}
@@ -18,11 +18,13 @@
 <label class="label">{% trans 'Office' %}</label>{{ object.profile.office|default:"-" }}
 <label class="label">{% trans 'Contact Phone' %}</label>{{ object.profile.contact_phone|default:"-" }}
 <formset>
-</form>
+</div>
 </div>
 
 <form class="span3 well pull-right">
-	<img src="{{ MEDIA_URL }}{{ object.profile.thumbnail }}" alt="" title="" border="0"/>
+    {% thumbnail object.profile.profile_picture "270x300" crop="center" as thumb %}
+        <img src="{{ MEDIA_URL }}{{ thumb }}" alt="" title="" border="0"/>
+    {% endthumbnail %}
 </form>
 {% endblock %}
 

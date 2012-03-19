@@ -1,14 +1,11 @@
 {% extends 'cloud9/base.html' %}
-{% load i18n %}
+{% load i18n thumbnail %}
 
 {% block title %}{% trans 'Edit your Account' %}{% endblock %}
 
 {% block body %}
 <div class="row span">
-	{% if error %}
-		<p>{{ error }}</p>
-	{% endif %}
-	<form action="." class="span5 well" method="post">{% csrf_token %}
+	<form enctype="multipart/form-data" action="." class="span5 well" method="post">{% csrf_token %}
 		<h2>{% trans 'Edit your Account' %}</h2>
 		<formset>
 	    <table>
@@ -21,7 +18,9 @@
 		</div>
 	</form>
 	<form class="span3 well pull-right">
-		<img src="{{ MEDIA_URL }}{{ object.profile.thumbnail }}" alt="" title="" border="0"/>
+        {% thumbnail form.profile_picture.value "270x300" crop="center" as thumb %}
+            <img src="{{ MEDIA_URL }}{{ thumb }}" alt="" title="" border="0"/>
+        {% endthumbnail %}
 	</form>
 </div>
 {% endblock %}

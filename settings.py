@@ -1,4 +1,4 @@
-# Django settings for adcloud_employees project.
+# Django settings for people project.
 import os
 
 PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -111,7 +111,7 @@ AUTHENTICATION_BACKENDS = (
     'socialregistration.contrib.openid.auth.OpenIDAuth',
 )
 
-ROOT_URLCONF = 'adcloud_employees.urls'
+ROOT_URLCONF = 'people.urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
