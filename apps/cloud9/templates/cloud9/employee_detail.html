@@ -7,19 +7,31 @@
 <div class="control-group pull-right">
 {% user_can_edit %}
 </div>
-<div class="pull-right">
-	<img src="{{ MEDIA_URL }}{{ object.profile.thumbnail }}" alt="" title="" border="0"/>
-</div>
-<div class="row">
-	<div class="span_5">
-	<p><label class="label">{% trans 'Username' %}</label>{{ object.username }}</p>
-	<p><label class="label">{% trans 'Firstname' %}</label>{{ object.first_name }}</p>
-	<p><label class="label">{% trans 'Last Name' %}</label>{{ object.last_name }}</p>
-	<p><label class="label">{% trans 'Department' %}</label>{{ object.profile.dept }}</p>
-	<p><label class="label">{% trans 'Office' %}</label>{{ object.profile.office }}</p>
-	<p><label class="label">{% trans 'Contact Phone' %}</label>{{ object.profile.contact_phone|default:"None" }}</p>
-	<div>
-<div>
 
+<div class="row span">
+<form class="span5 well pull-left">
+<h2>{% if object.get_full_name %}{{ object.get_full_name}}{% else %}{{ object.first_name }} {{ object.last_name }}{% endif %}</h2>
+<formset class="">
+<label class="label">{% trans 'Username' %}</label>{{ object.username }}
+<label class="label">{% trans 'Email' %}</label><a href="mailto:{{ object.email }}">{{ object.email }}</a>
+<label class="label">{% trans 'Department' %}</label>{{ object.profile.dept }}
+<label class="label">{% trans 'Office' %}</label>{{ object.profile.office|default:"-" }}
+<label class="label">{% trans 'Contact Phone' %}</label>{{ object.profile.contact_phone|default:"-" }}
+<formset>
+</form>
+</div>
+
+<form class="span3 well pull-right">
+	<img src="{{ MEDIA_URL }}{{ object.profile.thumbnail }}" alt="" title="" border="0"/>
+</form>
 {% endblock %}
 
+
+{% block css %}
+<style>
+	
+	.border{
+		border:solid #c00 1px;
+	}
+	
+</style>{% endblock %}

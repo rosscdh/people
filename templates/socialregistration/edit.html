@@ -4,25 +4,26 @@
 {% block title %}{% trans 'Edit your Account' %}{% endblock %}
 
 {% block body %}
-<div class="row">
-<h1>{% trans 'Edit your Account' %}</h1>
-</div>
-
-{% if error %}
-	<p>{{ error }}</p>
-{% else %}
-	<form enctype="multipart/form-data" action="." method="post">{% csrf_token %}
+<div class="row span">
+	{% if error %}
+		<p>{{ error }}</p>
+	{% endif %}
+	<form action="." class="span5 well" method="post">{% csrf_token %}
+		<h2>{% trans 'Edit your Account' %}</h2>
+		<formset>
 	    <table>
-	        {{ form }}
+	        {{ form.as_table }}
 	    </table>
-
+		</formset>
 		<div class="form-actions">
 		<button class="btn btn-primary" type="submit">{% trans 'Save' %}</button>
 		<button id="signup-cancel" class="btn">{% trans 'Cancel' %}</button>
 		</div>
 	</form>
-{% endif %}
-
+	<form class="span3 well pull-right">
+		<img src="{{ MEDIA_URL }}{{ object.profile.thumbnail }}" alt="" title="" border="0"/>
+	</form>
+</div>
 {% endblock %}
 
 {% block js %}
@@ -31,7 +32,7 @@ $(document).ready(function(){
 
 	$('#signup-cancel').live('click', function(event) {
 		event.preventDefault();
-		document.location = '{% url cloud9:employee_detail slug=object.username %}';
+		document.location = '{% url cloud9:employee_detail slug=form.object.username %}';
 	});
 
 });
