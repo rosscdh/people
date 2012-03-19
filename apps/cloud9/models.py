@@ -33,7 +33,7 @@ class AdcloudInfo(models.Model):
     department = models.IntegerField(choices=DEPARTMENTS.get_choices(), default=DEPARTMENTS.TECH)
     workplace = models.IntegerField(choices=OFFICES.get_choices(), default=OFFICES.COLOGNE)
     contact_phone = models.CharField(max_length=24,blank=True,null=True)
-    profile_picture = models.ImageField(upload_to=PROFILE_PIC_PATH, default=DEFAULT_PIC, blank=True, null=True)
+    profile_picture = models.ImageField(upload_to=PROFILE_PIC_PATH, blank=False, null=True)
 
     def __unicode__(self):
         return u'%s - %s (%s)' % (self.user.username, self.dept, self.office)

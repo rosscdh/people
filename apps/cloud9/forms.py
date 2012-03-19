@@ -18,7 +18,7 @@ class AccountSetupForm(UserForm):
     department = forms.ChoiceField(choices=AdcloudInfo.DEPARTMENTS.get_choices())
     workplace = forms.ChoiceField(choices=AdcloudInfo.OFFICES.get_choices())
     contact_phone = forms.CharField(required=False)
-    profile_picture = forms.ImageField(required=False)
+    profile_picture = forms.ImageField(required=True)
 
     def save(self, request, user, profile, client):
         is_new = user.id is None
