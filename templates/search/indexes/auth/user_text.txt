@@ -4,3 +4,4 @@
 {{ object.last_name }}
 {{ object.profile.dept }}
 {{ object.profile.office }}
+{{ object.profile.profile_picture }}

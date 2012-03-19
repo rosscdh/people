@@ -42,8 +42,9 @@ class AccountSetupForm(UserForm):
         if not is_new:
             user.save()
 
-        profile.user = user
-        profile.save()
+        if profile:
+            profile.user = user
+            profile.save()
         return user, profile
 
 

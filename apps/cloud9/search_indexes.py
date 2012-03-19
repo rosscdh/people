@@ -10,6 +10,7 @@ class PeopleIndex(indexes.RealTimeSearchIndex, indexes.Indexable):
     last_name = indexes.CharField(model_attr='last_name')
     department = indexes.CharField(model_attr='profile__dept')
     office = indexes.CharField(model_attr='profile__workplace')
+    profile_picture = indexes.CharField(model_attr='profile__profile_picture')
     content_auto = indexes.EdgeNgramField(model_attr='get_full_name')
 
     def get_model(self):

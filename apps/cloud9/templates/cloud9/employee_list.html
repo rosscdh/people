@@ -11,9 +11,15 @@
 {% for u in object_list %}
 <tr>
     <td class="span2">
-        {% thumbnail u.profile.profile_picture "120x120" crop="center" as thumb %}
-            <a href="{% url cloud9:employee_detail slug=u.username %}"><img src="{{ MEDIA_URL }}{{ thumb }}" alt="" title="" border="0"/></a>
-        {% endthumbnail %}
+        {% if u.profile.profile_picture %}
+            {% thumbnail u.profile.profile_picture "120x120" crop="center" as thumb %}
+                <a href="{% url cloud9:employee_detail slug=u.username %}"><img src="{{ MEDIA_URL }}{{ thumb }}" alt="" title="" border="0"/></a>
+            {% endthumbnail %}
+        {% else %}
+            {% thumbnail u.profile_picture "120x120" crop="center" as thumb %}
+                <a href="{% url cloud9:employee_detail slug=u.username %}"><img src="{{ MEDIA_URL }}{{ thumb }}" alt="" title="" border="0"/></a>
+            {% endthumbnail %}
+        {% endif %}
     </td>
     <td class="span4"><a href="{% url cloud9:employee_detail slug=u.username %}">{{ u.get_full_name|default:u.username }}</a></td>
 	<td>{{ u.profile.dept }}</td>
