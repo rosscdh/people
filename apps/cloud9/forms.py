@@ -8,10 +8,17 @@ from models import DEFAULT_PIC, PROFILE_PIC_PATH
 
 
 class SimpleSearchForm(forms.Form):
+    """
+    Provides a basic query form to search the haystack with
+    """
     q = forms.CharField(label='', required=True, initial=_('Search'))
 
 
 class AccountSetupForm(UserForm):
+    """
+    Derrives from the socialregistration.UserForm but sets the fields
+    to our specific requirements
+    """
     username = forms.RegexField(r'^[\w.@+-]+$', max_length=32) # overriden username regex
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
@@ -48,8 +55,15 @@ class AccountSetupForm(UserForm):
         return user, profile
 
 class AccountEditForm(AccountSetupForm):
-    """ Used to edit the user object without interfering with the base UserForm """
+    """
+    Derrives from the Custom AccountSetupForm which is derrived from socialregistration
+    overrides the username of socialregistration which checks for username availability
+    """
 
     def clean_username(self):
+        """
+        @TODO need to readd the check but cater to the fact that this is an edit thus the user
+        should match the current request user object
+        """
         return self.cleaned_data.get('username')
 

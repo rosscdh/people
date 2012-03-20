@@ -2,6 +2,7 @@ import os
 
 PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
 
+# is the live environment after all
 DEBUG = False
 
 ADMINS = (
@@ -10,6 +11,7 @@ ADMINS = (
 
 SITE_ID = 2 # as per c9_sites.json fixtures
 
-MEDIA_ROOT = os.path.join(PROJECT_DIR, 'media')
-STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
+# setup for webfaction paths
+MEDIA_ROOT = os.path.join(PROJECT_DIR, '../../media/people')
+STATIC_ROOT = os.path.join(PROJECT_DIR, '../../static/people')
 
