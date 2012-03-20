@@ -3,7 +3,6 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
-from sorl.thumbnail import get_thumbnail
 from annoying.fields import AutoOneToOneField
 from apps.util import get_namedtuple_choices
 

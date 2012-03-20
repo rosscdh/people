@@ -1,14 +1,22 @@
+"""
+Author: Ross Crawford-d'Heureuse
+Description: Default functions to integrate with django-socialregistration
+which lacks the appropriate hooks to get AX properties from google.
+PLEASE NOTE: need to use the stard0g101 version of django-socialregistration
+as per README.markdown
+"""
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 from django.http import Http404
 from openid.extensions import ax
-
+#@TODO Turn into Mixin Object
 
 """ Tuple of requested AX urls ((string)<ax_url>, (bool)<is_required>)"""
 AX_URLS = getattr(settings, 'SOCIALREGISTRATION_AX_URLS',
     None)
+
 
 """ ensure that the openid email comes from one of required domains """
 def is_valid_domain(domain):
@@ -51,8 +59,9 @@ def socialregistration_ax_request(auth_request):
             ax_request.add(ax.AttrInfo(url, required=is_required))
         return ax_request
     return None
-    
 
+
+""" Parse an email address into its basic parts @HACK """
 def parse_email(email):
     ob = email.split('@')
     address = dict({
@@ -60,6 +69,7 @@ def parse_email(email):
     'host': ob[1],
     })
     return address
+
 
 def normalize_openid_keys(openid_args):
     normalized_data = dict({})
@@ -71,4 +81,3 @@ def normalize_openid_keys(openid_args):
            normalized_data[v] = openid_args[key]
 
     return normalized_data
-    
