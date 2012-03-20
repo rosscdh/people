@@ -58,9 +58,9 @@ def socialregistration_ax_request(auth_request):
             ax_request.add(ax.AttrInfo(url, required=is_required))
         return ax_request
     return None
-    
 
 
+""" Parse an email address into its basic parts @HACK """
 def parse_email(email):
     ob = email.split('@')
     address = dict({
@@ -80,3 +80,4 @@ def normalize_openid_keys(openid_args):
            normalized_data[v] = openid_args[key]
 
     return normalized_data
+
