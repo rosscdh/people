@@ -3,6 +3,7 @@ django-extensions
 Werkzeug
 PIL
 Whoosh
+#fabric
 django-annoying
 django-debug-toolbar
 -e git+https://github.com/stard0g101/django-socialregistration.git#egg=django-socialregistration

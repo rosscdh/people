@@ -14,7 +14,7 @@ SITE_ID = 2 # as per c9_sites.json fixtures
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(PROJECT_DIR, '../data/dev.db'),
+        'NAME': os.path.join(PROJECT_DIR, '../data/live.db'),
         'USER': '',
         'PASSWORD': '',
         'HOST': '',
@@ -23,6 +23,6 @@ DATABASES = {
 }
 
 # setup for webfaction paths
-MEDIA_ROOT = os.path.join(PROJECT_DIR, '../../media/people')
-STATIC_ROOT = os.path.join(PROJECT_DIR, '../../static/people')
+MEDIA_ROOT = os.path.join(PROJECT_DIR, '../media')
+STATIC_ROOT = os.path.join(PROJECT_DIR, '../static')
 
