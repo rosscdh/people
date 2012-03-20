@@ -136,6 +136,8 @@ INSTALLED_APPS = (
     'django.contrib.admin',
 
     'django_extensions',
+    'debug_toolbar',
+
     'haystack',
     'socialregistration',
     'socialregistration.contrib.openid',

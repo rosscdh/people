@@ -12,11 +12,11 @@
 <div class="span7 well pull-left">
 <h2>{% if object.get_full_name %}{{ object.get_full_name}}{% else %}{{ object.first_name }} {{ object.last_name }}{% endif %}</h2>
 <formset class="">
-<label class="label">{% trans 'Username' %}</label>{{ object.username }}
-<label class="label">{% trans 'Email' %}</label><a href="mailto:{{ object.email }}">{{ object.email }}</a>
-<label class="label">{% trans 'Department' %}</label>{{ object.profile.dept }}
-<label class="label">{% trans 'Office' %}</label>{{ object.profile.office|default:"-" }}
-<label class="label">{% trans 'Contact Phone' %}</label>{{ object.profile.contact_phone|default:"-" }}
+<strong>{% trans 'Username' %}</strong><br/>{{ object.username }}<br/>
+<strong>{% trans 'Email' %}</strong><br/><a href="mailto:{{ object.email }}">{{ object.email }}</a><br/>
+<strong>{% trans 'Department' %}</strong><br/>{{ object.profile.dept }}<br/>
+<strong>{% trans 'Office' %}</strong><br/>{{ object.profile.office|default:"-" }}<br/>
+<strong>{% trans 'Contact Phone' %}</strong><br/>{{ object.profile.contact_phone|default:"-" }}<br/>
 <formset>
 </div>
 </div>

@@ -24,7 +24,7 @@ class AdcloudInfo(models.Model):
     MADRID = 2
     ZURICH = 4
     OFFICES = get_namedtuple_choices('OFFICES', (
-                        (COLOGNE,'COLOGNE',_(u'Köln')),
+                        (COLOGNE,'COLOGNE',_(u'Cologne')),
                         (MADRID,'MADRID',_('Madrid')),
                         (ZURICH,'ZURICH',_('Zurich')),
                     ))

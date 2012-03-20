@@ -4,6 +4,7 @@ Werkzeug
 PIL
 Whoosh
 django-annoying
+django-debug-toolbar
 -e git+https://github.com/stard0g101/django-socialregistration.git#egg=django-socialregistration
 -e git+https://github.com/sorl/sorl-thumbnail.git#egg=sorl-thumbnail
 -e git+https://github.com/toastdriven/django-haystack.git#egg=django-haystack
