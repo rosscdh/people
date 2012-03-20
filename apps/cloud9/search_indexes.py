@@ -3,6 +3,9 @@ from django.contrib.auth.models import User
 
 
 class PeopleIndex(indexes.RealTimeSearchIndex, indexes.Indexable):
+    """
+    Realtimesearch handler for haystacks view of users
+    """
     text = indexes.CharField(document=True, use_template=True)
     username = indexes.CharField(model_attr='username')
     full_name = indexes.CharField(model_attr='get_full_name')

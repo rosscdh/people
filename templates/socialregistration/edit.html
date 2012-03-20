@@ -32,7 +32,7 @@ $(document).ready(function(){
 
 	$('#signup-cancel').live('click', function(event) {
 		event.preventDefault();
-		document.location = '{% url cloud9:employee_detail slug=form.object.username %}';
+		document.location = '{% url cloud9:employee_detail slug=form.username.value %}';
 	});
 
 });

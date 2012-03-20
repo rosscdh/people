@@ -1,3 +1,8 @@
+"""
+In order to provide clean access to constants used in model definitions
+This class provides a simple lookup mechnism which allows static reference to named values
+instead of having to hardcode the numeric variable
+"""
 from collections import namedtuple
 
 
