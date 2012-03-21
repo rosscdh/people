@@ -49,4 +49,3 @@ def deploy_live():
   env = 'live'
   remote_project_path = REMOTE_PROJECT_PATH
   deploy(env, remote_project_path)
-

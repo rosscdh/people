@@ -5,7 +5,9 @@ PIL
 Whoosh
 #fabric
 django-annoying
+south
 django-debug-toolbar
 -e git+https://github.com/stard0g101/django-socialregistration.git#egg=django-socialregistration
 -e git+https://github.com/sorl/sorl-thumbnail.git#egg=sorl-thumbnail
 -e git+https://github.com/toastdriven/django-haystack.git#egg=django-haystack
+-e git+https://github.com/alex/django-taggit.git#egg=django-taggit
