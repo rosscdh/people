@@ -49,12 +49,17 @@ class AccountSetupForm(UserForm):
 
         skills = self.cleaned_data.get('skills')
         if len(skills) > 0:
+            # clear the skills
+            user.profile.skills.all().delete()
+            # readd the skills
             for s in skills:
                 user.profile.skills.add(s)
 
         if self.cleaned_data.get('profile_picture'):
             user.profile.profile_picture = self.cleaned_data.get('profile_picture')
+
         user.profile.save()
+
         if not is_new:
             user.save()
 
