@@ -18,7 +18,17 @@
 <strong>{% trans 'Office' %}</strong><br/>{{ object.profile.office|default:"-" }}<br/>
 <strong>{% trans 'Skype' %}</strong><br/>{{ object.profile.skype|default:"-" }}<br/>
 <strong>{% trans 'Contact Phone' %}</strong><br/>{{ object.profile.contact_phone|default:"-" }}<br/>
+</formset>
+	{% if object.profile.skills %}
 <formset>
+	<h3>Skills</h3>
+	<blockquote>
+	{% for s in object.profile.skills.all %}
+	{{ s }}{% if not forloop.last %},{% endif %}
+	{% endfor %}
+	</blockquote>
+</formset>
+	{% endif %}
 </div>
 </div>
 
