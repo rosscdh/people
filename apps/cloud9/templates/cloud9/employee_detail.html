@@ -21,7 +21,7 @@
 </formset>
 	{% if object.profile.skills %}
 <formset>
-	<h3>Skills</h3>
+	<h3>{% trans 'Tags' %}</h3>
 	<blockquote>
 	{% for s in object.profile.skills.all %}
 	{{ s }}{% if not forloop.last %},{% endif %}
