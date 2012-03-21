@@ -16,7 +16,7 @@ class AdcloudInfo(models.Model):
     SALES = 2
     MARKETING = 4
     DEPARTMENTS = get_namedtuple_choices('DEPARTMENTS', (
-                        (TECH,'TECH',_('Tech')),
+                        (TECH,'DEV',_('Dev')),
                         (SALES,'SALES',_('Sales')),
                         (MARKETING,'MARKETING',_('Marketing')),
                     ))
@@ -29,7 +29,7 @@ class AdcloudInfo(models.Model):
                         (ZURICH,'ZURICH',_('Zurich')),
                     ))
     user = AutoOneToOneField(User, primary_key=True, related_name='profile')
-    department = models.IntegerField(choices=DEPARTMENTS.get_choices(), default=DEPARTMENTS.TECH)
+    department = models.IntegerField(choices=DEPARTMENTS.get_choices(), default=DEPARTMENTS.DEV)
     workplace = models.IntegerField(choices=OFFICES.get_choices(), default=OFFICES.COLOGNE)
     contact_phone = models.CharField(max_length=24,blank=True,null=True)
     profile_picture = models.ImageField(upload_to=PROFILE_PIC_PATH, blank=False, null=False)
@@ -41,7 +41,7 @@ class AdcloudInfo(models.Model):
     def dept(self):
         department = [dept for d,dept in self.DEPARTMENTS.get_choices() if d == self.department]
         if len(department) == 0:
-            department.append(self.DEPARTMENTS.TECH)
+            department.append(self.DEPARTMENTS.DEV)
         return u'%s' % (department[0],)
 
     @property

@@ -60,7 +60,7 @@ class Cloud9AdcloudInfoModelTest(TestCase):
         self.user = User.objects.get(pk=1)
         self.AdcloudInfoObject = AdcloudInfo(
             user = self.user,
-            department = AdcloudInfo.DEPARTMENTS.TECH,
+            department = AdcloudInfo.DEPARTMENTS.DEV,
             workplace = AdcloudInfo.OFFICES.COLOGNE,
         )
 
