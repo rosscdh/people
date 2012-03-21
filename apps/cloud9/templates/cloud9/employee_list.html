@@ -22,7 +22,7 @@
         {% endif %}
     </td>
     <td class="span4"><a href="{% url cloud9:employee_detail slug=u.username %}">{{ u.get_full_name|default:u.username }}</a></td>
-	<td>
+	<td class="span6">
 		{% if not u.profile.dept %}{{ u.department }}{% else %}{{ u.profile.dept }}{% endif %}
 		{% if u.profile.skills %}
 		<blockquote>
