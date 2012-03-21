@@ -26,3 +26,8 @@ DATABASES = {
 MEDIA_ROOT = os.path.join(PROJECT_DIR, '../media')
 STATIC_ROOT = os.path.join(PROJECT_DIR, '../static')
 
+
+STATICFILES_DIRS = (
+    ("base", os.path.join(PROJECT_DIR, '../static/base/')),
+    ("cloud9", os.path.join(PROJECT_DIR, '../static/cloud9/')),
+)
