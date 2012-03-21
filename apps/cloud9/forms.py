@@ -27,7 +27,7 @@ class AccountSetupForm(UserForm):
     workplace = forms.ChoiceField(label='Office',choices=AdcloudInfo.OFFICES.get_choices())
     contact_phone = forms.CharField(required=False)
     skype = forms.CharField(required=False)
-    skills = TagField(required=False)
+    skills = TagField(required=False,help_text=_('Seperate skill by a comma (,)'))
     profile_picture = forms.ImageField(required=True)
 
     def save(self, request, user, profile, client):
