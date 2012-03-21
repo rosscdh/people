@@ -10,6 +10,7 @@ from django.http import Http404
 from django.contrib.auth.models import User
 
 from haystack.query import SearchQuerySet
+from haystack.inputs import AutoQuery,Clean
 from socialregistration.views import Setup
 
 from forms import AccountEditForm
@@ -129,7 +130,7 @@ class PeopleSearch(View):
     def get(self, request):
         query = request.GET.get('q', '')
 
-        queryset = SearchQuerySet().using('default').filter(content=query)
+        queryset = SearchQuerySet().using('default').filter(content=Clean(query))
 
         # If there is only 1 returned result, then automatically redirect to 
         # the lucky user

@@ -52,14 +52,15 @@ class AdcloudInfo(models.Model):
 
     @property
     def dept(self):
-        department = [dept for d,dept in self.DEPARTMENTS.get_choices() if d == self.department]
+        department = [unicode(dept) for d,dept in self.DEPARTMENTS.get_choices() if d == int(self.department)]
         if len(department) == 0:
             department.append(self.DEPARTMENTS.DEV)
+
         return u'%s' % (department[0],)
 
     @property
     def office(self):
-        office = [workplace for o,workplace in self.OFFICES.get_choices() if o == self.workplace]
+        office = [unicode(workplace) for o,workplace in self.OFFICES.get_choices() if o == int(self.workplace)]
         if len(office) == 0:
             office.append(self.OFFICES.COLOGNE)
         return u'%s' % (office[0],)

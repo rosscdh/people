@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from models import AdcloudInfo
 from views import EmployeeEdit, PeopleSearch
 
-employees_list = User.objects.filter(is_superuser=False).order_by('last_name','first_name','profile__workplace','profile__department')
+employees_list = User.objects.filter(is_superuser=False,is_active=True).order_by('last_name','first_name','profile__workplace','profile__department')
 
 urlpatterns = patterns('',
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}, name='logout'),

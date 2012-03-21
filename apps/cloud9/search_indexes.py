@@ -14,7 +14,7 @@ class PeopleIndex(indexes.RealTimeSearchIndex, indexes.Indexable):
     last_name = indexes.CharField(model_attr='last_name')
     get_full_name = indexes.CharField(model_attr='get_full_name')
     department = indexes.CharField(model_attr='profile__dept')
-    office = indexes.CharField(model_attr='profile__office')
+    office = indexes.CharField(model_attr='profile__dept')
     profile_picture = indexes.CharField(model_attr='profile__profile_picture')
     content_auto = indexes.EdgeNgramField(model_attr='get_full_name')
 
@@ -23,4 +23,5 @@ class PeopleIndex(indexes.RealTimeSearchIndex, indexes.Indexable):
 
     def index_queryset(self):
         """Used when the entire index for model is updated."""
-        return self.get_model().objects.exclude(is_superuser=True,profile=None).filter(is_active=True)
+        return self.get_model().objects.select_related('profile').exclude(is_superuser=True,is_active=False,profile=None).filter(is_active=True)
+
