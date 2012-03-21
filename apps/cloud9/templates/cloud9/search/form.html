@@ -29,14 +29,6 @@ $(document).ready(function(){
             event.preventDefault()
         }
     });
-    
-    $('ul.ui-autocomplete li a').live("click", function(event){
-        event.preventDefault();
-        $('form#form-celeb-search').submit();
-    });
-    
-    $("input#id_q").autocomplete({
-        source: '{% url cloud9:people_search %}'
-    });
+
 });
 </script>

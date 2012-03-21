@@ -3,6 +3,7 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from socialregistration.forms import UserForm
+from taggit.forms import TagField
 from models import AdcloudInfo
 from models import DEFAULT_PIC, PROFILE_PIC_PATH
 
@@ -25,6 +26,8 @@ class AccountSetupForm(UserForm):
     department = forms.ChoiceField(choices=AdcloudInfo.DEPARTMENTS.get_choices())
     workplace = forms.ChoiceField(label='Office',choices=AdcloudInfo.OFFICES.get_choices())
     contact_phone = forms.CharField(required=False)
+    skype = forms.CharField(required=False)
+    skills = TagField(required=False)
     profile_picture = forms.ImageField(required=True)
 
     def save(self, request, user, profile, client):
@@ -42,6 +45,12 @@ class AccountSetupForm(UserForm):
         user.profile.department = self.cleaned_data.get('department')
         user.profile.workplace = self.cleaned_data.get('workplace')
         user.profile.contact_phone = self.cleaned_data.get('contact_phone')
+        user.profile.skype = self.cleaned_data.get('skype')
+
+        skills = self.cleaned_data.get('skills')
+        if len(skills) > 0:
+            for s in skills:
+                user.profile.skills.add(s)
 
         if self.cleaned_data.get('profile_picture'):
             user.profile.profile_picture = self.cleaned_data.get('profile_picture')

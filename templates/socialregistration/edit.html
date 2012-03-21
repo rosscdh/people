@@ -4,6 +4,9 @@
 {% block title %}{% trans 'Edit your Account' %}{% endblock %}
 
 {% block body %}
+<div class="control-group pull-right">
+<a href="{% url cloud9:employee_detail slug=object.username %}" class="btn btn-inverse">{% trans 'Profile' %}</a>
+</div>
 <div class="row span">
 	<form enctype="multipart/form-data" action="." class="span5 well" method="post">{% csrf_token %}
 		<h2>{% trans 'Edit your Account' %}</h2>

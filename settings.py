@@ -140,6 +140,7 @@ INSTALLED_APPS = (
 	'south',
 
     'haystack',
+	'taggit',
     'socialregistration',
     'socialregistration.contrib.openid',
     'sorl.thumbnail',

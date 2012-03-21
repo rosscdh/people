@@ -3,6 +3,8 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
+
+from taggit.managers import TaggableManager
 from annoying.fields import AutoOneToOneField
 from apps.util import get_namedtuple_choices
 
@@ -12,27 +14,38 @@ PROFILE_PIC_PATH = '%s/%s' % (settings.MEDIA_ROOT,DEFAULT_PIC_PATH,)
 
 
 class AdcloudInfo(models.Model):
-    TECH = 1
+    DEV = 1
     SALES = 2
     MARKETING = 4
+    CLOUDMAN = 8
+    SSP = 16
+    DSP = 32
+    OFFICEADMIN = 64
     DEPARTMENTS = get_namedtuple_choices('DEPARTMENTS', (
-                        (TECH,'DEV',_('Dev')),
-                        (SALES,'SALES',_('Sales')),
-                        (MARKETING,'MARKETING',_('Marketing')),
+                        (DEV,'DEV',_('Development')),
+                        (SALES,'SALES',_('Product Management')),
+                        (CLOUDMAN,'CLOUDMAN',_('Cloud Management')),
+                        (SSP,'SSP',_('Supply Side')),
+                        (DSP,'DSP',_('Demand Side')),
+                        (OFFICEADMIN,'OFFICEADMIN',_('Administration')),
+                        (MARKETING,'MARKETING',_('Marketing & PR')),
                     ))
     COLOGNE = 1
     MADRID = 2
-    ZURICH = 4
+    PARIS = 4
     OFFICES = get_namedtuple_choices('OFFICES', (
                         (COLOGNE,'COLOGNE',_(u'Cologne')),
                         (MADRID,'MADRID',_('Madrid')),
-                        (ZURICH,'ZURICH',_('Zurich')),
+                        (PARIS,'PARIS',_('Paris')),
                     ))
     user = AutoOneToOneField(User, primary_key=True, related_name='profile')
     department = models.IntegerField(choices=DEPARTMENTS.get_choices(), default=DEPARTMENTS.DEV)
     workplace = models.IntegerField(choices=OFFICES.get_choices(), default=OFFICES.COLOGNE)
     contact_phone = models.CharField(max_length=24,blank=True,null=True)
     profile_picture = models.ImageField(upload_to=PROFILE_PIC_PATH, blank=False, null=False)
+    skype = models.CharField(max_length=64,blank=True,null=True)
+
+    skills = TaggableManager()
 
     def __unicode__(self):
         return u'%s - %s (%s)' % (self.user.username, self.dept, self.office)

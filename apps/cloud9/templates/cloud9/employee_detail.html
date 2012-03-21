@@ -9,13 +9,14 @@
 </div>
 
 <div class="row span">
-<div class="span7 well pull-left">
+<div class="span5 well pull-left">
 <h2>{% if object.get_full_name %}{{ object.get_full_name}}{% else %}{{ object.first_name }} {{ object.last_name }}{% endif %}</h2>
 <formset class="">
 <strong>{% trans 'Username' %}</strong><br/>{{ object.username }}<br/>
 <strong>{% trans 'Email' %}</strong><br/><a href="mailto:{{ object.email }}">{{ object.email }}</a><br/>
 <strong>{% trans 'Department' %}</strong><br/>{{ object.profile.dept }}<br/>
 <strong>{% trans 'Office' %}</strong><br/>{{ object.profile.office|default:"-" }}<br/>
+<strong>{% trans 'Skype' %}</strong><br/>{{ object.profile.skype|default:"-" }}<br/>
 <strong>{% trans 'Contact Phone' %}</strong><br/>{{ object.profile.contact_phone|default:"-" }}<br/>
 <formset>
 </div>
@@ -25,7 +26,18 @@
     {% thumbnail object.profile.profile_picture "270x300" crop="center" as thumb %}
         <img src="{{ MEDIA_URL }}{{ thumb }}" alt="" title="" border="0"/>
     {% endthumbnail %}
+	{% if object.profile.skype %}
+	<form class="span3 well pull-right">
+		<!--
+		Skype 'My status' button
+		http://www.skype.com/go/skypebuttons
+		-->
+		<script type="text/javascript" src="http://download.skype.com/share/skypebuttons/js/skypeCheck.js"></script>
+		<a href="skype:{{ object.profile.skype }}?call"><img src="http://mystatus.skype.com/balloon/{{ object.profile.skype }}" style="border: none;" width="150" height="60" alt="My status" /></a>
+	</form>
+	{% endif %}
 </form>
+
 {% endblock %}
 
 

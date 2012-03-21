@@ -56,6 +56,10 @@ class EmployeeEdit(Setup):
         """
         Overridden get data method which is used to populate the form
         """
+        skills = []
+        for skill in user.profile.skills.all():
+            skills.append(skill.name)
+        skills = ','.join(skills)
         data = {
             'username': user.username,
             'email': user.email,
@@ -65,6 +69,8 @@ class EmployeeEdit(Setup):
             'workplace': user.profile.workplace,
             'contact_phone': user.profile.contact_phone,
             'profile_picture': user.profile.profile_picture,
+            'skype': user.profile.skype,
+            'skills': skills,
         }
         return data
 

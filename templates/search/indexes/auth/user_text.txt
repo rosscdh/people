@@ -5,3 +5,6 @@
 {{ object.profile.dept }}
 {{ object.profile.office }}
 {{ object.profile.profile_picture }}
+{% for skill in object.profile.skills.all %}
+{{ skill }}
+{% endfor %}
