@@ -22,7 +22,16 @@
         {% endif %}
     </td>
     <td class="span4"><a href="{% url cloud9:employee_detail slug=u.username %}">{{ u.get_full_name|default:u.username }}</a></td>
-	<td>{% if not u.profile.dept %}{{ u.department }}{% else %}{{ u.profile.dept }}{% endif %}</td>
+	<td>
+		{% if not u.profile.dept %}{{ u.department }}{% else %}{{ u.profile.dept }}{% endif %}
+		{% if u.profile.skills %}
+		<blockquote>
+		{% for s in u.profile.skills.all %}
+		{{ s }}{% if not forloop.last %},{% endif %}
+		{% endfor %}
+		</blockquote>
+		{% endif %}
+	</td>
     <td>{% if not u.profile.office %}{{ u.office }}{% else %}{{ u.profile.office }}{% endif %}</td>
 </tr>
 {% empty %}
