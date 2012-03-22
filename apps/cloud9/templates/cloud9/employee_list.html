@@ -7,23 +7,24 @@
 
 {% block body %}
 
-<table class="table table-striped">
+<ul class="unstyled table-striped">
 {% for u in object_list %}
-<tr>
-    <td class="span2">
+<li class="row">
+    <div class="span2 pull-left">
         {% if u.profile.profile_picture %}
             {% thumbnail u.profile.profile_picture "120x120" crop="center" as thumb %}
                 <a href="{% url cloud9:employee_detail slug=u.username %}"><img src="{{ MEDIA_URL }}{{ thumb }}" alt="" title="" border="0"/></a>
             {% endthumbnail %}
         {% else %}
             {% thumbnail u.profile_picture "120x120" crop="center" as thumb %}
-                <a href="{% url cloud9:employee_detail slug=u.username %}"><img src="{{ MEDIA_URL }}{{ thumb }}" alt="" title="" border="0"/></a>
+                <a href="{% url cloud9:employee_detail slug=u.username %}"><img src="{{ MEDIA_URL }}{{ thumb }}" alt="{{ u.get_full_name|default:u.username }}" title="{{ u.get_full_name|default:u.username }}" border="0"/></a>
             {% endthumbnail %}
         {% endif %}
-    </td>
-    <td class="span4"><a href="{% url cloud9:employee_detail slug=u.username %}">{{ u.get_full_name|default:u.username }}</a></td>
-	<td class="span6">
+    </div>
+    <div class="span2 pull-left"><a href="{% url cloud9:employee_detail slug=u.username %}">{{ u.get_full_name|default:u.username }}</a></div>
+	<div class="span3 pull-left">
 		{% if not u.profile.dept %}{{ u.department }}{% else %}{{ u.profile.dept }}{% endif %}
+		{% if u.skills or u.profile.skills.all  %}
 		<blockquote>
 		{% if u.skills %}
 			{{ u.skills }}
@@ -33,13 +34,14 @@
 			{% endfor %}
 		{% endif %}
 		</blockquote>
-	</td>
-    <td>{% if not u.profile.office %}{{ u.office }}{% else %}{{ u.profile.office }}{% endif %}</td>
-</tr>
+		{% endif %}
+	</div>
+    <div class="span2 pull-left">{% if not u.profile.office %}{{ u.office }}{% else %}{{ u.profile.office }}{% endif %}</div>
+</li>
 {% empty %}
-<tr><td>No Results</td></tr>
+<li>No Results</li>
 {% endfor %}
-</table>
+</ul>
     
 {% endblock %}
 
