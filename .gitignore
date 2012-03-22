@@ -6,6 +6,7 @@
 ._*
 .DS_Store
 apps/tailor/management/commands/*.png
+local_settings.py
 media/*
 log/*
 /static

@@ -133,7 +133,6 @@ INSTALLED_APPS = (
     'django.contrib.admin',
 
     'django_extensions',
-    'debug_toolbar',
 	'south',
 
     'haystack',
@@ -188,6 +187,7 @@ LANGUAGES = (
     ('es', ugettext('Spanish')),
 )
 
+
 SOCIALREGISTRATION_SETUP_FORM = 'apps.cloud9.forms.AccountSetupForm'
 SOCIALREGISTRATION_INITIAL_DATA_FUNCTION = 'apps.cloud9.socialregistration_initial_data'
 SOCIALREGISTRATION_ADD_AX_REQUEST_FUNCTION = 'apps.cloud9.socialregistration_ax_request'
@@ -202,6 +202,7 @@ SOCIALREGISTRATION_AX_URLS = (
     ('http://openid.net/schema/company/name',False),
 )
 SOCIALREGISTRATION_ALLOWED_DOMAINS = ('adcloud.com',)
+
 # Include local_settings.py for local overrides
 try:
     from local_settings import *

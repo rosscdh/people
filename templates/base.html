@@ -49,7 +49,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#"><img src="{{ STATIC_URL }}cloud9/logo-adcloud.png" alt="" title="" border="0"/></a>
+          <a class="brand" href="/"><img src="{{ STATIC_URL }}cloud9/logo-adcloud.png" alt="" title="" border="0"/></a>
           <div class="nav-collapse">
             <ul class="nav">
               {% if user.is_authenticated %}
@@ -81,6 +81,15 @@
             </ul> -->
             &nbsp;
 		</div>
+		{% if messages %}
+		<div class="row">
+		<ul class="messages">
+		    {% for message in messages %}
+		    <li{% if message.tags %} class="btn btn-danger span12 {{ message.tags }}"{% endif %}>{{ message }}</li>
+		    {% endfor %}
+		</ul>
+		</div>
+		{% endif %}
 		{% block content-head %}{% endblock %}
 		{% block pre-body %}{% endblock %}
         {% block body %}{% endblock %}

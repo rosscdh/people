@@ -15,6 +15,7 @@ from socialregistration.views import Setup
 
 from forms import AccountEditForm
 from models import AdcloudInfo
+from apps.util import user_is_self_or_admin
 
 
 def default(request):
@@ -82,6 +83,9 @@ class EmployeeEdit(Setup):
         field useage
         """
         user = get_object_or_404(User, username=slug)
+        allowed_access = user_is_self_or_admin( request, user )
+        if not allowed_access == True:
+            return allowed_access
 
         try:
             profile = user.profile
@@ -101,6 +105,9 @@ class EmployeeEdit(Setup):
         from socialregistration.contrib.openid.models import OpenIDProfile
 
         user = get_object_or_404(User, username=slug)
+        allowed_access = user_is_self_or_admin( request, user )
+        if not allowed_access == True:
+            return allowed_access
 
         try:
             profile = OpenIDProfile.objects.get(user=user)
@@ -130,7 +137,7 @@ class PeopleSearch(View):
     def get(self, request):
         query = request.GET.get('q', '')
 
-        queryset = SearchQuerySet().using('default').filter(content=Clean(query))
+        queryset = SearchQuerySet().using('default').filter(content=Clean(query)).order_by('last_name','first_name','office','department')
 
         # If there is only 1 returned result, then automatically redirect to 
         # the lucky user

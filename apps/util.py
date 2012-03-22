@@ -1,9 +1,15 @@
+# encoding: utf-8
 """
 In order to provide clean access to constants used in model definitions
 This class provides a simple lookup mechnism which allows static reference to named values
 instead of having to hardcode the numeric variable
 """
+from django.utils.translation import ugettext_lazy as _
 from collections import namedtuple
+from django.http import HttpResponseRedirect
+from django.conf import settings
+from django.core.urlresolvers import reverse
+from django.contrib import messages
 
 
 def get_namedtuple_choices(name, choices_tuple):
@@ -46,4 +52,19 @@ def get_namedtuple_choices(name, choices_tuple):
 
     return Choices._make([val for val,name,desc in choices_tuple])
 
+
+"""
+Decorator to ensure you can only edit your own profile
+unless you are an admin or mod
+"""
+def user_is_self_or_admin( request, viewed_user ):
+    if not request.user.is_authenticated():
+        messages.error(request, _('You need to be logged in.'))
+        return HttpResponseRedirect( reverse('cloud9:employee_list') )
+
+    if request.user != viewed_user and (not request.user.is_staff and not request.user.is_superuser ):
+        messages.error(request, _('You are trying to access someones profile without permission. You are a very norty person.'))
+        return HttpResponseRedirect( reverse('cloud9:employee_list') )
+
+    return True
 
