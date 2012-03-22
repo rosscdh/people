@@ -64,3 +64,10 @@ class AdcloudInfo(models.Model):
         if len(office) == 0:
             office.append(self.OFFICES.COLOGNE)
         return u'%s' % (office[0],)
+
+    def get_skills(self):
+        tags = self.skills.all()
+        if len(tags) > 0:
+            skills = [unicode(tag.name) for tag in tags]
+            return ', '.join(skills)
+        return None
