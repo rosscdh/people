@@ -42,10 +42,17 @@
 {% endblock %}
 
 {% block js %}
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}base/jquery.jOrgChart.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}base/bootstrap-tooltip.js"></script>
 <script>
 jQuery(document).ready(function() {
     $("#org").jOrgChart();
+    $('a.person').tooltip({
+        animation: true,
+        placement: 'right',
+        delay: { show: 200, hide: 500 }
+    });
 });
 </script>
 {% endblock %}
