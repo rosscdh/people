@@ -14,5 +14,6 @@ def people_list(context, office, department):
     people_list = context['object_list']['people'][office][department]
     return dict({
         'people_list': people_list,
+        'MEDIA_URL': context['MEDIA_URL'],
     })
 people_list.is_safe = True
