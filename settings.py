@@ -5,6 +5,7 @@ PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+THUMBNAIL_DEBUG = False
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -203,6 +204,13 @@ SOCIALREGISTRATION_AX_URLS = (
     ('http://openid.net/schema/company/name',False),
 )
 SOCIALREGISTRATION_ALLOWED_DOMAINS = ('adcloud.com',)
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/tmp/people_cache',
+    }
+}
 
 # Include local_settings.py for local overrides
 try:

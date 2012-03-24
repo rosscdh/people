@@ -4,6 +4,8 @@ PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
 
 # is the live environment after all
 DEBUG = False
+TEMPLATE_DEBUG = DEBUG
+THUMBNAIL_DEBUG = DEBUG
 
 ADMINS = (
     ('Ross Crawford-d\'Heureuse', 'ross.crawford@adcloud.com'),
@@ -31,3 +33,10 @@ STATICFILES_DIRS = (
     ("base", os.path.join(PROJECT_DIR, '../static/base/')),
     ("cloud9", os.path.join(PROJECT_DIR, '../static/cloud9/')),
 )
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '../data/people_cache',
+    }
+}

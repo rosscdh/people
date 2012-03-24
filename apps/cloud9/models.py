@@ -48,7 +48,7 @@ class AdcloudInfo(models.Model):
     skills = TaggableManager()
 
     def __unicode__(self):
-        return u'%s - %s (%s)' % (self.user.username, self.dept, self.office)
+        return u'%s - %s (%s) - %s' % (self.user.username, self.dept, self.office, self.profile_picture)
 
     @property
     def dept(self):
