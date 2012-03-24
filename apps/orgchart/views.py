@@ -17,8 +17,6 @@ from apps.cloud9.models import AdcloudInfo
 
 class OrganizationChart(TemplateView):
     """
-    Search for people, makes use of the django-haystack app
-    is basically a modified custom view of the GenericList.employee_list in cloud9.urls
     """
     template_name = 'orgchart/chart.html'
 
@@ -55,3 +53,8 @@ class OrganizationChart(TemplateView):
         return render_to_response(self.template_name, {
                 'object_list': lists,
             },context_instance=RequestContext(request))
+
+class OrganizationChartHTML5(OrganizationChart):
+    """
+    """
+    template_name = 'orgchart/chartHTML5.html'
