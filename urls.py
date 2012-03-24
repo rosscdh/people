@@ -5,11 +5,11 @@ from django.contrib import admin
 
 admin.autodiscover()
 
-
 urlpatterns = patterns('',
     (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
     (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^social/', include('socialregistration.urls', namespace='socialregistration')),
+    url(r'^org/', include('apps.orgchart.urls', namespace='orgchart')),
     url(r'^', include('apps.cloud9.urls', namespace='cloud9')),
 )

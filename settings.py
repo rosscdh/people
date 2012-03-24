@@ -142,6 +142,7 @@ INSTALLED_APPS = (
     'sorl.thumbnail',
 
     'apps.cloud9',
+    'apps.orgchart',
 )
 
 # A sample logging configuration. The only tangible logging

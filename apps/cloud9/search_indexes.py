@@ -24,5 +24,5 @@ class PeopleIndex(indexes.RealTimeSearchIndex, indexes.Indexable):
 
     def index_queryset(self):
         """Used when the entire index for model is updated."""
-        return self.get_model().objects.select_related('profile').exclude(is_superuser=True,is_active=False,profile=None).filter(is_active=True)
+        return self.get_model().objects.select_related('profile').filter(is_active=True,is_superuser=False)
 
