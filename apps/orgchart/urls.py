@@ -12,4 +12,5 @@ from views import OrganizationChart
 
 urlpatterns = patterns('',
     url(r'^chart/$', login_required(cache_page(60 * 15)(OrganizationChart.as_view())), name='default'),
+    url(r'^chart/nocache/$', login_required(OrganizationChart.as_view()), name='default'),
 )
