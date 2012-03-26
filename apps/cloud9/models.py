@@ -21,6 +21,7 @@ class AdcloudInfo(models.Model):
     SSP = 16
     DSP = 32
     OFFICEADMIN = 64
+    OFFICEADMIN = 128
     DEPARTMENTS = get_namedtuple_choices('DEPARTMENTS', (
                         (DEV,'DEV',_('Development')),
                         (SALES,'SALES',_('Product Management')),
@@ -29,6 +30,7 @@ class AdcloudInfo(models.Model):
                         (DSP,'DSP',_('Demand Side')),
                         (OFFICEADMIN,'OFFICEADMIN',_('Administration')),
                         (MARKETING,'MARKETING',_('Marketing & PR')),
+                        (MANAGEMENT,'MANAGEMENT',_('Management')),
                     ))
     COLOGNE = 1
     MADRID = 2
