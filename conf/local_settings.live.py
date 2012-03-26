@@ -37,6 +37,6 @@ STATICFILES_DIRS = (
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': '../data/people_cache',
+        'LOCATION': os.path.join(PROJECT_DIR, '../data/people_cache'),
     }
 }
