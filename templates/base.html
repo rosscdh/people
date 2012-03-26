@@ -54,7 +54,7 @@
             <ul class="nav">
               {% if user.is_authenticated %}
               <li class="active"><a href="{% url cloud9:employee_list %}">{% trans 'People' %}</a></li>
-              <li class="active"><a href="{% url orgchart:default %}">{% trans 'CloudView' %}</a></li>
+              <!-- <li class="active"><a href="{% url orgchart:default %}">{% trans 'CloudView' %}</a></li> -->
               {% endif %}
             </ul>
 
