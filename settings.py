@@ -134,10 +134,10 @@ INSTALLED_APPS = (
     'django.contrib.admin',
 
     'django_extensions',
-	'south',
+    'south',
 
     'haystack',
-	'taggit',
+    'taggit',
     'socialregistration',
     'socialregistration.contrib.openid',
     'sorl.thumbnail',
