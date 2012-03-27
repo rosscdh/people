@@ -11,6 +11,7 @@ from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 from django.http import Http404
 from openid.extensions import ax
+from apps.middleware import Http403
 #@TODO Turn into Mixin Object
 
 """ Tuple of requested AX urls ((string)<ax_url>, (bool)<is_required>)"""
@@ -36,8 +37,7 @@ def socialregistration_initial_data(request, user, profile, client):
 
     email_parts = parse_email(args['http://openid.net/schema/contact/email'])
     if not is_valid_domain(email_parts['host']):
-        raise Http404
-        #@TODO write redirect cos of not matching email
+        raise Http403
 
     user_data = {
         'username': email_parts['username'],
