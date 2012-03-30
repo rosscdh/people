@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load i18n openid thumbnail %}
+
+{% block body %}
+<ul class="unstyled">
+{% for u in object_list %}
+<li class="pull-left">
+{% thumbnail u.profile.profile_picture "120x120" crop="center" as thumb %}
+    <a class="person" rel="tooltip" data-original-title="{{ u.get_full_name|default:u.username }}" href="{% url cloud9:employee_detail slug=u.username %}"><img width="120" class="member-avatar" data-avatar="{{ MEDIA_URL }}{{ thumb }}" height="120" style="width:120px;height:120px;" src="" alt="{{ u.get_full_name|default:u.username }}" title="{{ u.get_full_name|default:u.username }}" border="0"/></a><br/>
+{% endthumbnail %}
+</li>
+{% empty %}
+<li>No Results</li>
+{% endfor %}
+</ul>
+{% endblock %}
+
+
+{% block js %}
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}base/bootstrap-tooltip.js"></script>
+<script>
+jQuery(document).ready(function() {
+    $('img.member-avatar').each(function() {
+        $(this).attr('src', $(this).attr('data-avatar') )
+    });
+    $('a.person').tooltip({
+        animation: true,
+        placement: 'top',
+        delay: { show: 200, hide: 500 }
+    });
+});
+</script>
+{% endblock %}

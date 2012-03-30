@@ -18,6 +18,7 @@ class PeopleIndex(indexes.RealTimeSearchIndex, indexes.Indexable):
     room_number = indexes.CharField(model_attr='profile__room_number',null=True)
     skills = indexes.CharField(model_attr='profile__get_skills')
     profile_picture = indexes.CharField(model_attr='profile__profile_picture')
+    contact_phone = indexes.CharField(model_attr='profile__contact_phone',null=True)
     content_auto = indexes.EdgeNgramField(model_attr='get_full_name')
 
     def get_model(self):

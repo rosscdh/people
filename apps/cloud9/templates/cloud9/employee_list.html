@@ -41,6 +41,9 @@
         {% if u.profile.room_number or u.room_numer %}
         <br/><strong class="muted">Room:</strong>&nbsp;{% if u.profile.room_number %}{{ u.profile.room_number }}{% else %}{{ u.room_number }}{% endif %}
         {% endif %}
+        {% if u.profile.contact_phone or u.contact_phone %}
+        <br/><strong class="muted">No.:</strong>&nbsp;{% if u.profile.contact_phone %}{{ u.profile.contact_phone }}{% else %}{{ u.contact_phone }}{% endif %}
+        {% endif %}
     </div>
 </li>
 {% empty %}

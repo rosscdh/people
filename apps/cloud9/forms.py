@@ -27,7 +27,7 @@ class AccountSetupForm(UserForm):
     workplace = forms.ChoiceField(label='Office',choices=AdcloudInfo.OFFICES.get_choices())
     room_number = forms.CharField(required=False)
     contact_phone = forms.CharField(required=False)
-    skype = forms.CharField(required=False)
+    skype = forms.CharField(required=False, help_text=_('Ensure: "Skype -> Preferences -> Privacy -> Show my status on the web" is checked'))
     skills = TagField(required=False,label=_('Tags'),help_text=_('Seperate by a comma (,)'))
     profile_picture = forms.ImageField(required=True)
 

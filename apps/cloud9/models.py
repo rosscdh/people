@@ -52,6 +52,9 @@ class AdcloudInfo(models.Model):
 
     skills = TaggableManager()
 
+    class Meta:
+      ordering = ['user__last_name','user__first_name','workplace','department']
+
     def __unicode__(self):
         return u'%s - %s (%s) - %s' % (self.user.username, self.dept, self.office, self.profile_picture)
 

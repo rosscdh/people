@@ -27,9 +27,15 @@ def default(request):
     """
     is_loggedin = request.user.is_authenticated()
     if not is_loggedin:
+
         return redirect(reverse('cloud9:login'))
+
     elif is_loggedin:
-        return redirect(reverse('cloud9:employee_list'))
+      object_list = User.objects.select_related('profile').filter(is_active=True,is_superuser=False)
+      return render_to_response('cloud9/home.html', {
+              'object_list': object_list,
+          },context_instance=RequestContext(request))
+
     else:
         return render_to_response('cloud9/base.html', {'request':request}, context_instance=RequestContext(request))
 
@@ -123,9 +129,9 @@ class EmployeeEdit(Setup):
 
         user, profile = form.save(request, user, profile, client)
 
-        user = profile.authenticate()
+        profile.authenticate()
 
-        return redirect(self.get_next(request))
+        return redirect(reverse('cloud9:employee_detail', kwargs={'slug':user.username}))
 
 
 class PeopleSearch(View):
