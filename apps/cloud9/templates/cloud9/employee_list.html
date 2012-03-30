@@ -36,7 +36,12 @@
 		</blockquote>
 		{% endif %}
 	</div>
-    <div class="span2 pull-left">{% if not u.profile.office %}{{ u.office }}{% else %}{{ u.profile.office }}{% endif %}</div>
+    <div class="span2 pull-left">
+        {% if not u.profile.office %}{{ u.office }}{% else %}{{ u.profile.office }}{% endif %}
+        {% if u.profile.room_number or u.room_numer %}
+        <br/><strong class="muted">Room:</strong>&nbsp;{% if u.profile.room_number %}{{ u.profile.room_number }}{% else %}{{ u.room_number }}{% endif %}
+        {% endif %}
+    </div>
 </li>
 {% empty %}
 <li>No Results</li>

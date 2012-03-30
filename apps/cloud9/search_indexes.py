@@ -15,6 +15,7 @@ class PeopleIndex(indexes.RealTimeSearchIndex, indexes.Indexable):
     get_full_name = indexes.CharField(model_attr='get_full_name')
     department = indexes.CharField(model_attr='profile__dept')
     office = indexes.CharField(model_attr='profile__office')
+    room_number = indexes.CharField(model_attr='profile__room_number',null=True)
     skills = indexes.CharField(model_attr='profile__get_skills')
     profile_picture = indexes.CharField(model_attr='profile__profile_picture')
     content_auto = indexes.EdgeNgramField(model_attr='get_full_name')
