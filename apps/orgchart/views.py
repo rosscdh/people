@@ -41,12 +41,21 @@ class OrganizationChart(TemplateView):
         people_queryset = queryset
         people = dict({
         })
+
+        # add offices
         for o in lists['offices']:
+          if not o in people:
             people[o] = dict({})
-            for d in lists['depts']:
-                people[o][d] = []
-                for p in people_queryset.filter(office=o,department=d):
-                    people[o][d].append(p)
+
+        # add departments
+        for o in lists['offices']:
+          for d in lists['depts']:
+            if not d in people[o]:
+              people[o][d] = []
+
+        # add people to departments
+        for p in people_queryset:
+            people[p.office][p.department].append(p)
 
         lists['people'] = people
 

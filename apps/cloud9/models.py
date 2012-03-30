@@ -10,8 +10,10 @@ from apps.util import get_namedtuple_choices
 
 DEFAULT_PIC_PATH = 'employees/pics/'
 DEFAULT_PIC = '%sdefault-pic.jpg' % (DEFAULT_PIC_PATH,)
-PROFILE_PIC_PATH = '%s/%s' % (settings.MEDIA_ROOT,DEFAULT_PIC_PATH,)
 
+""" Method to uniquify the uploaded people image """
+def avatar_upload_path_handler(instance, filename):
+    return "{path}{id}-{file}".format(path=DEFAULT_PIC_PATH, id=instance.user.id, file=filename)
 
 class AdcloudInfo(models.Model):
     DEV = 1
@@ -21,6 +23,7 @@ class AdcloudInfo(models.Model):
     SSP = 16
     DSP = 32
     OFFICEADMIN = 64
+    MANAGEMENT = 128
     DEPARTMENTS = get_namedtuple_choices('DEPARTMENTS', (
                         (DEV,'DEV',_('Development')),
                         (SALES,'SALES',_('Product Management')),
@@ -29,6 +32,7 @@ class AdcloudInfo(models.Model):
                         (DSP,'DSP',_('Demand Side')),
                         (OFFICEADMIN,'OFFICEADMIN',_('Administration')),
                         (MARKETING,'MARKETING',_('Marketing & PR')),
+                        (MANAGEMENT,'MANAGEMENT',_('Management')),
                     ))
     COLOGNE = 1
     MADRID = 2
@@ -41,8 +45,9 @@ class AdcloudInfo(models.Model):
     user = AutoOneToOneField(User, primary_key=True, related_name='profile')
     department = models.IntegerField(choices=DEPARTMENTS.get_choices(), default=DEPARTMENTS.DEV)
     workplace = models.IntegerField(choices=OFFICES.get_choices(), default=OFFICES.COLOGNE)
+    room_number = models.CharField(max_length=24,blank=True,null=True)
     contact_phone = models.CharField(max_length=24,blank=True,null=True)
-    profile_picture = models.ImageField(upload_to=PROFILE_PIC_PATH, blank=False, null=False)
+    profile_picture = models.ImageField(upload_to=avatar_upload_path_handler, blank=False, null=False)
     skype = models.CharField(max_length=64,blank=True,null=True)
 
     skills = TaggableManager()

@@ -5,7 +5,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from socialregistration.forms import UserForm
 from taggit.forms import TagField
 from models import AdcloudInfo
-from models import DEFAULT_PIC, PROFILE_PIC_PATH
+from models import DEFAULT_PIC
 
 
 class SimpleSearchForm(forms.Form):
@@ -25,6 +25,7 @@ class AccountSetupForm(UserForm):
     last_name = forms.CharField(required=True)
     department = forms.ChoiceField(choices=AdcloudInfo.DEPARTMENTS.get_choices())
     workplace = forms.ChoiceField(label='Office',choices=AdcloudInfo.OFFICES.get_choices())
+    room_number = forms.CharField(required=False)
     contact_phone = forms.CharField(required=False)
     skype = forms.CharField(required=False)
     skills = TagField(required=False,label=_('Tags'),help_text=_('Seperate by a comma (,)'))
@@ -44,6 +45,7 @@ class AccountSetupForm(UserForm):
 
         user.profile.department = self.cleaned_data.get('department')
         user.profile.workplace = self.cleaned_data.get('workplace')
+        user.profile.room_number = self.cleaned_data.get('room_number')
         user.profile.contact_phone = self.cleaned_data.get('contact_phone')
         user.profile.skype = self.cleaned_data.get('skype')
 

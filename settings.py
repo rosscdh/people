@@ -8,7 +8,7 @@ TEMPLATE_DEBUG = DEBUG
 THUMBNAIL_DEBUG = False
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Ross Crawford-d\'Heureuse', 'ross.crawford@adcloud.com'),
 )
 
 MANAGERS = ADMINS
@@ -92,7 +92,6 @@ SECRET_KEY = '6yye_0mpx1wucf&%drje(^wd^k+@si5o%0j3jvkz!9=4!1(k$@'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -102,6 +101,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'apps.middleware.Http403Middleware',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -134,10 +134,10 @@ INSTALLED_APPS = (
     'django.contrib.admin',
 
     'django_extensions',
-	'south',
+    'south',
 
     'haystack',
-	'taggit',
+    'taggit',
     'socialregistration',
     'socialregistration.contrib.openid',
     'sorl.thumbnail',
