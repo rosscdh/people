@@ -45,6 +45,7 @@ class AccountSetupForm(UserForm):
 
         user.profile.department = self.cleaned_data.get('department')
         user.profile.workplace = self.cleaned_data.get('workplace')
+        user.profile.room_number = self.cleaned_data.get('room_number')
         user.profile.contact_phone = self.cleaned_data.get('contact_phone')
         user.profile.skype = self.cleaned_data.get('skype')
 
