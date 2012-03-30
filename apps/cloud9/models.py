@@ -45,6 +45,7 @@ class AdcloudInfo(models.Model):
     user = AutoOneToOneField(User, primary_key=True, related_name='profile')
     department = models.IntegerField(choices=DEPARTMENTS.get_choices(), default=DEPARTMENTS.DEV)
     workplace = models.IntegerField(choices=OFFICES.get_choices(), default=OFFICES.COLOGNE)
+    room_number = models.CharField(max_length=24,blank=True,null=True)
     contact_phone = models.CharField(max_length=24,blank=True,null=True)
     profile_picture = models.ImageField(upload_to=avatar_upload_path_handler, blank=False, null=False)
     skype = models.CharField(max_length=64,blank=True,null=True)
