@@ -69,6 +69,7 @@ class EmployeeEdit(Setup):
             'last_name': user.last_name,
             'department': user.profile.department,
             'workplace': user.profile.workplace,
+            'room_number': user.profile.room_number,
             'contact_phone': user.profile.contact_phone,
             'profile_picture': user.profile.profile_picture,
             'skype': user.profile.skype,
