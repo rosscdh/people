@@ -25,6 +25,7 @@ class AccountSetupForm(UserForm):
     last_name = forms.CharField(required=True)
     department = forms.ChoiceField(choices=AdcloudInfo.DEPARTMENTS.get_choices())
     workplace = forms.ChoiceField(label='Office',choices=AdcloudInfo.OFFICES.get_choices())
+    room_number = forms.CharField(required=False)
     contact_phone = forms.CharField(required=False)
     skype = forms.CharField(required=False)
     skills = TagField(required=False,label=_('Tags'),help_text=_('Seperate by a comma (,)'))
