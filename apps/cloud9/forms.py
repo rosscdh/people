@@ -5,7 +5,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from socialregistration.forms import UserForm
 from taggit.forms import TagField
 from models import AdcloudInfo
-from models import DEFAULT_PIC, PROFILE_PIC_PATH
+from models import DEFAULT_PIC
 
 
 class SimpleSearchForm(forms.Form):

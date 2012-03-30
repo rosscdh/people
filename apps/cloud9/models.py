@@ -10,8 +10,10 @@ from apps.util import get_namedtuple_choices
 
 DEFAULT_PIC_PATH = 'employees/pics/'
 DEFAULT_PIC = '%sdefault-pic.jpg' % (DEFAULT_PIC_PATH,)
-PROFILE_PIC_PATH = '%s/%s' % (settings.MEDIA_ROOT,DEFAULT_PIC_PATH,)
 
+""" Method to uniquify the uploaded people image """
+def avatar_upload_path_handler(instance, filename):
+    return "{path}{id}-{file}".format(path=DEFAULT_PIC_PATH, id=instance.user.id, file=filename)
 
 class AdcloudInfo(models.Model):
     DEV = 1
@@ -44,7 +46,7 @@ class AdcloudInfo(models.Model):
     department = models.IntegerField(choices=DEPARTMENTS.get_choices(), default=DEPARTMENTS.DEV)
     workplace = models.IntegerField(choices=OFFICES.get_choices(), default=OFFICES.COLOGNE)
     contact_phone = models.CharField(max_length=24,blank=True,null=True)
-    profile_picture = models.ImageField(upload_to=PROFILE_PIC_PATH, blank=False, null=False)
+    profile_picture = models.ImageField(upload_to=avatar_upload_path_handler, blank=False, null=False)
     skype = models.CharField(max_length=64,blank=True,null=True)
 
     skills = TaggableManager()
