@@ -8,12 +8,18 @@ from taggit.managers import TaggableManager
 from annoying.fields import AutoOneToOneField
 from apps.util import get_namedtuple_choices
 
+import uuid
+
 DEFAULT_PIC_PATH = 'employees/pics/'
 DEFAULT_PIC = '%sdefault-pic.jpg' % (DEFAULT_PIC_PATH,)
 
+
 """ Method to uniquify the uploaded people image """
 def avatar_upload_path_handler(instance, filename):
-    return "{path}{id}-{file}".format(path=DEFAULT_PIC_PATH, id=instance.user.id, file=filename)
+    uid = uuid.uuid1()
+    
+    return "{path}{id}-{file}".format(path=DEFAULT_PIC_PATH, id=uid, file=filename)
+
 
 class AdcloudInfo(models.Model):
     DEV = 1

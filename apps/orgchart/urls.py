@@ -7,9 +7,12 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, permission_required
 from django.views.decorators.cache import cache_page
 
-from views import OrganizationChart
+from views import OrganizationChart, OrganizationChartHTML5
 
 
 urlpatterns = patterns('',
     url(r'^chart/$', login_required(cache_page(60 * 15)(OrganizationChart.as_view())), name='default'),
+    url(r'^chart/nocache/$', login_required(OrganizationChart.as_view()), name='default_nocache'),
+    url(r'^chart/html5/$', login_required(cache_page(60 * 15)(OrganizationChartHTML5.as_view())), name='html5'),
+    url(r'^chart/html5/nocache/$', login_required(OrganizationChartHTML5.as_view()), name='html5_nocache'),
 )
