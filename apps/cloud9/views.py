@@ -144,7 +144,8 @@ class PeopleSearch(View):
     def get(self, request):
         query = request.GET.get('q', '')
 
-        queryset = SearchQuerySet().using('default').filter(content=AutoQuery(query)).order_by('last_name','first_name','office','department')
+        queryset = SearchQuerySet().using('default').filter(content__startswith=query).order_by('last_name','first_name','office','department')
+
 
         # If there is only 1 returned result, then automatically redirect to 
         # the lucky user
