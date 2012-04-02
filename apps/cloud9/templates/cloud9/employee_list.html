@@ -20,11 +20,10 @@
                 <a href="{% url cloud9:employee_detail slug=u.username %}"><img src="{{ MEDIA_URL }}{{ thumb }}" alt="{{ u.get_full_name|default:u.username }}" title="{{ u.get_full_name|default:u.username }}" border="0"/></a>
             {% endthumbnail %}
         {% endif %}
+        <br/><a href="{% url cloud9:employee_detail slug=u.username %}">{{ u.get_full_name|default:u.username }}</a>
     </div>
-    <div class="span2 pull-left"><a href="{% url cloud9:employee_detail slug=u.username %}">{{ u.get_full_name|default:u.username }}</a></div>
 	<div class="span3 pull-left">
 		{% if not u.profile.dept %}{{ u.department }}{% else %}{{ u.profile.dept }}{% endif %}
-		{% if u.skills or u.profile.skills.all  %}
 		<blockquote>
 		{% if u.skills %}
 			{{ u.skills }}
@@ -34,7 +33,6 @@
 			{% endfor %}
 		{% endif %}
 		</blockquote>
-		{% endif %}
 	</div>
     <div class="span2 pull-left">
         {% if not u.profile.office %}{{ u.office }}{% else %}{{ u.profile.office }}{% endif %}

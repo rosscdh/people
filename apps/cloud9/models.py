@@ -17,10 +17,12 @@ DEFAULT_PIC = '%sdefault-pic.jpg' % (DEFAULT_PIC_PATH,)
 """ Method to uniquify the uploaded people image """
 def avatar_upload_path_handler(instance, filename):
     uid = uuid.uuid1()
-    
     return "{path}{id}-{file}".format(path=DEFAULT_PIC_PATH, id=uid, file=filename)
 
 
+"""
+Adcloud infor User.profile object used to store additional User info
+"""
 class AdcloudInfo(models.Model):
     DEV = 1
     SALES = 2
