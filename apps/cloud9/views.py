@@ -15,7 +15,8 @@ from socialregistration.views import Setup
 
 from forms import AccountEditForm
 from models import AdcloudInfo
-from apps.util import user_is_self_or_admin
+from apps.util import user_is_self_or_admin, anonymous_required
+
 
 
 def default(request):
@@ -39,7 +40,7 @@ def default(request):
     else:
         return render_to_response('cloud9/base.html', {'request':request}, context_instance=RequestContext(request))
 
-
+@anonymous_required
 def login(request):
     """
     Basically a direct to template renderer but the requirement of the request object

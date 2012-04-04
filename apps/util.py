@@ -4,6 +4,7 @@ In order to provide clean access to constants used in model definitions
 This class provides a simple lookup mechnism which allows static reference to named values
 instead of having to hardcode the numeric variable
 """
+from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from collections import namedtuple
 from django.http import HttpResponseRedirect
@@ -67,4 +68,26 @@ def user_is_self_or_admin( request, viewed_user ):
         return HttpResponseRedirect( reverse('cloud9:employee_list') )
 
     return True
+
+
+
+""" Anonymous required decorator """
+def anonymous_required( view_function, redirect_to = None ):
+    return AnonymousRequired( view_function, redirect_to )
+
+class AnonymousRequired( object ):
+    """ Ensure that the user cannot view this view 
+    unless they are not authenticated, if they are then redirect them to the 
+    base LOGIN_REDIRECT_URL """
+    def __init__( self, view_function, redirect_to ):
+        if redirect_to is None:
+            from django.conf import settings
+            redirect_to = settings.LOGIN_REDIRECT_URL
+        self.view_function = view_function
+        self.redirect_to = redirect_to
+
+    def __call__( self, request, *args, **kwargs ):
+        if request.user is not None and request.user.is_authenticated():
+            return HttpResponseRedirect( self.redirect_to ) 
+        return self.view_function( request, *args, **kwargs )
 

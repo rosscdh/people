@@ -189,6 +189,7 @@ LANGUAGES = (
     ('es', ugettext('Spanish')),
 )
 
+LOGIN_REDIRECT_URL = '/'
 
 SOCIALREGISTRATION_SETUP_FORM = 'apps.cloud9.forms.AccountSetupForm'
 SOCIALREGISTRATION_INITIAL_DATA_FUNCTION = 'apps.cloud9.socialregistration_initial_data'
