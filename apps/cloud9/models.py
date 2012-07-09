@@ -68,6 +68,13 @@ class AdcloudInfo(models.Model):
     def __unicode__(self):
         return u'%s - %s (%s) - %s' % (self.user.username, self.dept, self.office, self.profile_picture)
 
+    def get_twitter_username(self):
+        if self.twitter not in [None,'','None']:
+            twittername = self.twitter
+        else:
+            twittername = 'adcloud'
+        return u'@%s' %(twittername,)
+
     @property
     def dept(self):
         department = [unicode(dept) for d,dept in self.DEPARTMENTS.get_choices() if d == int(self.department)]

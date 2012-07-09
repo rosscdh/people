@@ -1,5 +1,5 @@
 {% extends 'cloud9/base.html' %}
-{% load i18n openid thumbnail cloud9_tags %}
+{% load i18n openid thumbnail cloud9_tags twitter_tags %}
 
 {% block title %}{% trans 'Now viewing' %} - {{ object.username }}{% endblock %}
 
@@ -20,7 +20,7 @@
 <strong>{% trans 'Department' %}</strong><br/>{{ object.profile.dept }}<br/>
 <strong>{% trans 'Office' %}</strong><br/>{{ object.profile.office|default:"-" }}<br/>
 <strong>{% trans 'Skype' %}</strong><br/>{{ object.profile.skype|default:"-" }}<br/>
-<strong>{% trans 'Twitter' %}</strong><br/>{{ object.profile.twitter|default:"-" }}<br/>
+<strong>{% trans 'Twitter' %}</strong><br/>{{ object.profile.get_twitter_username|default:"adcloud"|twitterize }}<br/>
 <strong>{% trans 'Contact Phone' %}</strong><br/>{{ object.profile.contact_phone|default:"-" }}<br/>
 </formset>
 	{% if object.profile.skills %}
