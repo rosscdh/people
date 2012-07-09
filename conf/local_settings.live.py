@@ -15,12 +15,17 @@ SITE_ID = 2 # as per c9_sites.json fixtures
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'adcloud_people',
-        'USER': 'adcloud_people',
-        'PASSWORD': '68ca3e0c',
-        'HOST': '127.0.0.1',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': os.path.join(PROJECT_DIR, '../data/live.db'),
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        # 'NAME': 'adcloud_people',
+        # 'USER': 'adcloud_people',
+        # 'PASSWORD': '68ca3e0c',
+        # 'HOST': '127.0.0.1',
+        # 'PORT': '',
     }
 }
 

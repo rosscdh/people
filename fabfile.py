@@ -7,11 +7,11 @@ debug = True
 
 PROJECT = 'people'
 PROJECT_PATH = '/home/rossc/Projects/people'
-#REMOTE_PROJECT_PATH = '/home/adcloud/webapps/people'
-REMOTE_PROJECT_PATH = '/home/stard0g101/webapps/people'
+REMOTE_PROJECT_PATH = '/home/adcloud/webapps/people'
+#REMOTE_PROJECT_PATH = '/home/stard0g101/webapps/people'
 
-#live_hosts = ('adcloud@adcloud.webfactional.com')
-live_hosts = ('stard0g101@stard0g101.webfactional.com')
+live_hosts = ('adcloud@adcloud.webfactional.com')
+#live_hosts = ('stard0g101@stard0g101.webfactional.com')
 
 FILENAME_TIMESTAMP = strftime("%m-%d-%Y-%H:%M:%S", gmtime())
 
