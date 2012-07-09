@@ -29,9 +29,9 @@ def default(request):
     is_loggedin = request.user.is_authenticated()
 
     if not is_loggedin:
-      object_list = User.objects.select_related('profile').filter(profile__is_public=True,is_active=True,is_superuser=False)
+      object_list = User.objects.select_related('profile').filter(profile__is_public=True,is_active=True,is_superuser=False).order_by('first_name', 'last_name')
     elif is_loggedin:
-      object_list = User.objects.select_related('profile').filter(is_active=True,is_superuser=False)
+      object_list = User.objects.select_related('profile').filter(is_active=True,is_superuser=False).order_by('first_name', 'last_name')
 
     return render_to_response('cloud9/home.html', {
         'object_list': object_list,
