@@ -57,6 +57,8 @@ class AdcloudInfo(models.Model):
     contact_phone = models.CharField(max_length=24,blank=True,null=True)
     profile_picture = models.ImageField(upload_to=avatar_upload_path_handler, blank=False, null=False)
     skype = models.CharField(max_length=64,blank=True,null=True)
+    twitter = models.CharField(max_length=64,blank=True,null=True)
+    is_public = models.BooleanField(blank=True,default=False)
 
     skills = TaggableManager()
 
@@ -87,3 +89,6 @@ class AdcloudInfo(models.Model):
             skills = [unicode(tag.name) for tag in tags]
             return ', '.join(skills)
         return None
+
+from south.modelsinspector import add_introspection_rules
+add_introspection_rules([], ["^annoying.fields.AutoOneToOneField"])

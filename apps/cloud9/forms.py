@@ -28,6 +28,8 @@ class AccountSetupForm(UserForm):
     room_number = forms.CharField(required=False)
     contact_phone = forms.CharField(required=False)
     skype = forms.CharField(required=False, help_text=_('Ensure: "Skype -> Preferences -> Privacy -> Show my status on the web" is checked'))
+    twitter = forms.CharField(required=False)
+    is_public = forms.BooleanField(required=False,initial=False)
     skills = TagField(required=False,label=_('Tags'),help_text=_('Seperate by a comma (,)'))
     profile_picture = forms.ImageField(required=True)
 
@@ -48,6 +50,8 @@ class AccountSetupForm(UserForm):
         user.profile.room_number = self.cleaned_data.get('room_number')
         user.profile.contact_phone = self.cleaned_data.get('contact_phone')
         user.profile.skype = self.cleaned_data.get('skype')
+        user.profile.twitter = self.cleaned_data.get('twitter')
+        user.profile.is_public = self.cleaned_data.get('is_public')
 
         skills = self.cleaned_data.get('skills')
         if len(skills) > 0:
@@ -68,6 +72,7 @@ class AccountSetupForm(UserForm):
         if profile:
             profile.user = user
             profile.save()
+
         return user, profile
 
 

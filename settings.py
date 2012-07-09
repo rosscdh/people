@@ -3,7 +3,7 @@ import os
 
 PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 THUMBNAIL_DEBUG = False
 
@@ -189,6 +189,7 @@ LANGUAGES = (
     ('es', ugettext('Spanish')),
 )
 
+LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 
 SOCIALREGISTRATION_SETUP_FORM = 'apps.cloud9.forms.AccountSetupForm'

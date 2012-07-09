@@ -27,18 +27,18 @@ def default(request):
     (this may change as the system expands in the future)
     """
     is_loggedin = request.user.is_authenticated()
+
     if not is_loggedin:
-
-        return redirect(reverse('cloud9:login'))
-
+      object_list = User.objects.select_related('profile').filter(profile__is_public=True,is_active=True,is_superuser=False)
     elif is_loggedin:
       object_list = User.objects.select_related('profile').filter(is_active=True,is_superuser=False)
-      return render_to_response('cloud9/home.html', {
-              'object_list': object_list,
-          },context_instance=RequestContext(request))
 
-    else:
-        return render_to_response('cloud9/base.html', {'request':request}, context_instance=RequestContext(request))
+    return render_to_response('cloud9/home.html', {
+        'object_list': object_list,
+    },context_instance=RequestContext(request))
+
+    # else:
+    #     return render_to_response('cloud9/base.html', {'request':request}, context_instance=RequestContext(request))
 
 @anonymous_required
 def login(request):
@@ -80,6 +80,8 @@ class EmployeeEdit(Setup):
             'contact_phone': user.profile.contact_phone,
             'profile_picture': user.profile.profile_picture,
             'skype': user.profile.skype,
+            'twitter': user.profile.twitter,
+            'is_public': user.profile.is_public,
             'skills': skills,
         }
         return data
