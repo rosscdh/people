@@ -23,6 +23,7 @@ class AccountSetupForm(UserForm):
     username = forms.RegexField(r'^[\w.@+-]+$', max_length=32) # overriden username regex
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
+    title = forms.CharField(required=False)
     department = forms.ChoiceField(choices=AdcloudInfo.DEPARTMENTS.get_choices())
     workplace = forms.ChoiceField(label='Office',choices=AdcloudInfo.OFFICES.get_choices())
     room_number = forms.CharField(required=False)
@@ -45,6 +46,7 @@ class AccountSetupForm(UserForm):
         if is_new:
             user.save()
 
+        user.profile.title = self.cleaned_data.get('title')
         user.profile.department = self.cleaned_data.get('department')
         user.profile.workplace = self.cleaned_data.get('workplace')
         user.profile.room_number = self.cleaned_data.get('room_number')

@@ -6,7 +6,15 @@
 {% for u in object_list %}
 <li class="pull-left">
 {% thumbnail u.profile.profile_picture "120x120" crop="center" as thumb %}
-    <a class="person" rel="tooltip" data-original-title="{{ u.get_full_name|default:u.username }}" href="{% url cloud9:employee_detail slug=u.username %}"><img width="120" class="member-avatar" data-avatar="{{ MEDIA_URL }}{{ thumb }}" height="120" style="width:120px;height:120px;" src="" alt="{{ u.get_full_name|default:u.username }}" title="{{ u.get_full_name|default:u.username }}" border="0"/></a><br/>
+	{% if user.is_authenticated %}
+    <a class="person" rel="tooltip" data-original-title="{{ u.get_full_name|default:u.username }} - {{ u.profile.title }}" href="{% url cloud9:employee_detail slug=u.username %}">
+    	<img width="120" class="member-avatar" data-avatar="{{ MEDIA_URL }}{{ thumb }}" height="120" style="width:120px;height:120px;" src="" alt="{{ u.get_full_name|default:u.username }}" title="{{ u.get_full_name|default:u.username }}" border="0"/>
+	</a><br/>
+	{% else %}
+    <span class="person" rel="tooltip" data-original-title="{{ u.get_full_name|default:u.username }} - {{ u.profile.title }}" href="{% url cloud9:employee_detail slug=u.username %}">
+    	<img width="120" class="member-avatar" data-avatar="{{ MEDIA_URL }}{{ thumb }}" height="120" style="width:120px;height:120px;" src="" alt="{{ u.get_full_name|default:u.username }}" title="{{ u.get_full_name|default:u.username }}" border="0"/>
+	</span><br/>
+	{% endif %}
 {% endthumbnail %}
 </li>
 {% empty %}
@@ -24,7 +32,7 @@ jQuery(document).ready(function() {
     $('img.member-avatar').each(function() {
         $(this).attr('src', $(this).attr('data-avatar') )
     });
-    $('a.person').tooltip({
+    $('.person').tooltip({
         animation: true,
         placement: 'top',
         delay: { show: 200, hide: 500 }

@@ -51,6 +51,7 @@ class AdcloudInfo(models.Model):
                         (PARIS,'PARIS',_('Paris')),
                     ))
     user = AutoOneToOneField(User, primary_key=True, related_name='profile')
+    title = models.CharField(max_length=24,blank=True,null=True)
     department = models.IntegerField(choices=DEPARTMENTS.get_choices(), default=DEPARTMENTS.DEV)
     workplace = models.IntegerField(choices=OFFICES.get_choices(), default=OFFICES.COLOGNE)
     room_number = models.CharField(max_length=24,blank=True,null=True)

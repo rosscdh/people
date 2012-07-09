@@ -35,6 +35,7 @@ def default(request):
 
     return render_to_response('cloud9/home.html', {
         'object_list': object_list,
+        'is_loggedin': is_loggedin,
     },context_instance=RequestContext(request))
 
     # else:
@@ -74,6 +75,7 @@ class EmployeeEdit(Setup):
             'email': user.email,
             'first_name': user.first_name,
             'last_name': user.last_name,
+            'title': user.profile.title,
             'department': user.profile.department,
             'workplace': user.profile.workplace,
             'room_number': user.profile.room_number,
