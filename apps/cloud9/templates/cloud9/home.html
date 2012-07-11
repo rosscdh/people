@@ -8,11 +8,11 @@
 {% thumbnail u.profile.profile_picture "120x120" crop="center" as thumb %}
 	{% if user.is_authenticated %}
     <a class="person" rel="tooltip" data-original-title="{{ u.get_full_name|default:u.username }} - {{ u.profile.title }}" href="{% url cloud9:employee_detail slug=u.username %}">
-    	<img width="120" class="member-avatar" data-avatar="{{ MEDIA_URL }}{{ thumb }}" height="120" style="width:120px;height:120px;" src="" alt="{{ u.get_full_name|default:u.username }}" title="{{ u.get_full_name|default:u.username }}" border="0"/>
+    	<img width="120" class="member-avatar" data-avatar="{{ MEDIA_URL }}{{ thumb }}" height="120" style="width:120px;height:120px;" src="" border="0"/>
 	</a><br/>
 	{% else %}
     <span class="person" rel="tooltip" data-original-title="{{ u.get_full_name|default:u.username }} - {{ u.profile.title }}" href="{% url cloud9:employee_detail slug=u.username %}">
-    	<img width="120" class="member-avatar" data-avatar="{{ MEDIA_URL }}{{ thumb }}" height="120" style="width:120px;height:120px;" src="" alt="{{ u.get_full_name|default:u.username }}" title="{{ u.get_full_name|default:u.username }}" border="0"/>
+    	<img width="120" class="member-avatar" data-avatar="{{ MEDIA_URL }}{{ thumb }}" height="120" style="width:120px;height:120px;" src="" border="0"/>
 	</span><br/>
 	{% endif %}
 {% endthumbnail %}
