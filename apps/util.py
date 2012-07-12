@@ -51,6 +51,13 @@ def get_namedtuple_choices(name, choices_tuple):
         def get_choices(self):
             return zip(tuple(self), self._choices)
 
+        def get_desc(self, value):
+            for val,name,desc in choices_tuple:
+                if val == value:
+                    return desc
+                    break
+            return None
+
     return Choices._make([val for val,name,desc in choices_tuple])
 
 

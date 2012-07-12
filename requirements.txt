@@ -11,6 +11,7 @@ django-debug-toolbar
 -e git+https://github.com/sorl/sorl-thumbnail.git#egg=sorl-thumbnail
 -e git+https://github.com/toastdriven/django-haystack.git#egg=django-haystack
 -e git+https://github.com/alex/django-taggit.git#egg=django-taggit
+-e git+https://github.com/toastdriven/django-tastypie.git#egg=django-tastypie
 
 #https://github.com/wesnolte/jOrgChart.git
 

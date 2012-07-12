@@ -100,3 +100,4 @@ class AdcloudInfo(models.Model):
 
 from south.modelsinspector import add_introspection_rules
 add_introspection_rules([], ["^annoying.fields.AutoOneToOneField"])
+
