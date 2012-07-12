@@ -33,10 +33,10 @@ class PersonResource(ModelResource):
         bundle.data['last_name'] = bundle.obj.user.last_name
         bundle.data['department'] = Person.DEPARTMENTS.get_desc(bundle.data['department'])
         bundle.data['workplace'] = Person.OFFICES.get_desc(bundle.data['workplace'])
-        # picture = get_thumbnail(bundle.data['profile_picture'], '120x120', crop='center', quality=99)
-        # thumb = get_thumbnail(bundle.data['profile_picture'], '72x72', crop='center', quality=99)
-        bundle.data['profile_picture'] = 'http://%s%s' % (Site.domain, bundle.data['profile_picture'],)
-        # bundle.data['profile_thumb'] = 'http://%s%s' % (Site.domain, bundle.data['profile_thumb'],)
+        picture = get_thumbnail(bundle.obj.profile_picture, '120x120', crop='center', quality=99)
+        thumb = get_thumbnail(bundle.obj.profile_picture, '72x72', crop='center', quality=99)
+        bundle.data['profile_picture'] = 'http://%s%s' % (Site.domain, picture.url,)
+        bundle.data['profile_thumb'] = 'http://%s%s' % (Site.domain, thumb.url,)
         return bundle
 
 """ Register the api resources """
