@@ -102,6 +102,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'apps.middleware.Http403Middleware',
+    # Allow JSON cross site requests
+    'apps.middleware.XsSharing',
 )
 
 AUTHENTICATION_BACKENDS = (

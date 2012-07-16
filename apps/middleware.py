@@ -3,12 +3,13 @@ from django.http import HttpResponseForbidden
 from django.template import RequestContext,Template,loader,TemplateDoesNotExist
 from django.utils.importlib import import_module
 
+XS_SHARING_ALLOWED_ORIGINS = getattr(settings, 'XS_SHARING_ALLOWED_ORIGINS', '*')
+XS_SHARING_ALLOWED_METHODS = getattr(settings, 'XS_SHARING_ALLOWED_METHODS', ['POST','GET','OPTIONS', 'PUT', 'DELETE'])
+
 """
 # Middleware to allow the display of a 403.html template when a
 # 403 error is raised.
 """
-
-
 class Http403(Exception):
     pass
 
@@ -51,3 +52,37 @@ class Http403Middleware(object):
              })
 
             return HttpResponseForbidden(t.render(c))
+
+
+class XsSharing(object):
+    """
+        This middleware allows cross-domain XHR using the html5 postMessage API.
+         
+
+        Access-Control-Allow-Origin: http://foo.example
+        Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE
+    """
+    def process_request(self, request):
+
+        if 'HTTP_ACCESS_CONTROL_REQUEST_METHOD' in request.META:
+            response = http.HttpResponse()
+            response['Access-Control-Allow-Origin']  = XS_SHARING_ALLOWED_ORIGINS 
+            response['Access-Control-Allow-Methods'] = ",".join( XS_SHARING_ALLOWED_METHODS ) 
+            response['Access-Control-Allow-Headers'] = "Content-Type"
+            
+            return response
+
+        return None
+
+    def process_response(self, request, response):
+        # Avoid unnecessary work
+        if response.has_header('Access-Control-Allow-Origin'):
+            return response
+
+        response['Access-Control-Allow-Origin']  = XS_SHARING_ALLOWED_ORIGINS 
+        response['Access-Control-Allow-Methods'] = ",".join( XS_SHARING_ALLOWED_METHODS )
+        response['Access-Control-Allow-Headers'] = "Content-Type"
+
+        return response
+
+
