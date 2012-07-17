@@ -32,6 +32,7 @@ class PersonResource(ModelResource):
         bundle.data['full_name'] = bundle.obj.user.get_full_name()
         bundle.data['first_name'] = bundle.obj.user.first_name
         bundle.data['last_name'] = bundle.obj.user.last_name
+        bundle.data['email'] = bundle.obj.user.email
         bundle.data['department'] = Person.DEPARTMENTS.get_desc(bundle.data['department'])
         bundle.data['workplace'] = Person.OFFICES.get_desc(bundle.data['workplace'])
 
