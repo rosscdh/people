@@ -21,6 +21,7 @@ available_formats = ['json']
 
 Site = Site.objects.get(id=settings.SITE_ID)
 
+
 class PersonResource(ModelResource):
     class Meta:
         queryset = Person.objects.select_related('user').filter(is_public=True,user__is_active=True,user__is_superuser=False).order_by('user__first_name', 'user__last_name')
@@ -34,13 +35,24 @@ class PersonResource(ModelResource):
         bundle.data['department'] = Person.DEPARTMENTS.get_desc(bundle.data['department'])
         bundle.data['workplace'] = Person.OFFICES.get_desc(bundle.data['workplace'])
 
-        picture = get_thumbnail(bundle.obj.profile_picture, '120x120', crop='center', quality=99)
-        thumb = get_thumbnail(bundle.obj.profile_picture, '72x72', crop='center', quality=99)
+        if bundle.obj.profile_picture:
+            picture = get_thumbnail(bundle.obj.profile_picture, '120x120', crop='center', quality=99)
+            thumb = get_thumbnail(bundle.obj.profile_picture, '72x72', crop='center', quality=99)
 
-        bundle.data['profile_picture'] = 'http://%s%s' % (Site.domain, picture.url,)
-        bundle.data['profile_thumb'] = 'http://%s%s' % (Site.domain, thumb.url,)
+            bundle.data['profile_picture'] = 'http://%s%s' % (Site.domain, picture.url,)
+            bundle.data['profile_thumb'] = 'http://%s%s' % (Site.domain, thumb.url,)
 
         return bundle
 
+
+class ExtendedPersonResource(PersonResource):
+    class Meta:
+        queryset = Person.objects.select_related('user').filter(user__is_active=True,user__is_superuser=False).order_by('user__first_name', 'user__last_name')
+        resource_name = 'all/people'
+        serializer = Serializer(formats=available_formats)    
+
+
+
 """ Register the api resources """
 v1_public_api.register(PersonResource())
+v1_public_api.register(ExtendedPersonResource())
