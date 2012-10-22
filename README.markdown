@@ -7,8 +7,15 @@ working at adcloud
 
 Installation
 --------------------
-`pip install requirements.txt`
+`easy_install pip`
+`pip install virtualenv virtualenvwrapper`
+`pip install -r requirements.txt`
 
+`python manage.py syncdb`
+`python manage.py migrate`
+`python manage.py loadfixtures`
+`python manage.py validate`
+`python manage.py runserver_plus`
 
 Special Notes
 --------------------
