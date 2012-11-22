@@ -1,9 +1,8 @@
 {% load i18n thumbnail %}
 {% for p in people_list %}
-<li> 
-    {% thumbnail p.profile_picture "64x64" crop="center" as thumb %}
-        <a class="person" rel="tooltip" data-original-title="{{ p.skills }}" href="{% url cloud9:employee_detail slug=p.username %}"><img src="{{ MEDIA_URL }}{{ thumb }}" alt="{{ p.get_full_name|default:p.username }}" title="{{ p.get_full_name|default:p.username }}" border="0"/></a><br/>
-    {% endthumbnail %}
-    <a class="person" rel="tooltip" data-original-title="{{ p.skills }}" href="{% url cloud9:employee_detail slug=p.username %}">{{ p.get_full_name|default:p.username }}</a>
-</li>
+{
+	"name": "{{ p.user|default:p.user.username|safe }}",
+	"children": null
+}{% if not forloop.last %},{% endif %}
 {% endfor %}
+

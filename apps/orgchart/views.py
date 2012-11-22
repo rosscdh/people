@@ -28,42 +28,39 @@ class OrganizationChart(TemplateView):
             'tag': request.GET.get('tag', None),
         })
 
-        queryset = SearchQuerySet() \
-                    .using('default') \
-                    .order_by('last_name','first_name')
+
+        people_queryset = AdcloudInfo.objects \
+                            .select_related('user') \
+                            .exclude(user__is_superuser=True) \
+                            .order_by('user__last_name', 'user__first_name')
 
         lists = dict({
-            'offices': [unicode(name) for id,name in AdcloudInfo.OFFICES.get_choices()],
-            'depts': [unicode(name) for id,name in AdcloudInfo.DEPARTMENTS.get_choices()],
+            'offices': [(i, unicode(n)) for i,n in AdcloudInfo.OFFICES.get_choices()],
+            'depts': [(i, unicode(n)) for i,n in AdcloudInfo.DEPARTMENTS.get_choices()],
             'people': None,
         })
 
-        people_queryset = queryset
-        people = dict({
-        })
+        people = {}
 
         # add offices
-        for o in lists['offices']:
-          if not o in people:
-            people[o] = dict({})
+        for id, o in AdcloudInfo.OFFICES.get_choices():
+          if not id in people:
+            people[id] = {}
 
         # add departments
-        for o in lists['offices']:
-          for d in lists['depts']:
-            if not d in people[o]:
-              people[o][d] = []
+        for id, o in AdcloudInfo.OFFICES.get_choices():
+          for d,dept in AdcloudInfo.DEPARTMENTS.get_choices():
+            if not d in people[id]:
+              people[id][d] = []
 
         # add people to departments
         for p in people_queryset:
-            people[p.office][p.department].append(p)
+            people[int(p.workplace)][p.department].append(p)
 
         lists['people'] = people
 
         return render_to_response(self.template_name, {
                 'object_list': lists,
+                'people_list': people_queryset
             },context_instance=RequestContext(request))
 
-class OrganizationChartHTML5(OrganizationChart):
-    """
-    """
-    template_name = 'orgchart/chartHTML5.html'

@@ -1,58 +1,186 @@
 {% extends 'orgchart/base.html' %}
-{% load i18n orgchart_tags %}
+{% load i18n orgchart_tags thumbnail %}
 {% block chart %}
 
 <div class="row">
-    <ul id="org" style="display:none">
-    <!-- <ul> -->
-        <li>
-            Adcloud.com
-            <ul>
-            {% for o in object_list.offices %}
-                <li>
-                    {{ o }}
-                    {% if object_list.depts %}
-                    <ul>
-                    {% for d in object_list.depts %}
-                    <li>
-                        {{ d }} 
-                        {% if object_list.people %}
-                        <ul>
-                            {% people_list o d %}
-                        </ul>
-                        {% endif %}
-                    </li>
-                    {% endfor %}
-                    </ul>
-                    {% endif %}
-                </li>
-            {% endfor %}
-            </ul>
-        </li>
-    </ul>
-    
+    <div id="chart"></div>
 </div>
 
 {% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="{{ STATIC_URL }}base/custom.css"/>
-<link rel="stylesheet" href="{{ STATIC_URL }}base/jquery.jOrgChart.css"/>
-<link rel="stylesheet" href="{{ STATIC_URL }}base/jOrgChartPrettify.css"/>
+<style>
+circle {
+  cursor: pointer;
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 15px;
+}
+
+text {
+  font-size:14px;
+}
+
+path.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+</style>
 {% endblock %}
 
 {% block js %}
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}base/jquery.jOrgChart.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}base/bootstrap-tooltip.js"></script>
-<script>
-jQuery(document).ready(function() {
-    $("#org").jOrgChart();
-    $('a.person').tooltip({
-        animation: true,
-        placement: 'right',
-        delay: { show: 200, hide: 500 }
+<script type="text/javascript" src="{{ STATIC_URL }}d3/d3.v2.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+  var w = 960,
+      h = 2000,
+      i = 0,
+      duration = 900,
+      root;
+
+  var tree = d3.layout.tree()
+      .size([h, w - 160]);
+
+  var diagonal = d3.svg.diagonal()
+      .projection(function(d) { return [d.y, d.x]; });
+
+  var vis = d3.select("#chart").append("svg:svg")
+      .attr("width", w)
+      .attr("height", h)
+      .append("svg:g")
+      .attr("transform", "translate(25,0)");
+
+  json = $.parseJSON($('script#people_data').html());
+  json.x0 = 0;
+  json.y0 = 0;
+  update(root = json);
+
+
+  function update(source) {
+
+    // Compute the new tree layout.
+    //var nodes = tree.nodes(root).reverse();
+    var nodes = tree.nodes(root).reverse();
+
+   
+    // Update the nodes…
+      var node = vis.selectAll("g.node")
+        .data(nodes, function(d) { return d.id || (d.id = ++i); });
+
+    var nodeEnter = node.enter().append("svg:g")
+        .attr("class", "node")
+        .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; });
+   
+    // Enter any new nodes at the parent's previous position.
+   
+      nodeEnter.append("svg:circle")
+        // .attr("class", "node")
+        //.attr("cx", function(d) { return source.x0; })
+        //.attr("cy", function(d) { return source.y0; })
+        .attr("r", 4.5)
+        .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; })
+        .on("click", click);
+    
+    nodeEnter.append("svg:text")
+          .attr("x", function(d) { return d._children ? -18 : 18; })
+          .attr("y", 3)
+          // .attr("fill","#c00")
+          // .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+          .text(function(d) { return d.name; });
+
+    // Transition nodes to their new position.
+    nodeEnter.transition()
+      .duration(duration)
+      .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+        .style("opacity", 1)
+        .select("circle")
+        .style("fill", "lightsteelblue");
+        
+      node.transition()
+        .duration(duration)
+        .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+        .style("opacity", 1);
+      
+
+    node.exit().transition()
+        .duration(duration)
+        .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
+        .style("opacity", 1e-6)
+        .remove();
+
+    // Update the links…
+    var link = vis.selectAll("path.link")
+        .data(tree.links(nodes), function(d) { return d.target.id; });
+
+    // Enter any new links at the parent's previous position.
+    link.enter().insert("svg:path", "g")
+        .attr("class", "link")
+        .attr("d", function(d) {
+          var o = {x: source.x0, y: source.y0};
+          return diagonal({source: o, target: o});
+        })
+      .transition()
+        .duration(duration)
+        .attr("d", diagonal);
+
+    // Transition links to their new position.
+    link.transition()
+        .duration(duration)
+        .attr("d", diagonal);
+
+    // Transition exiting nodes to the parent's new position.
+    link.exit().transition()
+        .duration(duration)
+        .attr("d", function(d) {
+          var o = {x: source.x, y: source.y};
+          return diagonal({source: o, target: o});
+        })
+        .remove();
+
+    // Stash the old positions for transition.
+    nodes.forEach(function(d) {
+      d.x0 = d.x;
+      d.y0 = d.y;
     });
+  }
+
+  // Toggle children on click.
+  function click(d) {
+    if (d.children) {
+      d._children = d.children;
+      d.children = null;
+    } else {
+      d.children = d._children;
+      d._children = null;
+    }
+    update(d);
+  }
+
+  d3.select(self.frameElement).style("height", h + "px");
 });
+</script>
+
+<script type="text/json" id="people_data">
+{
+    "name": "Adcloud",
+    "children": [
+        {% for oi, o in object_list.offices %}
+        {
+          "name": "{{ o|safe }}",
+          "children": [
+            {% for di, d in object_list.depts %}
+            {
+              "name": "{{ d|safe }}",
+              "children": [
+                  {% people_list oi di %}
+              ]
+            }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+          ]
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ]
+}
 </script>
 {% endblock %}
