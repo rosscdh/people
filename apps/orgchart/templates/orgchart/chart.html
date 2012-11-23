@@ -1,15 +1,36 @@
 {% extends 'orgchart/base.html' %}
 {% load i18n orgchart_tags thumbnail %}
+{% load url from future %}
 {% block chart %}
 
 <div class="row">
-    <div id="chart"></div>
+  <ul id="offices">
+  {% for oi, o in object_list.offices %}
+  <li class="{% if o|lower == selected_office %}active{% endif %}"><h2><a href="{% url 'orgchart:default_nocache' %}?office={{ o|lower }}">{{ o }}</a></h2></li>
+  {% endfor %}
+  </ul>
+</div>
+
+<div class="row">
+    <div id="chart" class="span9"></div>
+    <div id="user-profile" class="span3"></div>
+    <div id="user-signature" class="span3"></div>
 </div>
 
 {% endblock %}
 
 {% block css %}
 <style>
+ul#offices{
+  list-style-type: none;
+}
+ul#offices li{
+float:left;
+margin:0px 20px 0px 0px;
+}
+ul#offices .active a{
+  color:#c00;
+}
 circle {
   cursor: pointer;
   fill: #fff;
@@ -30,11 +51,20 @@ path.link {
 {% endblock %}
 
 {% block js %}
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.rc.1/handlebars.min.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}d3/d3.v2.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-  var w = 960,
-      h = 2000,
+
+var source   = $("script#profile").html();
+var profile_template = Handlebars.compile(source);
+
+var source   = $("script#people_signature").html();
+var signature_template = Handlebars.compile(source);
+
+
+  var w = 640,
+      h = 1200,
       i = 0,
       duration = 900,
       root;
@@ -54,6 +84,7 @@ $(document).ready(function() {
   json = $.parseJSON($('script#people_data').html());
   json.x0 = 0;
   json.y0 = 0;
+
   update(root = json);
 
 
@@ -85,6 +116,21 @@ $(document).ready(function() {
     nodeEnter.append("svg:text")
           .attr("x", function(d) { return d._children ? -18 : 18; })
           .attr("y", 3)
+      .on('mouseover', function(ob){
+        if (ob.type != undefined && ob.type == 'person') {
+          html = profile_template(ob);
+          $('#user-profile').html(html);
+          $('#user-profile').popover('show');
+          html = signature_template(ob);
+          $('#user-signature').html(html);
+          $('#user-signature').popover('show');
+        }
+      })
+      .on('mouseout', function(ob){
+        if (ob.type != undefined && ob.type == 'person') {
+          //$('#user-profile').popover('hide');
+        }
+      })
           // .attr("fill","#c00")
           // .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
           .text(function(d) { return d.name; });
@@ -162,25 +208,56 @@ $(document).ready(function() {
 </script>
 
 <script type="text/json" id="people_data">
+{% for oi, o in object_list.offices %}
+{% if o|lower == selected_office %}
 {
-    "name": "Adcloud",
-    "children": [
-        {% for oi, o in object_list.offices %}
-        {
-          "name": "{{ o|safe }}",
-          "children": [
-            {% for di, d in object_list.depts %}
-            {
-              "name": "{{ d|safe }}",
-              "children": [
-                  {% people_list oi di %}
-              ]
-            }{% if not forloop.last %},{% endif %}
-            {% endfor %}
-          ]
-        }{% if not forloop.last %},{% endif %}
-        {% endfor %}
-    ]
-}
+  "name": "{{ o|safe }}",
+  "children": [
+    {% for di, d in object_list.depts %}
+    {
+      "name": "{{ d|safe }}",
+      "children": [
+          {% people_list oi di %}
+      ]
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ]
+}{% endif %}
+{% endfor %}
+</script>
+
+<script id="profile" type="text/x-handlebars-template">
+{% verbatim %}
+<div class="profile">
+{{name}}<br/>
+<img src="{{picture}}" title="{{name}} - {{title}}" border="0"/><br/>
+{{title}}<br/>
+{{email}}<br/>
+Room No.: {{room_number}}<br/>
+Phone No.: {{contact_phone}}<br/>
+skype: {{skype}}<br/>
+twitter: {{twitter}}<br/>
+</div>
+{% endverbatim %}
+</script>
+
+<script type="text/json" id="people_signature">
+<strong>Email Signature</strong>
+<textarea style="width:100%;height:320px;">{% verbatim %}
+{{first_name}}
+-- 
+*** Adcloud steigt in den mobilen Werbemarkt ein: http://adcloud.com/de/presse/adcloud-macht-mobil/ ***
+--------------------------------------------------------------------------------------------------------
+{{name}} · {{title}}
+
+Adcloud GmbH · Venloer Str. 25 · D-50672 Köln
+Ein Unternehmen von Deutsche Post DHL 
+
+T  {{contact_phone}}
+{{email}}  · www.adcloud.com
+
+Handelsregister: Amtsgericht Köln, HRB 65770 · Sitz der Gesellschaft: Köln · Geschäftsführer: Henning Lange, Oliver Thylmann
+{% endverbatim %}
+</textarea>
 </script>
 {% endblock %}

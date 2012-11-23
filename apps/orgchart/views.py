@@ -22,6 +22,8 @@ class OrganizationChart(TemplateView):
 
     def get(self, request):
 
+        selected_office = request.GET.get('office', 'cologne')
+
         query = dict({
             'office': request.GET.get('office', None),
             'dept': request.GET.get('dept', None),
@@ -41,26 +43,21 @@ class OrganizationChart(TemplateView):
         })
 
         people = {}
-
-        # add offices
-        for id, o in AdcloudInfo.OFFICES.get_choices():
-          if not id in people:
-            people[id] = {}
-
-        # add departments
-        for id, o in AdcloudInfo.OFFICES.get_choices():
-          for d,dept in AdcloudInfo.DEPARTMENTS.get_choices():
-            if not d in people[id]:
-              people[id][d] = []
-
         # add people to departments
         for p in people_queryset:
-            people[int(p.workplace)][p.department].append(p)
+            if not p.workplace in people:
+                people[p.workplace] = {}
+            if not p.department in people[p.workplace]:
+                people[p.workplace][p.department] = []
+            people[p.workplace][p.department].append(p)
+
+
 
         lists['people'] = people
 
         return render_to_response(self.template_name, {
                 'object_list': lists,
-                'people_list': people_queryset
+                'people_list': people_queryset,
+                'selected_office': selected_office
             },context_instance=RequestContext(request))
 

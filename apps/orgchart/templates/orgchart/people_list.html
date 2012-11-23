@@ -1,7 +1,17 @@
 {% load i18n thumbnail %}
 {% for p in people_list %}
 {
-	"name": "{{ p.user|default:p.user.username|safe }}",
+	"name": "{{ p.user.get_full_name|default:p.user.username|escapejs }}",
+	"first_name": "{{ p.user.first_name|escapejs }}",
+	"last_name": "{{ p.user.last_name|escapejs }}",
+	"type": "person",
+	"picture": "{% thumbnail p.profile_picture "64x64" crop="center" as thumb %}{{ MEDIA_URL }}{{ thumb }}{% endthumbnail %}",
+	"title": "{{ p.title }}",
+	"email": "{{ p.user.email }}",
+	"room_number": "{{ p.room_number }}",
+	"contact_phone": "{{ p.contact_phone }}",
+	"skype": "{{ p.skype }}",
+	"twitter": "{{ p.twitter }}",
 	"children": null
 }{% if not forloop.last %},{% endif %}
 {% endfor %}
