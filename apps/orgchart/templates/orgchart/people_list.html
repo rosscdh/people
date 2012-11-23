@@ -5,7 +5,7 @@
 	"first_name": "{{ p.user.first_name|escapejs }}",
 	"last_name": "{{ p.user.last_name|escapejs }}",
 	"type": "person",
-	"picture": "{% thumbnail p.profile_picture "64x64" crop="center" as thumb %}{{ MEDIA_URL }}{{ thumb }}{% endthumbnail %}",
+	"picture": "{% thumbnail p.profile_picture "120x120" crop="center" as thumb %}{{ MEDIA_URL }}{{ thumb }}{% endthumbnail %}",
 	"title": "{{ p.title }}",
 	"email": "{{ p.user.email }}",
 	"room_number": "{{ p.room_number }}",
