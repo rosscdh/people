@@ -1,4 +1,5 @@
 {% load i18n thumbnail %}
+{% load url from future %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -53,18 +54,17 @@
           <div class="nav-collapse">
             <ul class="nav">
               {% if user.is_authenticated %}
-              <li class="active"><a href="{% url cloud9:default %}">{% trans 'Home' %}</a></li>
-              <li class="active"><a href="{% url cloud9:employee_list %}">{% trans 'People' %}</a></li>
-              <li class="active"><a href="{% url orgchart:default %}">{% trans 'OrgChart' %}</a></li>
-              <!-- <li class="active"><a href="{% url orgchart:default %}">{% trans 'CloudView' %}</a></li> -->
+              <li class="active"><a href="{% url 'cloud9:default' %}">{% trans 'Home' %}</a></li>
+              <li class="active"><a href="{% url 'cloud9:employee_list' %}">{% trans 'People' %}</a></li>
+              <li class="active"><a href="{% url 'orgchart:default' office='cologne' %}">{% trans 'OrgChart' %}</a></li>
               {% endif %}
             </ul>
 
             <p class="navbar-text pull-right">
                 {% if user.is_authenticated %}
-                    {% trans 'Logged in as' %} <a href="{% url cloud9:employee_edit slug=user.username %}">{{ user.username }}</a> ({% if user.is_superuser %}admin{% else %}{% if user.is_staff %}moderator{% else %}basic{% endif %}{% endif %}) - <a href="{% url cloud9:logout %}">{% trans 'Logout' %}</a>
+                    {% trans 'Logged in as' %} <a href="{% url 'cloud9:employee_edit' slug=user.username %}">{{ user.username }}</a> ({% if user.is_superuser %}admin{% else %}{% if user.is_staff %}moderator{% else %}basic{% endif %}{% endif %}) - <a href="{% url 'cloud9:logout' %}">{% trans 'Logout' %}</a>
                 {% else %}
-                <a href="{% url cloud9:login %}">{% trans 'Log in' %}</a>
+                <a href="{% url 'cloud9:login' %}">{% trans 'Log in' %}</a>
                 {% endif %}
             </p>
 

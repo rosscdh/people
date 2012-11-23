@@ -8,11 +8,11 @@ register = template.Library()
 
 
 @register.inclusion_tag('orgchart/people_list.html', takes_context=True)
-def people_list(context, office, department):
+def people_list(context, department):
     """
     """
     people = context['object_list']['people']
-    people_list = people[office][department] if office in people and department in people[office] else None
+    people_list = people[department] if department in people else None
     return dict({
         'people_list': people_list,
         'MEDIA_URL': context['MEDIA_URL'],

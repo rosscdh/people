@@ -6,7 +6,7 @@
 <div class="row">
   <ul id="offices">
   {% for oi, o in object_list.offices %}
-  <li class="{% if o|lower == selected_office %}active{% endif %}"><h2><a href="{% url 'orgchart:default_nocache' %}?office={{ o|lower }}">{{ o }}</a></h2></li>
+  <li class="{% if o|lower == selected_office %}active{% endif %}"><h2><a href="{% url 'orgchart:default' office=o|lower %}">{{ o }}</a></h2></li>
   {% endfor %}
   </ul>
 </div>
@@ -64,7 +64,7 @@ var signature_template = Handlebars.compile(source);
 
 
   var w = 640,
-      h = 1200,
+      h = {{ chart_height }},
       i = 0,
       duration = 900,
       root;
@@ -217,7 +217,7 @@ var signature_template = Handlebars.compile(source);
     {
       "name": "{{ d|safe }}",
       "children": [
-          {% people_list oi di %}
+          {% people_list di %}
       ]
     }{% if not forloop.last %},{% endif %}
     {% endfor %}
