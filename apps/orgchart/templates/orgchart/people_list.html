@@ -13,6 +13,7 @@
 	"contact_phone": "{{ p.contact_phone }}",
 	"skype": "{{ p.skype }}",
 	"twitter": "{{ p.twitter }}",
+	"tags": [{% for s in p.skills.all %}"{{ s|escapejs }}"{% if not forloop.last %},{% endif %}{% endfor %}],
 	"children": null
 }{% if not forloop.last %},{% endif %}
 {% endfor %}

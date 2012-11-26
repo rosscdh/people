@@ -33,8 +33,8 @@
 			</blockquote>
 		</formset>
 			{% endif %}
-		<h3>Email Signature</h3>
-		<div id="user-signature" class=""></div>
+		<!-- <h3>Email Signature</h3> -->
+		<!-- <div id="user-signature" class=""></div> -->
 	</div>
 </div>
 
@@ -80,7 +80,6 @@ $(document).ready(function() {
 	var ob = $.parseJSON($('script#people_list').html());
 	html = signature_template(ob);
 	$('#user-signature').html(html);
-	$('#user-signature').popover('show');
 });
 </script>
 

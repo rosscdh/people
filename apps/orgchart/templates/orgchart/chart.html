@@ -225,14 +225,10 @@ var profile_template = Handlebars.compile(source);
 <script id="profile" type="text/x-handlebars-template">
 {% verbatim %}
 <div class="profile">
-<h3>{{name}}</h3><a href="{{profile}}">profile</a><br/>
+
+<h3>{{name}}</h3><strong>{{title}}</strong><br/>
 <a href="{{profile}}"><img src="{{picture}}" title="{{name}} - {{title}}" border="0"/></a><br/>
-<strong>{{title}}</strong><br/>
-{{email}}<br/>
-Room No.: {{room_number}}<br/>
-Phone No.: {{contact_phone}}<br/>
-skype: {{skype}}<br/>
-twitter: {{twitter}}<br/>
+{{#each tags}}{{this}}&nbsp;{{/each}}
 </div>
 {% endverbatim %}
 </script>
