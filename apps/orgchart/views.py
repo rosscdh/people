@@ -48,7 +48,7 @@ class OrganizationChart(TemplateView):
 
         lists['people'] = people
 
-        chart_height = 100/len(lists['depts']) * 100
+        chart_height = (len(lists['depts']) * 110) + (len(lists['people']) * 35)
 
         return render_to_response(self.template_name, {
                 'object_list': lists,

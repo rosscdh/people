@@ -11,9 +11,9 @@
   </ul>
 </div>
 
-<div class="row">
+<div id="chart-area" class="row">
     <div id="chart" class="span9"></div>
-    <div id="user-profile" class="span3"></div>
+    <div id="user-profile" class="absolute"></div>
 </div>
 
 {% endblock %}
@@ -47,17 +47,20 @@ path.link {
   stroke: #ccc;
   stroke-width: 1.5px;
 }
+.absolute{
+  position:absolute;
+}
 </style>
 {% endblock %}
 
 {% block js %}
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/d3/2.10.0/d3.v2.min.js"></script>
 <script type="text/javascript">
+
 $(document).ready(function() {
 
 var source   = $("script#profile").html();
 var profile_template = Handlebars.compile(source);
-
 
   var w = 640,
       h = {{ chart_height }},
@@ -200,6 +203,32 @@ var profile_template = Handlebars.compile(source);
   }
 
   d3.select(self.frameElement).style("height", h + "px");
+
+  var menu = $("#user-profile");
+  var area = $("#chart-area");
+  var menuYloc = null;
+
+  var containerTop = area.position().top;
+  var containerLeft = area.position().left;
+  var containerHeight = area.innerHeight();
+  var menuHeight = 240;
+  menu.width(300);
+
+  //Position the menu at the top-left of the container div
+  menu.css('top', containerTop).css('right', menu.width() + 150);
+
+  menuYloc = parseInt(menu.css("top").substring(0,menu.css("top").indexOf("px")))
+
+  $(window).scroll(function () {
+
+    //If the menu is within the container then move it down
+    if($(document).scrollTop() > containerTop && $(document).scrollTop() < (containerTop + containerHeight - menuHeight))
+    {
+      offset = $(document).scrollTop() + (menuHeight/3) +"px";
+      menu.animate({top:offset},{duration:200,queue:false});
+    }
+
+  });
 });
 </script>
 
