@@ -11,20 +11,25 @@ register = template.Library()
 def people_list(context, department):
     """
     """
-    people_list = []
-    people = context['object_list']['people'] if 'object_list' in context else None
-    if people is not None:
-        people_list = people[department] if department in people else None
-    else:
-        people = context['object'] if 'object' in context else None
-        if people is not None:
-            people_list = [people]
+    people = context['object_list']['people']
+    people_list = people[department] if department in people else []
 
     return dict({
         'people_list': people_list,
         'MEDIA_URL': context['MEDIA_URL'],
     })
 people_list.is_safe = True
+
+
+@register.inclusion_tag('orgchart/people_list.html', takes_context=True)
+def person_profile_json(context, person):
+    """
+    """
+    return dict({
+        'people_list': [person],
+        'MEDIA_URL': context['MEDIA_URL'],
+    })
+person_profile_json.is_safe = True
 
 
 """
