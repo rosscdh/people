@@ -124,6 +124,11 @@ var profile_template = Handlebars.compile(source);
           //$('#user-profile').popover('hide');
         }
       })
+      .on('click', function(ob){
+        if (ob.profile != undefined) {
+          document.location = ob.profile;
+        }
+      })
           // .attr("fill","#c00")
           .text(function(d) { return d.name; });
 
