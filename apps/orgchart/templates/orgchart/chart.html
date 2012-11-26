@@ -14,7 +14,6 @@
 <div class="row">
     <div id="chart" class="span9"></div>
     <div id="user-profile" class="span3"></div>
-    <div id="user-signature" class="span3"></div>
 </div>
 
 {% endblock %}
@@ -51,16 +50,12 @@ path.link {
 {% endblock %}
 
 {% block js %}
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.rc.1/handlebars.min.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/d3/2.10.0/d3.v2.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
 
 var source   = $("script#profile").html();
 var profile_template = Handlebars.compile(source);
-
-var source   = $("script#people_signature").html();
-var signature_template = Handlebars.compile(source);
 
 
   var w = 640,
@@ -121,9 +116,6 @@ var signature_template = Handlebars.compile(source);
           html = profile_template(ob);
           $('#user-profile').html(html);
           $('#user-profile').popover('show');
-          html = signature_template(ob);
-          $('#user-signature').html(html);
-          $('#user-signature').popover('show');
         }
       })
       .on('mouseout', function(ob){
@@ -132,7 +124,6 @@ var signature_template = Handlebars.compile(source);
         }
       })
           // .attr("fill","#c00")
-          // .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
           .text(function(d) { return d.name; });
 
     // Transition nodes to their new position.
@@ -148,7 +139,6 @@ var signature_template = Handlebars.compile(source);
         .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
         .style("opacity", 1);
       
-
     node.exit().transition()
         .duration(duration)
         .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
@@ -229,9 +219,9 @@ var signature_template = Handlebars.compile(source);
 <script id="profile" type="text/x-handlebars-template">
 {% verbatim %}
 <div class="profile">
-{{name}}<br/>
-<img src="{{picture}}" title="{{name}} - {{title}}" border="0"/><br/>
-{{title}}<br/>
+<h3>{{name}}</h3><a href="{{profile}}">profile</a><br/>
+<a href="{{profile}}"><img src="{{picture}}" title="{{name}} - {{title}}" border="0"/></a><br/>
+<strong>{{title}}</strong><br/>
 {{email}}<br/>
 Room No.: {{room_number}}<br/>
 Phone No.: {{contact_phone}}<br/>
@@ -241,23 +231,4 @@ twitter: {{twitter}}<br/>
 {% endverbatim %}
 </script>
 
-<script type="text/json" id="people_signature">
-<strong>Email Signature</strong>
-<textarea style="width:100%;height:320px;">{% verbatim %}
-{{first_name}}
--- 
-*** Adcloud steigt in den mobilen Werbemarkt ein: http://adcloud.com/de/presse/adcloud-macht-mobil/ ***
---------------------------------------------------------------------------------------------------------
-{{name}} · {{title}}
-
-Adcloud GmbH · Venloer Str. 25 · D-50672 Köln
-Ein Unternehmen von Deutsche Post DHL 
-
-T  {{contact_phone}}
-{{email}}  · www.adcloud.com
-
-Handelsregister: Amtsgericht Köln, HRB 65770 · Sitz der Gesellschaft: Köln · Geschäftsführer: Henning Lange, Oliver Thylmann
-{% endverbatim %}
-</textarea>
-</script>
 {% endblock %}

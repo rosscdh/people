@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from models import AdcloudInfo
 from views import EmployeeEdit, PeopleSearch
 
-employees_list = User.objects.select_related('profile','profile__skills').filter(is_superuser=False,is_active=True)
+employees_list = AdcloudInfo.objects.select_related('user').filter(user__is_superuser=False, user__is_active=True)
 
 
 urlpatterns = patterns('',
@@ -19,6 +19,6 @@ urlpatterns = patterns('',
     url(r'^people/$', login_required(PeopleSearch.as_view()), name='employee_list'),
     url(r'^people/search/$', login_required(PeopleSearch.as_view()), name='people_search'),
     url(r'^people/(?P<slug>.*)/edit/$', login_required(EmployeeEdit.as_view()), name='employee_edit'),
-    url(r'^people/(?P<slug>.*)/$', login_required(object_detail), {'queryset': employees_list, 'template_name': 'cloud9/employee_detail.html', 'slug_field': 'username'}, name='employee_detail'),
+    url(r'^people/(?P<slug>.*)/$', login_required(object_detail), {'queryset': employees_list, 'template_name': 'cloud9/employee_detail.html', 'slug_field': 'user__username'}, name='employee_detail'),
     url(r'^', 'apps.cloud9.views.default', name='default'),
 )

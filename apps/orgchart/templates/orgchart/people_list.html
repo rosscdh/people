@@ -4,6 +4,7 @@
 	"name": "{{ p.user.get_full_name|default:p.user.username|escapejs }}",
 	"first_name": "{{ p.user.first_name|escapejs }}",
 	"last_name": "{{ p.user.last_name|escapejs }}",
+	"profile": "{{ p.get_absolute_url }}",
 	"type": "person",
 	"picture": "{% thumbnail p.profile_picture "120x120" crop="center" as thumb %}{{ MEDIA_URL }}{{ thumb }}{% endthumbnail %}",
 	"title": "{{ p.title }}",

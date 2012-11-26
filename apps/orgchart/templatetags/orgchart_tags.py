@@ -11,8 +11,15 @@ register = template.Library()
 def people_list(context, department):
     """
     """
-    people = context['object_list']['people']
-    people_list = people[department] if department in people else None
+    people_list = []
+    people = context['object_list']['people'] if 'object_list' in context else None
+    if people is not None:
+        people_list = people[department] if department in people else None
+    else:
+        people = context['object'] if 'object' in context else None
+        if people is not None:
+            people_list = [people]
+
     return dict({
         'people_list': people_list,
         'MEDIA_URL': context['MEDIA_URL'],

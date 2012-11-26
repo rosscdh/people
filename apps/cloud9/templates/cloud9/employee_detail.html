@@ -1,7 +1,7 @@
 {% extends 'cloud9/base.html' %}
-{% load i18n openid thumbnail cloud9_tags twitter_tags %}
+{% load i18n openid thumbnail cloud9_tags twitter_tags orgchart_tags %}
 
-{% block title %}{% trans 'Now viewing' %} - {{ object.username }}{% endblock %}
+{% block title %}{% trans 'Now viewing' %} - {{ object.user.username }}{% endblock %}
 
 {% block body %}
 <div class="control-group pull-right">
@@ -9,38 +9,40 @@
 </div>
 
 <div class="row span">
-<div class="span5 well pull-left">
-<h2>{% if object.get_full_name %}{{ object.get_full_name}}{% else %}{{ object.first_name }} {{ object.last_name }}{% endif %}</h2>
-<formset class="">
-{% if object.profile.is_public %}
-<strong class="btn btn-success">{% trans 'Is Visible on Public Homepage' %}</strong><br/>
-{% endif %}
-<strong>{% trans 'Title' %}</strong><br/>{{ object.profile.title }}<br/>
-<strong>{% trans 'Department' %}</strong><br/>{{ object.profile.dept }}<br/>
-<strong>{% trans 'Email' %}</strong><br/><a href="mailto:{{ object.email }}">{{ object.email }}</a><br/>
-<strong>{% trans 'Office' %}</strong><br/>{{ object.profile.office|default:"-" }}<br/>
-<strong>{% trans 'Skype' %}</strong><br/>{{ object.profile.skype|default:"-" }}<br/>
-<strong>{% trans 'Twitter' %}</strong><br/>{{ object.profile.get_twitter_username|default:"adcloud"|twitterize }}<br/>
-<strong>{% trans 'Contact Phone' %}</strong><br/>{{ object.profile.contact_phone|default:"-" }}<br/>
-</formset>
-	{% if object.profile.skills %}
-<formset>
-	<h3>{% trans 'Tags' %}</h3>
-	<blockquote>
-	{% for s in object.profile.skills.all %}
-	{{ s }}{% if not forloop.last %},{% endif %}
-	{% endfor %}
-	</blockquote>
-</formset>
-	{% endif %}
-</div>
+	<div class="span5 well pull-left">
+		<h2>{% if object.user.get_full_name %}{{ object.user.get_full_name}}{% else %}{{ object.user.first_name }} {{ object.user.last_name }}{% endif %}</h2>
+		<formset class="">
+		{% if object.is_public %}
+		<strong class="btn btn-success">{% trans 'Is Visible on Public Homepage' %}</strong><br/>
+		{% endif %}
+		<strong>{% trans 'Title' %}</strong><br/>{{ object.title }}<br/>
+		<strong>{% trans 'Department' %}</strong><br/>{{ object.dept }}<br/>
+		<strong>{% trans 'Email' %}</strong><br/><a href="mailto:{{ object.user.email }}">{{ object.user.email }}</a><br/>
+		<strong>{% trans 'Office' %}</strong><br/>{{ object.office|default:"-" }}<br/>
+		<strong>{% trans 'Skype' %}</strong><br/>{{ object.skype|default:"-" }}<br/>
+		<strong>{% trans 'Twitter' %}</strong><br/>{{ object.get_twitter_username|default:"adcloud"|twitterize }}<br/>
+		<strong>{% trans 'Contact Phone' %}</strong><br/>{{ object.contact_phone|default:"-" }}<br/>
+		</formset>
+			{% if object.skills %}
+		<formset>
+			<h3>{% trans 'Tags' %}</h3>
+			<blockquote>
+			{% for s in object.skills.all %}
+			{{ s }}{% if not forloop.last %},{% endif %}
+			{% endfor %}
+			</blockquote>
+		</formset>
+			{% endif %}
+		<h3>Email Signature</h3>
+		<div id="user-signature" class=""></div>
+	</div>
 </div>
 
 <form class="span3 well pull-right">
-    {% thumbnail object.profile.profile_picture "270x300" crop="center" as thumb %}
+    {% thumbnail object.profile_picture "270x300" crop="center" as thumb %}
         <img src="{{ MEDIA_URL }}{{ thumb }}" alt="" title="" border="0"/>
     {% endthumbnail %}
-	{% if object.profile.skype %}
+	{% if object.skype %}
 	<form class="span3 well pull-right">
 		<!--
 		Skype 'My status' button
@@ -62,4 +64,47 @@
 		border:solid #c00 1px;
 	}
 	
+	div#user-signature {
+		width:90%;
+	}
+	div#user-signature textarea{
+	width:90%;	
+	}
 </style>{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+$(document).ready(function() {
+	var source   = $("script#people_signature").html();
+	var signature_template = Handlebars.compile(source);
+	var ob = $.parseJSON($('script#people_list').html());
+	html = signature_template(ob);
+	$('#user-signature').html(html);
+	$('#user-signature').popover('show');
+});
+</script>
+
+<script type="text/json" id="people_list">
+{% people_list p.department %}
+</script>
+
+<script type="text/json" id="people_signature">
+<textarea style="width:100%;height:320px;">
+{% verbatim %}
+{{first_name}}
+-- 
+*** Adcloud steigt in den mobilen Werbemarkt ein: http://adcloud.com/de/presse/adcloud-macht-mobil/ ***
+--------------------------------------------------------------------------------------------------------
+{{name}} · {{title}}
+
+Adcloud GmbH · Venloer Str. 25 · D-50672 Köln
+Ein Unternehmen von Deutsche Post DHL 
+
+{{#if contact_phone}}T  {{contact_phone}}{{/if}}
+{{email}}  · www.adcloud.com
+
+Handelsregister: Amtsgericht Köln, HRB 65770 · Sitz der Gesellschaft: Köln · Geschäftsführer: Henning Lange, Oliver Thylmann
+{% endverbatim %}
+</textarea>
+</script>
+{% endblock %}

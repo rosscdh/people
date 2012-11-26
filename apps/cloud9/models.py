@@ -3,6 +3,7 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 
 from taggit.managers import TaggableManager
 from annoying.fields import AutoOneToOneField
@@ -68,6 +69,9 @@ class AdcloudInfo(models.Model):
 
     def __unicode__(self):
         return u'%s - %s (%s) - %s' % (self.user.username, self.dept, self.office, self.profile_picture)
+
+    def get_absolute_url(self):
+        return reverse('cloud9:employee_detail', kwargs={'slug': self.user.username })
 
     def get_twitter_username(self):
         if self.twitter not in [None,'','None']:
