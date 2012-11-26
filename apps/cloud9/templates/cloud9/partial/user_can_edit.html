@@ -1,2 +1,2 @@
 {% load i18n %}
-{% if user_can_edit %}<a href="{% url cloud9:employee_edit slug=object.username %}" class="btn btn-primary">{% trans 'Edit' %}</a>{% endif %}
+{% if user_can_edit %}<a href="{% url cloud9:employee_edit slug=object.user.username %}" class="btn btn-primary">{% trans 'Edit' %}</a>{% endif %}
