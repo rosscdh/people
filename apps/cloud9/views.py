@@ -147,9 +147,12 @@ class PeopleSearch(View):
     template_name = 'cloud9/employee_list.html'
 
     def get(self, request):
-        query = request.GET.get('q', '')
+        query = request.GET.get('q', None)
 
-        queryset = SearchQuerySet().using('default').filter(content__startswith=query).order_by('last_name','first_name','office','department')
+        if query is not None:
+            queryset = SearchQuerySet().using('default').filter(content__contains=query).order_by('last_name','first_name','office','department')
+        else:
+            queryset = SearchQuerySet().using('default').all().order_by('last_name','first_name','office','department')
 
 
         # If there is only 1 returned result, then automatically redirect to 
@@ -160,6 +163,7 @@ class PeopleSearch(View):
         else:
             return render_to_response(
               'cloud9/employee_list.html', {
+                'query': query,
                 'object_list': queryset,
               },
               context_instance=RequestContext(request)

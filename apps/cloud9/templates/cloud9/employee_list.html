@@ -1,5 +1,5 @@
 {% extends 'cloud9/base.html' %}
-{% load i18n openid thumbnail %}
+{% load i18n openid thumbnail cache %}
 
 {% block content-head %}
 <h1>{% trans 'A List of People' %}</h1>
@@ -7,6 +7,7 @@
 
 {% block body %}
 
+{% cache 500 employee_list query %}
 <ul class="unstyled table-striped">
 {% for u in object_list %}
 <li class="row">
@@ -48,6 +49,7 @@
 <li>No Results</li>
 {% endfor %}
 </ul>
+{% endcache %}
     
 {% endblock %}
 
