@@ -12,8 +12,8 @@
 </div>
 
 <div id="chart-area" class="row">
-    <div id="chart" class="span9"></div>
-    <div id="user-profile" class="absolute"></div>
+    <div id="chart" class="span7"></div>
+    <div id="user-profile" class="span3 absolute"></div>
 </div>
 
 {% endblock %}
@@ -113,7 +113,7 @@ var profile_template = Handlebars.compile(source);
         .on("click", click);
     
     nodeEnter.append("svg:text")
-          .attr("x", function(d) { return d._children ? -18 : 18; })
+          .attr("x", function(d) { return d._children ? 0 : 12; })
           .attr("y", 3)
       .on('mouseover', function(ob){
         if (ob.type != undefined && ob.type == 'person') {
@@ -214,11 +214,18 @@ var profile_template = Handlebars.compile(source);
   var menuHeight = 240;
   menu.width(300);
 
-  //Position the menu at the top-left of the container div
-  menu.css('top', containerTop).css('right', menu.width() + 150);
+  getMenuLocation = function getMenuLocation() {
 
+    return area.position().left + 50 + (menu.width()*2);
+  }
+
+  //Position the menu at the top-left of the container div
+  menu.css('top', containerTop).css('left', getMenuLocation());
   menuYloc = parseInt(menu.css("top").substring(0,menu.css("top").indexOf("px")))
 
+  $(window).resize(function() {
+    menu.css('top', containerTop).css('left', getMenuLocation());
+  });
   $(window).scroll(function () {
 
     //If the menu is within the container then move it down
