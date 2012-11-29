@@ -51,10 +51,23 @@ class AdcloudInfo(models.Model):
                         (MADRID,'MADRID',_('Madrid')),
                         (PARIS,'PARIS',_('Paris')),
                     ))
+    NONE = 0
+    ATEAM = 1
+    TEAM404 = 2
+    XXX = 3
+    HELP = 4
+    DEVTEAMS = get_namedtuple_choices('DEPARTMENTS', (
+                        (NONE,'NONE',_('No Team')),
+                        (ATEAM,'ATEAM',_('A-Team')),
+                        (TEAM404,'TEAM404',_('Team 404')),
+                        (XXX,'XXX',_('Triple xXx')),
+                        (HELP,'HELP',_('HELP')),
+                    ))
     user = AutoOneToOneField(User, primary_key=True, related_name='profile')
     title = models.CharField(max_length=24,blank=True,null=True)
     department = models.IntegerField(choices=DEPARTMENTS.get_choices(), default=DEPARTMENTS.DEV)
     workplace = models.IntegerField(choices=OFFICES.get_choices(), default=OFFICES.COLOGNE)
+    team = models.IntegerField(choices=DEVTEAMS.get_choices(), default=DEVTEAMS.NONE)
     room_number = models.CharField(max_length=24,blank=True,null=True)
     contact_phone = models.CharField(max_length=24,blank=True,null=True)
     profile_picture = models.ImageField(upload_to=avatar_upload_path_handler, blank=False, null=False)
