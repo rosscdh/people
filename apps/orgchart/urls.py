@@ -7,9 +7,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, permission_required
 from django.views.decorators.cache import cache_page
 
-from views import OrganizationChart
+from views import OrganizationChartView, DevChartView
 
 
 urlpatterns = patterns('',
-    url(r'^(?P<office>.+)/$', login_required(OrganizationChart.as_view()), name='default'),
+    url(r'^teams/(?P<team>.+)/$', login_required(DevChartView.as_view()), name='teams'),
+    url(r'^(?P<office>.+)/$', login_required(OrganizationChartView.as_view()), name='default'),
 )
