@@ -9,6 +9,8 @@ from tastypie.serializers import Serializer
 from tastypie import fields, utils
 from tastypie.resources import Resource
 from tastypie.cache import SimpleCache
+from tastypie.authentication import ApiKeyAuthentication
+from tastypie.authorization import DjangoAuthorization
 
 from sorl.thumbnail import get_thumbnail
 
@@ -27,6 +29,8 @@ class PersonResource(ModelResource):
         queryset = Person.objects.select_related('user').filter(is_public=True,user__is_active=True,user__is_superuser=False).order_by('user__first_name', 'user__last_name')
         resource_name = 'people'
         serializer = Serializer(formats=available_formats)
+        authentication = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
 
     def dehydrate(self, bundle):
         bundle.data['full_name'] = bundle.obj.user.get_full_name()
@@ -47,10 +51,9 @@ class PersonResource(ModelResource):
 
 
 class ExtendedPersonResource(PersonResource):
-    class Meta:
+    class Meta(PersonResource.Meta):
         queryset = Person.objects.select_related('user').filter(user__is_active=True,user__is_superuser=False).order_by('user__first_name', 'user__last_name')
         resource_name = 'all/people'
-        serializer = Serializer(formats=available_formats)    
 
 
 

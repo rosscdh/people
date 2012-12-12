@@ -143,6 +143,7 @@ INSTALLED_APPS = (
     'socialregistration',
     'socialregistration.contrib.openid',
     'sorl.thumbnail',
+    'tastypie',
 
     'apps.cloud9',
     'apps.orgchart',
