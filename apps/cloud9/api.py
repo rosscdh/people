@@ -68,15 +68,20 @@ class ExtendedPersonResource(PersonResource):
 
             orm_filters = super(ExtendedPersonResource, self).build_filters(filters)
 
-            if "q" in filters:
+            if "q" in filters and settings.DATABASES['default']['ENGINE'] != 'django.db.backends.sqlite3':
                 q = filters.get('q')
-                print q
 
-                sqs = SearchQuerySet().filter(filters)
+                sqs = SearchQuerySet().filter(
+                    Q(user__get_full_name__icontains=q) | \
+                    Q(title__icontains=q) | \
+                    Q(skype__icontains=q) | \
+                    Q(twitter__icontains=q)
+                )
 
                 orm_filters["pk__in"] = [i.pk for i in sqs]
 
             return orm_filters
+
     class Meta(PersonResource.Meta):
         #queryset = Person.objects.select_related('user').filter(user__is_active=True,user__is_superuser=False).order_by('user__first_name', 'user__last_name')
         queryset = Person.objects.select_related('user').filter(user__is_active=True).order_by('user__first_name', 'user__last_name')

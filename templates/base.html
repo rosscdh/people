@@ -116,6 +116,7 @@
 
         $("#id_q").select2({
           minimumInputLength: 2,
+          quietMillis: 2000,
           placeholder: "Enter a name, tag or just experiment",
           allowClear: true,
           ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
@@ -125,8 +126,8 @@
                   return {
                       q: term, // search term
                       limit: 1000,
-                      username: 'rossc'
-                      api_key: 'e6b685f714424df9e07be35344b48710bc11ca0f'
+                      username: '{{ user.username }}'
+                      api_key: '{{ user.api_key.key }}'
                   };
               },
               results: function (data, page) { // parse the results into the format expected by Select2.
