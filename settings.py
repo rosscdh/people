@@ -126,7 +126,7 @@ TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
     'django.core.context_processors.i18n',
 )
 
-INSTALLED_APPS = (
+DJANGO_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -134,17 +134,21 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+)
 
+HELPER_APPS = (
     'django_extensions',
     'south',
-
     'haystack',
     'taggit',
     'socialregistration',
     'socialregistration.contrib.openid',
     'sorl.thumbnail',
     'tastypie',
+    'django_select2',
+)
 
+INSTALLED_APPS = DJANGO_APPS + HELPER_APPS + (
     'apps.cloud9',
     'apps.orgchart',
 )

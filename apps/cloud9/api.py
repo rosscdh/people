@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.conf.urls.defaults import url
 from django.contrib.sites.models import Site
+from django.db.models import Q
 
 from tastypie.resources import ModelResource
 from tastypie.validation import FormValidation
@@ -11,6 +12,8 @@ from tastypie.resources import Resource
 from tastypie.cache import SimpleCache
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import DjangoAuthorization
+from tastypie.constants import ALL, ALL_WITH_RELATIONS
+from haystack.query import SearchQuerySet
 
 from sorl.thumbnail import get_thumbnail
 
@@ -31,6 +34,14 @@ class PersonResource(ModelResource):
         serializer = Serializer(formats=available_formats)
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
+        filtering = {
+            "user__first_name": ALL,
+            "user__last_name": ALL,
+            "title": ALL,
+            "contact_phone": ALL,
+            "skype": ALL,
+            "twitter": ALL,
+        }
 
     def dehydrate(self, bundle):
         bundle.data['full_name'] = bundle.obj.user.get_full_name()
@@ -51,8 +62,24 @@ class PersonResource(ModelResource):
 
 
 class ExtendedPersonResource(PersonResource):
+    def build_filters(self, filters=None):
+            if filters is None:
+                filters = {}
+
+            orm_filters = super(ExtendedPersonResource, self).build_filters(filters)
+
+            if "q" in filters:
+                q = filters.get('q')
+                print q
+
+                sqs = SearchQuerySet().filter(filters)
+
+                orm_filters["pk__in"] = [i.pk for i in sqs]
+
+            return orm_filters
     class Meta(PersonResource.Meta):
-        queryset = Person.objects.select_related('user').filter(user__is_active=True,user__is_superuser=False).order_by('user__first_name', 'user__last_name')
+        #queryset = Person.objects.select_related('user').filter(user__is_active=True,user__is_superuser=False).order_by('user__first_name', 'user__last_name')
+        queryset = Person.objects.select_related('user').filter(user__is_active=True).order_by('user__first_name', 'user__last_name')
         resource_name = 'all/people'
 
 

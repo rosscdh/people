@@ -157,7 +157,7 @@ class PeopleSearch(View):
 
         # If there is only 1 returned result, then automatically redirect to 
         # the lucky user
-        if queryset.count() == 1:
+        if 1==2 and queryset.count() == 1:
             person = queryset[0]
             return redirect(reverse('cloud9:employee_detail', kwargs={ 'slug': person.username }))
         else:

@@ -1,4 +1,4 @@
-{% load i18n thumbnail %}
+{% load i18n thumbnail django_select2_tags %}
 {% load url from future %}
 <!DOCTYPE html>
 <html lang="en">
@@ -35,7 +35,7 @@
     <link rel="apple-touch-icon" href="{{ STATIC_URL }}images/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="72x72" href="{{ STATIC_URL }}images/apple-touch-icon-72x72.png">
     <link rel="apple-touch-icon" sizes="114x114" href="{{ STATIC_URL }}images/apple-touch-icon-114x114.png">
-    
+    {% import_django_select2_js_css %}
     {% block css %}{% endblock %}
   </head>
 
@@ -94,17 +94,55 @@
 		</ul>
 		</div>
 		{% endif %}
-		{% block content-head %}{% endblock %}
-		{% block pre-body %}{% endblock %}
-        {% block body %}{% endblock %}
+    {% block content-head %}{% endblock %}
+    {% block pre-body %}{% endblock %}
+    {% block body %}{% endblock %}
     </div> <!-- /container -->
 
     <p>&nbsp;</p>
     <p>&nbsp;</p>
 
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}base/bootstrap-tooltip.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.rc.1/handlebars.min.js"></script>
 
     {% block js %}{% endblock %}
-    
+
+    <script id="select2_search">
+    $(document).ready(function() {
+      if ($('#id_q').length > 0) {
+
+        var people_data = {data:[]};
+
+        $("#id_q").select2({
+          minimumInputLength: 2,
+          placeholder: "Enter a name, tag or just experiment",
+          allowClear: true,
+          ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
+              url: "/api/v1/all/people/",
+              dataType: 'jsonp',
+              data: function (term, page) {
+                  return {
+                      q: term, // search term
+                      limit: 1000,
+                      username: 'rossc'
+                      api_key: 'e6b685f714424df9e07be35344b48710bc11ca0f'
+                  };
+              },
+              results: function (data, page) { // parse the results into the format expected by Select2.
+                  // since we are using custom formatting functions we do not need to alter remote JSON data
+                  people_data.data = data;
+                   console.log(people_data.data) 
+                  return {results: data.movies};
+              }
+          },
+          formatResult: function(result) {
+           console.log('formatresult') 
+          }
+        });
+      }
+
+    });
+    </script>
   </body>
 </html>

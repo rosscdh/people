@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
-{% load i18n openid thumbnail %}
+{% load i18n openid cloud9_tags thumbnail %}
+
+{% block pre-body %}
+<div id="search-people">
+{% people_search_form %}
+</div>
+{% endblock %}
 
 {% block body %}
 <ul class="unstyled">
@@ -25,8 +31,6 @@
 
 
 {% block js %}
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}base/bootstrap-tooltip.js"></script>
 <script>
 jQuery(document).ready(function() {
     $('img.member-avatar').each(function() {
