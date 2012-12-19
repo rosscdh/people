@@ -1,6 +1,8 @@
 {% load i18n %}
 <form action="{% url cloud9:people_search %}" method="GET" id="form-people-search" class="well form-search">
+<h4>{% trans 'Search' %}</h4>
 {{ search_form }}
+<div>{% blocktrans %}Enter some terms to search by{% endblocktrans %}</div>
 <button id="search_button" class="btn" type="submit">{% trans 'Search' %}</button>
 </form>
 <script>
