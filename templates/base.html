@@ -55,7 +55,7 @@
             <ul class="nav">
               {% if user.is_authenticated %}
               <li class="active"><a href="{% url 'cloud9:default' %}">{% trans 'Home' %}</a></li>
-              <li class="active"><a href="{% url 'cloud9:employee_list' %}">{% trans 'People' %}</a></li>
+              <!-- <li class="active"><a href="{% url 'cloud9:employee_list' %}">{% trans 'People' %}</a></li> -->
               <li class="active"><a href="{% url 'orgchart:default' office='cologne' %}">{% trans 'OrgChart' %}</a></li>
               <!-- <li class="active"><a href="{% url 'orgchart:teams' team='all' %}">{% trans 'Development Team' %}</a></li> -->
               {% endif %}
@@ -108,42 +108,6 @@
 
     {% block js %}{% endblock %}
 
-    <script id="select2_search">
-    $(document).ready(function() {
-      if ($('#id_q').length > 0) {
 
-        var people_data = {data:[]};
-
-        $("#id_q").select2({
-          minimumInputLength: 2,
-          quietMillis: 2000,
-          placeholder: "Enter a name, tag or just experiment",
-          allowClear: true,
-          ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
-              url: "/api/v1/all/people/",
-              dataType: 'jsonp',
-              data: function (term, page) {
-                  return {
-                      q: term, // search term
-                      limit: 1000,
-                      username: '{{ user.username }}'
-                      api_key: '{{ user.api_key.key }}'
-                  };
-              },
-              results: function (data, page) { // parse the results into the format expected by Select2.
-                  // since we are using custom formatting functions we do not need to alter remote JSON data
-                  people_data.data = data;
-                   console.log(people_data.data) 
-                  return {results: data.movies};
-              }
-          },
-          formatResult: function(result) {
-           console.log('formatresult') 
-          }
-        });
-      }
-
-    });
-    </script>
   </body>
 </html>

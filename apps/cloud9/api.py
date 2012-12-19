@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls.defaults import url
 from django.contrib.sites.models import Site
 from django.db.models import Q
+from django.core.urlresolvers import reverse
 
 from tastypie.resources import ModelResource
 from tastypie.validation import FormValidation
@@ -50,6 +51,8 @@ class PersonResource(ModelResource):
         bundle.data['email'] = bundle.obj.user.email
         bundle.data['department'] = Person.DEPARTMENTS.get_desc(bundle.data['department'])
         bundle.data['workplace'] = Person.OFFICES.get_desc(bundle.data['workplace'])
+        bundle.data['team'] = Person.DEVTEAMS.get_desc(bundle.data['team'])
+        bundle.data['profile_url'] = reverse('cloud9:employee_detail', kwargs={'slug': bundle.obj.user.username})
 
         if bundle.obj.profile_picture:
             picture = get_thumbnail(bundle.obj.profile_picture, '120x120', crop='center', quality=99)

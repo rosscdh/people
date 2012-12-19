@@ -8,29 +8,122 @@
 {% endblock %}
 
 {% block body %}
-<ul class="unstyled">
+<ul id="people-list" class="unstyled">
 {% for u in object_list %}
-<li class="pull-left">
-{% thumbnail u.profile.profile_picture "120x120" crop="center" as thumb %}
-	{% if user.is_authenticated %}
-    <a class="person" rel="tooltip" data-original-title="{{ u.get_full_name|default:u.username }} - {{ u.profile.title }}" href="{% url cloud9:employee_detail slug=u.username %}">
-    	<img width="120" class="member-avatar" data-avatar="{{ MEDIA_URL }}{{ thumb }}" height="120" style="width:120px;height:120px;" src="" border="0"/>
-	</a><br/>
-	{% else %}
-    <span class="person" rel="tooltip" data-original-title="{{ u.get_full_name|default:u.username }} - {{ u.profile.title }}" href="{% url cloud9:employee_detail slug=u.username %}">
-    	<img width="120" class="member-avatar" data-avatar="{{ MEDIA_URL }}{{ thumb }}" height="120" style="width:120px;height:120px;" src="" border="0"/>
-	</span><br/>
-	{% endif %}
-{% endthumbnail %}
-</li>
+    <li class="span2">
+        {% thumbnail u.profile.profile_picture "120x120" crop="center" as thumb %}
+            <div><a class="person" rel="tooltip" href="{% url cloud9:employee_detail slug=u.username %}">{{ u.get_full_name }}</a></div>
+        	{% if user.is_authenticated %}
+            <a class="person" rel="tooltip" data-original-title="{{ u.get_full_name|default:u.username }} - {{ u.profile.title }}" href="{% url cloud9:employee_detail slug=u.username %}">
+            	<img width="120" class="member-avatar" data-avatar="{{ MEDIA_URL }}{{ thumb }}" height="120" style="width:120px;height:120px;" src="" border="0"/>
+        	</a>
+        	{% else %}
+            <span class="person" rel="tooltip" data-original-title="{{ u.get_full_name|default:u.username }} - {{ u.profile.title }}" href="{% url cloud9:employee_detail slug=u.username %}">
+            	<img width="120" class="member-avatar" data-avatar="{{ MEDIA_URL }}{{ thumb }}" height="120" style="width:120px;height:120px;" src="" border="0"/>
+        	</span>
+        	{% endif %}
+            <div>{{ u.profile.title }}</div>
+        {% endthumbnail %}
+    </li>
 {% empty %}
-<li>No Results</li>
+    <li class="span2">No Results</li>
 {% endfor %}
 </ul>
 {% endblock %}
 
 
 {% block js %}
+<style>
+#people-list li {
+    min-height:195px;
+}
+</style>
+{% verbatim %}
+<script id="people" type="text/x-handlebars-template">
+<li class="span2">
+    <div>{{title}}</div>
+    <a class="person" rel="tooltip" title="{{full_name}} - {{title}}" href="{{profile_url}}"><img width="120" height="120" class="member-avatar" data-avatar="{{profile_picture}}" style="width:120px;height:120px;" src="{{profile_picture}}" border="0"/></a>
+    <div><a class="person" rel="tooltip" title="{{full_name}} - {{title}}" href="{{profile_url}}">{{full_name}}</a></div>
+</li>
+</script>
+{% endverbatim %}
+
+<script id="select2_search">
+$(document).ready(function() {
+
+  if ($('#id_q').length > 0) {
+    $('form#form-people-search #search_button').hide();
+
+    var hb_source   = $("script#people").html();
+    var hb_template = Handlebars.compile(hb_source);
+
+    var people_data = {
+            q: null,
+            data: [],
+            search: function search() {
+                var self = this;
+                var return_data = [];
+                var q = self.q.toLowerCase();
+                $.each(self.data.objects, function(index, item){
+
+                    if (
+                        item.department.toLowerCase().indexOf(q) >= 0
+                        || item.contact_phone.indexOf(q) >= 0
+                        || item.email.indexOf(q) >= 0
+                        || item.full_name.toLowerCase().indexOf(q) >= 0
+                        || item.title.toLowerCase().indexOf(q) >= 0
+                        //|| item.team.indexOf(q) >= 0
+                        || item.workplace.toLowerCase().indexOf(q) >= 0
+                        || item.twitter.toLowerCase().indexOf(q) >= 0
+                    ) 
+                    {
+                        return_data.push(item);
+                    }
+                });
+                return return_data;
+            }
+    };
+
+    $("#id_q").select2({
+          minimumInputLength: 2,
+          quietMillis: 6000,
+          placeholder: "Enter a name, tag or just experiment",
+          allowClear: true,
+          ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
+              //url: "/api/v1/all/people/",
+              url: "http://people.adcloud.com/api/v1/people/",
+              dataType: 'jsonp',
+              data: function (term, page) {
+                    people_data.q = term;
+                    return {
+                        q: term, // search term
+                        limit: 1000,
+                        username: 'miriam.pylen',
+                        api_key: '9c332afa31e283794bdf0f6eb8f83220512fb0c6'
+                        // username: '{{ user.username }}',
+                        // api_key: '{{ user.api_key.key }}'
+                    };
+              },
+              results: function (data, page) { // parse the results into the format expected by Select2.
+                  // since we are using custom formatting functions we do not need to alter remote JSON data
+                  people_data.data = data;
+                  $('#people-list li').remove();
+                  $('#select2-results').remove();
+                  return {results: people_data.search()};
+              }
+          },
+          formatSelection: function() {
+            return null;
+          },
+          formatResult: function(result, container, query) {
+            var html = hb_template(result);
+            $('#people-list').append(html);
+          }
+    });
+  }
+
+});
+</script>
 <script>
 jQuery(document).ready(function() {
     $('img.member-avatar').each(function() {

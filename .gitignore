@@ -7,7 +7,7 @@
 .DS_Store
 apps/tailor/management/commands/*.png
 local_settings.py
-media/*
+/media/*
 log/*
 /static
 /socialregistration
