@@ -41,9 +41,8 @@
 {% verbatim %}
 <script id="people" type="text/x-handlebars-template">
 <li class="span2">
-    <div>{{title}}</div>
     <a class="person" rel="tooltip" title="{{full_name}} - {{title}}" href="{{profile_url}}"><img width="120" height="120" class="member-avatar" data-avatar="{{profile_picture}}" style="width:120px;height:120px;" src="{{profile_picture}}" border="0"/></a>
-    <div><a class="person" rel="tooltip" title="{{full_name}} - {{title}}" href="{{profile_url}}">{{full_name}}</a></div>
+    <div><a class="person" rel="tooltip" title="{{full_name}} - {{title}}" href="{{profile_url}}">{{full_name}}</a>, {{title}}</div>
 </li>
 </script>
 {% endverbatim %}
@@ -67,14 +66,14 @@ $(document).ready(function() {
                 $.each(self.data.objects, function(index, item){
 
                     if (
-                        item.department.toLowerCase().indexOf(q) >= 0
-                        || item.contact_phone.indexOf(q) >= 0
-                        || item.email.indexOf(q) >= 0
-                        || item.full_name.toLowerCase().indexOf(q) >= 0
-                        || item.title.toLowerCase().indexOf(q) >= 0
-                        || item.team.indexOf(q) >= 0
-                        || item.workplace.toLowerCase().indexOf(q) >= 0
-                        || item.twitter.toLowerCase().indexOf(q) >= 0
+                        item.department !== null && item.department.toLowerCase().indexOf(q) >= 0
+                        || item.contact_phone !== null && item.contact_phone.indexOf(q) >= 0
+                        || item.email !== null && item.email.indexOf(q) >= 0
+                        || item.full_name !== null && item.full_name.toLowerCase().indexOf(q) >= 0
+                        || item.title !== null && item.title.toLowerCase().indexOf(q) >= 0
+                        || item.team !== null && item.team.indexOf(q) >= 0
+                        || item.workplace !== null && item.workplace.toLowerCase().indexOf(q) >= 0
+                        || item.twitter !== null && item.twitter.toLowerCase().indexOf(q) >= 0
                     ) 
                     {
                         return_data.push(item);
@@ -90,18 +89,21 @@ $(document).ready(function() {
           placeholder: "Enter a name, tag or just experiment",
           allowClear: true,
           ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
+              {% if request.user.is_authenticated %}
               url: "/api/v1/all/people/",
-              // url: "http://people.adcloud.com/api/v1/people/",
+              {% else %}
+              url: "/api/v1/people/",
+              {% endif %}
               dataType: 'jsonp',
               data: function (term, page) {
                     people_data.q = term;
                     return {
                         q: term, // search term
                         limit: 1000,
-                        // username: 'miriam.pylen',
-                        // api_key: '9c332afa31e283794bdf0f6eb8f83220512fb0c6'
+                        {% if request.user.is_authenticated %}
                         username: '{{ user.username }}',
                         api_key: '{{ user.api_key.key }}'
+                        {% endif %}
                     };
               },
               results: function (data, page) { // parse the results into the format expected by Select2.

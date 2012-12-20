@@ -1,3 +1,4 @@
+import os 
 from django.conf import settings
 from django.conf.urls.defaults import url
 from django.contrib.sites.models import Site
@@ -33,8 +34,6 @@ class PersonResource(ModelResource):
         queryset = Person.objects.select_related('user').filter(is_public=True,user__is_active=True,user__is_superuser=False).order_by('user__first_name', 'user__last_name')
         resource_name = 'people'
         serializer = Serializer(formats=available_formats)
-        authentication = ApiKeyAuthentication()
-        authorization = DjangoAuthorization()
         filtering = {
             "user__first_name": ALL,
             "user__last_name": ALL,
@@ -55,11 +54,14 @@ class PersonResource(ModelResource):
         bundle.data['profile_url'] = reverse('cloud9:employee_detail', kwargs={'slug': bundle.obj.user.username})
 
         if bundle.obj.profile_picture:
-            picture = get_thumbnail(bundle.obj.profile_picture, '120x120', crop='center', quality=99)
-            thumb = get_thumbnail(bundle.obj.profile_picture, '72x72', crop='center', quality=99)
-
-            bundle.data['profile_picture'] = 'http://%s%s' % (Site.domain, picture.url,)
-            bundle.data['profile_thumb'] = 'http://%s%s' % (Site.domain, thumb.url,)
+            try:
+                picture = get_thumbnail(bundle.obj.profile_picture, '120x120', crop='center', quality=99)
+                thumb = get_thumbnail(bundle.obj.profile_picture, '72x72', crop='center', quality=99)
+                bundle.data['profile_picture'] = 'http://%s%s' % (Site.domain, picture.url,)
+                bundle.data['profile_thumb'] = 'http://%s%s' % (Site.domain, thumb.url,)
+            except:
+                bundle.data['profile_picture'] = None
+                bundle.data['profile_thumb'] = None
 
         return bundle
 
@@ -89,6 +91,8 @@ class ExtendedPersonResource(PersonResource):
         #queryset = Person.objects.select_related('user').filter(user__is_active=True,user__is_superuser=False).order_by('user__first_name', 'user__last_name')
         queryset = Person.objects.select_related('user').filter(user__is_active=True).order_by('user__first_name', 'user__last_name')
         resource_name = 'all/people'
+        authentication = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
 
 
 
