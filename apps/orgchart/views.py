@@ -37,7 +37,7 @@ class OrganizationChartView(TemplateView):
         people_queryset = AdcloudInfo.objects \
                             .select_related('user') \
                             .exclude(user__is_superuser=True) \
-                            .filter(workplace=office_id) \
+                            .filter(workplace=office_id, user__is_active=True) \
                             .order_by('user__last_name', 'user__first_name')
 
         people = {}

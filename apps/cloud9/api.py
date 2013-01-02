@@ -31,7 +31,7 @@ Site = Site.objects.get(id=settings.SITE_ID)
 
 class PersonResource(ModelResource):
     class Meta:
-        queryset = Person.objects.select_related('user').filter(is_public=True,user__is_active=True,user__is_superuser=False).order_by('user__first_name', 'user__last_name')
+        queryset = Person.objects.select_related('user').filter(is_public=True, user__is_active=True, user__is_superuser=False).order_by('user__first_name', 'user__last_name')
         resource_name = 'people'
         serializer = Serializer(formats=available_formats)
         filtering = {
@@ -88,8 +88,7 @@ class ExtendedPersonResource(PersonResource):
             return orm_filters
 
     class Meta(PersonResource.Meta):
-        #queryset = Person.objects.select_related('user').filter(user__is_active=True,user__is_superuser=False).order_by('user__first_name', 'user__last_name')
-        queryset = Person.objects.select_related('user').filter(user__is_active=True).order_by('user__first_name', 'user__last_name')
+        queryset = Person.objects.select_related('user').filter(user__is_active=True, user__is_superuser=False).order_by('user__first_name', 'user__last_name')
         resource_name = 'all/people'
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
