@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n openid cloud9_tags thumbnail %}
+{% load url from future %}
 
 {% block pre-body %}
 <div id="search-people">
@@ -8,17 +9,27 @@
 {% endblock %}
 
 {% block body %}
+
+{% if not request.user.is_authenticated %}
+<div class="hero-unit">
+<div class="span4 offset3">
+  You are not currently logged in
+  <a href="{% url 'cloud9:login' %}" class="btn btn-primary btn-large">Login</a>
+</div>
+</div>
+{% endif %}
+
 <ul id="people-list" class="unstyled">
 {% for u in object_list %}
     <li class="span2">
         {% thumbnail u.profile.profile_picture "120x120" crop="center" as thumb %}
-            <div><a class="person" rel="tooltip" href="{% url cloud9:employee_detail slug=u.username %}">{{ u.get_full_name }}</a></div>
+            <div><a class="person" rel="tooltip" href="{% url 'cloud9:employee_detail' slug=u.username %}">{{ u.get_full_name }}</a></div>
         	{% if user.is_authenticated %}
-            <a class="person" rel="tooltip" data-original-title="{{ u.get_full_name|default:u.username }} - {{ u.profile.title }}" href="{% url cloud9:employee_detail slug=u.username %}">
+            <a class="person" rel="tooltip" data-original-title="{{ u.get_full_name|default:u.username }} - {{ u.profile.title }}" href="{% url 'cloud9:employee_detail' slug=u.username %}">
             	<img width="120" class="member-avatar" data-avatar="{{ MEDIA_URL }}{{ thumb }}" height="120" style="width:120px;height:120px;" src="" border="0"/>
         	</a>
         	{% else %}
-            <span class="person" rel="tooltip" data-original-title="{{ u.get_full_name|default:u.username }} - {{ u.profile.title }}" href="{% url cloud9:employee_detail slug=u.username %}">
+            <span class="person" rel="tooltip" data-original-title="{{ u.get_full_name|default:u.username }} - {{ u.profile.title }}" href="{% url 'cloud9:employee_detail' slug=u.username %}">
             	<img width="120" class="member-avatar" data-avatar="{{ MEDIA_URL }}{{ thumb }}" height="120" style="width:120px;height:120px;" src="" border="0"/>
         	</span>
         	{% endif %}
