@@ -71,7 +71,7 @@ def user_is_self_or_admin( request, viewed_user ):
         return HttpResponseRedirect( reverse('cloud9:employee_list') )
 
     if request.user != viewed_user:
-        if not request.user.is_staff or not request.user.is_superuser:
+        if not request.user.is_staff and not request.user.is_superuser:
             messages.error(request, _('You are trying to access someones profile without permission. You are a very norty person.'))
             return HttpResponseRedirect( reverse('cloud9:employee_list') )
 

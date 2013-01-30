@@ -26,6 +26,7 @@
 		</formset>
 		{% if object.bio %}
 		<formset>
+			<h3>{% trans 'Biography' %}</h3>
 			{{ object.bio|markdown:"safe" }}
 		</formset>
 		{% endif %}
