@@ -1,5 +1,5 @@
 {% extends 'cloud9/base.html' %}
-{% load i18n openid thumbnail cloud9_tags twitter_tags orgchart_tags %}
+{% load i18n openid thumbnail cloud9_tags twitter_tags orgchart_tags markup %}
 
 {% block title %}{% trans 'Now viewing' %} - {{ object.user.username }}{% endblock %}
 
@@ -17,13 +17,19 @@
 		{% endif %}
 		<strong>{% trans 'Title' %}</strong><br/>{{ object.title }}<br/>
 		<strong>{% trans 'Department' %}</strong><br/>{{ object.dept }}<br/>
+		<strong>{% trans 'Team' %}</strong><br/>{{ object.team_name }}<br/>
 		<strong>{% trans 'Email' %}</strong><br/><a href="mailto:{{ object.user.email }}">{{ object.user.email }}</a><br/>
 		<strong>{% trans 'Office' %}</strong><br/>{{ object.office|default:"-" }}<br/>
 		<strong>{% trans 'Skype' %}</strong><br/>{{ object.skype|default:"-" }}<br/>
 		<strong>{% trans 'Twitter' %}</strong><br/>{{ object.get_twitter_username|default:"adcloud"|twitterize }}<br/>
 		<strong>{% trans 'Contact Phone' %}</strong><br/>{{ object.contact_phone|default:"-" }}<br/>
 		</formset>
-			{% if object.skills %}
+		{% if object.bio %}
+		<formset>
+			{{ object.bio|markdown:"safe" }}
+		</formset>
+		{% endif %}
+		{% if object.skills %}
 		<formset>
 			<h3>{% trans 'Tags' %}</h3>
 			<blockquote>
@@ -32,7 +38,7 @@
 			{% endfor %}
 			</blockquote>
 		</formset>
-			{% endif %}
+		{% endif %}
 		<!-- <h3>Email Signature</h3> -->
 		<!-- <div id="user-signature" class=""></div> -->
 	</div>
@@ -73,6 +79,7 @@
 </style>{% endblock %}
 
 {% block js %}
+
 <script type="text/javascript">
 $(document).ready(function() {
 	var source   = $("script#people_signature").html();

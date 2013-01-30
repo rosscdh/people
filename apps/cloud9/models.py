@@ -46,10 +46,12 @@ class AdcloudInfo(models.Model):
     COLOGNE = 1
     MADRID = 2
     PARIS = 4
+    ZURICH = 8
     OFFICES = get_namedtuple_choices('OFFICES', (
                         (COLOGNE,'COLOGNE',_(u'Cologne')),
                         (MADRID,'MADRID',_('Madrid')),
                         (PARIS,'PARIS',_('Paris')),
+                        (ZURICH,'ZURICH',_('Zurich')),
                     ))
     NONE = 0
     ATEAM = 1
@@ -65,6 +67,7 @@ class AdcloudInfo(models.Model):
                     ))
     user = AutoOneToOneField(User, primary_key=True, related_name='profile')
     title = models.CharField(max_length=24,blank=True,null=True)
+    bio = models.TextField(blank=True)
     department = models.IntegerField(choices=DEPARTMENTS.get_choices(), default=DEPARTMENTS.DEV)
     workplace = models.IntegerField(choices=OFFICES.get_choices(), default=OFFICES.COLOGNE)
     team = models.IntegerField(choices=DEVTEAMS.get_choices(), default=DEVTEAMS.NONE)
@@ -95,6 +98,7 @@ class AdcloudInfo(models.Model):
 
     @property
     def dept(self):
+        """ @TODO uglee fix """
         department = [unicode(dept) for d,dept in self.DEPARTMENTS.get_choices() if d == int(self.department)]
         if len(department) == 0:
             department.append(self.DEPARTMENTS.DEV)
@@ -102,7 +106,17 @@ class AdcloudInfo(models.Model):
         return u'%s' % (department[0],)
 
     @property
+    def team_name(self):
+        """ @TODO uglee fix """
+        team_name = [unicode(team) for t,team in self.DEVTEAMS.get_choices() if t == int(self.team)]
+        if len(team_name) == 0:
+            team_name.append(self.DEVTEAMS.NONE)
+
+        return u'%s' % (team_name[0],)
+
+    @property
     def office(self):
+        """ @TODO uglee fix """
         office = [unicode(workplace) for o,workplace in self.OFFICES.get_choices() if o == int(self.workplace)]
         if len(office) == 0:
             office.append(self.OFFICES.COLOGNE)

@@ -48,6 +48,7 @@ class PersonResource(ModelResource):
         bundle.data['first_name'] = bundle.obj.user.first_name
         bundle.data['last_name'] = bundle.obj.user.last_name
         bundle.data['email'] = bundle.obj.user.email
+        bundle.data['skills'] = [s.name.lower() for s in bundle.obj.user.profile.skills.all()]
         bundle.data['department'] = Person.DEPARTMENTS.get_desc(bundle.data['department'])
         bundle.data['workplace'] = Person.OFFICES.get_desc(bundle.data['workplace'])
         bundle.data['team'] = Person.DEVTEAMS.get_desc(bundle.data['team'])

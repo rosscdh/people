@@ -24,6 +24,7 @@ class AccountSetupForm(UserForm):
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
     title = forms.CharField(required=False)
+    bio = forms.CharField(required=False, widget=forms.Textarea, help_text='You are able to use Markdown for your bio. http://daringfireball.net/projects/markdown/syntax')
     department = forms.ChoiceField(choices=AdcloudInfo.DEPARTMENTS.get_choices())
     team = forms.ChoiceField(label='Team',choices=AdcloudInfo.DEVTEAMS.get_choices())
     workplace = forms.ChoiceField(label='Office',choices=AdcloudInfo.OFFICES.get_choices())
@@ -31,7 +32,7 @@ class AccountSetupForm(UserForm):
     contact_phone = forms.CharField(required=False)
     skype = forms.CharField(required=False, help_text=_('Ensure: "Skype -> Preferences -> Privacy -> Show my status on the web" is checked'))
     twitter = forms.CharField(required=False)
-    is_public = forms.BooleanField(required=False,initial=False)
+    is_public = forms.BooleanField(required=False,initial=False,help_text='Ticking this box will mean that you display on the adcloud.com team page')
     skills = TagField(required=False,label=_('Tags'),help_text=_('Seperate by a comma (,)'))
     profile_picture = forms.ImageField(required=True)
 
@@ -48,6 +49,7 @@ class AccountSetupForm(UserForm):
             user.save()
 
         user.profile.title = self.cleaned_data.get('title')
+        user.profile.bio = self.cleaned_data.get('bio')
         user.profile.department = self.cleaned_data.get('department')
         user.profile.workplace = self.cleaned_data.get('workplace')
         user.profile.team = self.cleaned_data.get('team')

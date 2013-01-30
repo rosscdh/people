@@ -74,8 +74,8 @@ $(document).ready(function() {
                 var self = this;
                 var return_data = [];
                 var q = self.q.toLowerCase();
+                var re = new RegExp(q,"gi");// used to parse skills
                 $.each(self.data.objects, function(index, item){
-
                     if (
                         item.department !== null && item.department.toLowerCase().indexOf(q) >= 0
                         || item.contact_phone !== null && item.contact_phone.indexOf(q) >= 0
@@ -85,6 +85,7 @@ $(document).ready(function() {
                         || item.team !== null && item.team.indexOf(q) >= 0
                         || item.workplace !== null && item.workplace.toLowerCase().indexOf(q) >= 0
                         || item.twitter !== null && item.twitter.toLowerCase().indexOf(q) >= 0
+                        || item.skills.findAll(re).length >= 1
                     ) 
                     {
                         return_data.push(item);
