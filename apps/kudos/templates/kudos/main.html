@@ -1,1 +1,14 @@
-main.html
+<div class="span2 badge badge-info" style="min-height:150px">
+    <div class="span2 text-center">
+        <span class="lead">Kudos</span>
+        <div class="lead">{{ total }}</div>
+        <small>{{ monthly_total }} this month</small>
+    </div>
+</div>
+<ul class="offset1 unstyled">
+{% if can_award %}
+{% for r in ratings %}
+<li class="text-center" data-toggle="tooltip" title="{{ r.name }}"><a href="" class="btn"><i class="{{ r.icon }}"></i></a></li>
+{% endfor %}
+{% endif %}
+</ul>

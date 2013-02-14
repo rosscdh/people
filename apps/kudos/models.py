@@ -19,6 +19,10 @@ class KudosManager(models.Manager):
 			date = datetime.datetime.today()
 		return self.filter(to_user=user, date_awarded__month=date.month).count()
 
+	def user_can_award(self, to_user, from_user):
+		date = datetime.datetime.today()
+		return self.filter(to_user=to_user, from_user=from_user, date_awarded__month=date.month).count() == 0
+
 
 class Kudos(models.Model):
 	RATINGS = get_namedtuple_choices('RATINGS', (
