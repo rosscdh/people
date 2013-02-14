@@ -152,6 +152,7 @@ HELPER_APPS = (
 INSTALLED_APPS = DJANGO_APPS + HELPER_APPS + (
     'apps.cloud9',
     'apps.orgchart',
+    'apps.kudos',
 )
 
 # A sample logging configuration. The only tangible logging

@@ -16,3 +16,5 @@ django_select2
 #https://github.com/wesnolte/jOrgChart.git
 markdown
 #postgresql_psycopg2
+mocktest
+factory_boy
