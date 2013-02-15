@@ -40,7 +40,6 @@ class TestKudos(mocktest.TestCase):
 
 		Kudos.objects.award_to(to_user=self.userb, from_user=self.usera, date_awarded=datetime.datetime(2013,01,01,00,00,00))
 		Kudos.objects.award_to(to_user=self.userb, from_user=self.usera, date_awarded=datetime.datetime(2013,01,01,00,00,00))
-
 		assert Kudos.objects.user_total_by_month(user=self.userb, date=datetime.datetime(2013,01,01,00,00,00)) == 2
 
 		Kudos.objects.award_to(to_user=self.userb, from_user=self.usera, date_awarded=datetime.datetime(2013,05,01,00,00,00))

@@ -7,6 +7,7 @@ from apps.util import get_namedtuple_choices
 
 import datetime
 
+
 class KudosManager(models.Manager):
 	def award_to(self, to_user, from_user, **kwargs):
 		return self.create(from_user=from_user, to_user=to_user, **kwargs)
