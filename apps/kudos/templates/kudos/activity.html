@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<ul class="span7 unstyled">
+{% for i in object_list %}
+<li>
+	<div class="span3 pull-right">{{ i.created_at }}</div>
+	<a href="{{ i.user.profile.get_absolute_url }}">{{ i.content }}</a>
+</li>
+{% endfor %}
+<ul>
+
+{% endblock %}
+

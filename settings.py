@@ -141,6 +141,8 @@ HELPER_APPS = (
     'sorl.thumbnail',
     'tastypie',
     'django_select2',
+    'user_streams',
+    'user_streams.backends.user_streams_single_table_backend',
 )
 
 INSTALLED_APPS = DJANGO_APPS + HELPER_APPS + (
@@ -148,6 +150,9 @@ INSTALLED_APPS = DJANGO_APPS + HELPER_APPS + (
     'apps.orgchart',
     'apps.kudos',
 )
+
+USER_STREAMS_BACKEND = 'user_streams.backends.user_streams_single_table_backend.SingleTableDatabaseBackend'
+USER_STREAMS_USE_UTC = True
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

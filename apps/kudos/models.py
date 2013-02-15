@@ -53,3 +53,7 @@ class Kudos(models.Model):
 
 	def __unicode__(self):
 		return u'%s - %s' % (self.rating, self.comment)
+
+
+# import the signals like this so they are always loaded
+from .signals import *

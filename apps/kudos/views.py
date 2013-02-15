@@ -1,12 +1,15 @@
 from django.contrib import messages
 from django.views.generic.edit import ProcessFormView
 from django.views.generic.edit import FormMixin
+from django.views.generic import TemplateView
 from django.http import HttpResponseRedirect
 
 from apps.kudos.models import Kudos
 from apps.kudos.forms import AwardKudosForm
 
 from mixins import JSONResponseMixin
+
+import user_streams
 
 
 class AwardKudosView(FormMixin, ProcessFormView):
@@ -26,3 +29,14 @@ class AwardKudosView(FormMixin, ProcessFormView):
 	def render_to_response(self, **kwargs):
 		self.form_valid(kwargs.get('form'))
 		return HttpResponseRedirect(self.get_success_url())
+
+
+class KudosActivityView(TemplateView):
+	template_name = 'kudos/activity.html'
+
+	def get_context_data(self, **kwargs):
+		backend = user_streams.get_backend()
+		stream = backend.filter_stream()
+		return {
+			'object_list': stream.all().order_by('-created_at')
+		}
