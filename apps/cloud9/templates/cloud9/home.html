@@ -23,8 +23,8 @@
 {% for u in object_list %}
     <li class="span2">
         {% thumbnail u.profile.profile_picture "120x120" crop="center" as thumb %}
-        <a class="person" href="{{profile_url}}"><img width="120" class="member-avatar" data-avatar="{{ MEDIA_URL }}{{ thumb }}" height="120" style="width:120px;height:120px;" src="" border="0"/></a>
-        <div><a class="person" rel="tooltip" href="{% url 'cloud9:employee_detail' slug=u.username %}">{{ u.get_full_name }}</a>{% if u.profile.title %}, {{ u.profile.title }}{% endif %}</div>
+        <a class="person" href="{% url 'cloud9:employee_detail' slug=u.username %}"><img width="120" class="member-avatar" data-avatar="{{ MEDIA_URL }}{{ thumb }}" height="120" style="width:120px;height:120px;" src="" border="0"/></a>
+        <div><a class="person" href="{% url 'cloud9:employee_detail' slug=u.username %}">{{ u.get_full_name }}</a>{% if u.profile.title %}, {{ u.profile.title }}{% endif %}</div>
         {% endthumbnail %}
     </li>
 {% empty %}
