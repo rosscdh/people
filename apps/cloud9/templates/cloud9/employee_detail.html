@@ -1,15 +1,18 @@
 {% extends 'cloud9/base.html' %}
+{% load kudos_tags %}
 {% load i18n openid thumbnail cloud9_tags twitter_tags orgchart_tags markup %}
 
 {% block title %}{% trans 'Now viewing' %} - {{ object.user.username }}{% endblock %}
 
 {% block body %}
-<div class="control-group pull-right">
-{% user_can_edit %}
+<div class="row">
+    <div class="control-group pull-right">
+    {% user_can_edit %}
+    </div>
 </div>
 
 <div class="row span">
-	<div class="span5 well pull-left">
+	<div class="span5 well">
 		<h2>{% if object.user.get_full_name %}{{ object.user.get_full_name}}{% else %}{{ object.user.first_name }} {{ object.user.last_name }}{% endif %}</h2>
 		<formset class="">
 		{% if object.is_public %}
@@ -45,7 +48,7 @@
 	</div>
 </div>
 
-<form class="span3 well pull-right">
+<form class="span3 well">
     {% thumbnail object.profile_picture "270x300" crop="center" as thumb %}
         <img src="{{ MEDIA_URL }}{{ thumb }}" alt="" title="" border="0"/>
     {% endthumbnail %}
@@ -60,6 +63,10 @@
 	</form>
 	{% endif %}
 </form>
+
+<div class="span3">
+    {% kudos_main object %}
+</div>
 
 {% endblock %}
 
