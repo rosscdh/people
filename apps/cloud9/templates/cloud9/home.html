@@ -23,17 +23,8 @@
 {% for u in object_list %}
     <li class="span2">
         {% thumbnail u.profile.profile_picture "120x120" crop="center" as thumb %}
-            <div><a class="person" rel="tooltip" href="{% url 'cloud9:employee_detail' slug=u.username %}">{{ u.get_full_name }}</a></div>
-        	{% if user.is_authenticated %}
-            <a class="person" rel="tooltip" data-original-title="{{ u.get_full_name|default:u.username }} - {{ u.profile.title }}" href="{% url 'cloud9:employee_detail' slug=u.username %}">
-            	<img width="120" class="member-avatar" data-avatar="{{ MEDIA_URL }}{{ thumb }}" height="120" style="width:120px;height:120px;" src="" border="0"/>
-        	</a>
-        	{% else %}
-            <span class="person" rel="tooltip" data-original-title="{{ u.get_full_name|default:u.username }} - {{ u.profile.title }}" href="{% url 'cloud9:employee_detail' slug=u.username %}">
-            	<img width="120" class="member-avatar" data-avatar="{{ MEDIA_URL }}{{ thumb }}" height="120" style="width:120px;height:120px;" src="" border="0"/>
-        	</span>
-        	{% endif %}
-            <div>{{ u.profile.title }}</div>
+        <a class="person" href="{{profile_url}}"><img width="120" class="member-avatar" data-avatar="{{ MEDIA_URL }}{{ thumb }}" height="120" style="width:120px;height:120px;" src="" border="0"/></a>
+        <div><a class="person" rel="tooltip" href="{% url 'cloud9:employee_detail' slug=u.username %}">{{ u.get_full_name }}</a>{% if u.profile.title %}, {{ u.profile.title }}{% endif %}</div>
         {% endthumbnail %}
     </li>
 {% empty %}
@@ -53,7 +44,7 @@
 <script id="people" type="text/x-handlebars-template">
 <li class="span2">
     <a class="person" rel="tooltip" title="{{full_name}} - {{title}}" href="{{profile_url}}"><img width="120" height="120" class="member-avatar" data-avatar="{{profile_picture}}" style="width:120px;height:120px;" src="{{profile_picture}}" border="0"/></a>
-    <div><a class="person" rel="tooltip" title="{{full_name}} - {{title}}" href="{{profile_url}}">{{full_name}}</a>, {{title}}</div>
+    <div><a class="person" rel="tooltip" title="{{full_name}} - {{title}}" href="{{profile_url}}">{{full_name}}</a>{{#if title}}, {{title}}{{/if}}</div>
 </li>
 </script>
 {% endverbatim %}
