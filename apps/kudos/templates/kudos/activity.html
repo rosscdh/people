@@ -4,7 +4,7 @@
 
 <ul class="span10 unstyled">
 {% for i in object_list %}
-<li>
+<li class="row">
 	<div class="span3 pull-right">{{ i.created_at }}</div>
 	<div class="span3">
 		<a href="{{ i.user.profile.get_absolute_url }}">{{ i.content }}</a>
