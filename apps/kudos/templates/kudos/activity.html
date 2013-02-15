@@ -11,7 +11,7 @@
 	</div>
 	<div class="span2 well">
 		<span class="lead">+{{ i.content_object.rating }}</span>
-    {% thumbnail i.user.profile_picture "75x75" crop="center" as thumb %}
+    {% thumbnail i.user.profile.profile_picture "75x75" crop="center" as thumb %}
         <img src="{{ MEDIA_URL }}{{ thumb }}" alt="" title="" border="0"/>
     {% endthumbnail %}
 	</div>
