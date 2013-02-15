@@ -41,9 +41,9 @@
 
 {% verbatim %}
 <script id="kudos-info" type="text/x-handlebars-template">
-  <div class="">from: {{from}}&nbsp;<img width="45" height="45" class="pull-right" src="{{from_thumb}}" border="0"/></div>
+  <div class="">{{from}}&nbsp;<img width="45" height="45" class="pull-right" src="{{from_thumb}}" border="0"/></div>
   <div class="row-fluid">
-  <span class="">{{date_of}}</span><br/>
+  <span class="small">{{date_of}}</span><br/>
   <span class="lead">+{{rating}} - {{ rating_name }}</span><br/>
   {{#if comment}}
   <blockquote>{{comment}}</blockquote>
