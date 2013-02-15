@@ -1,4 +1,4 @@
-{% load openid cloud9_tags %}{% load url from future %}
+{% load openid cloud9_tags kudos_tags thumbnail %}{% load url from future %}
 <div id="kudos-main" class="span2 badge badge-info" style="min-height:150px">
     <div class="span2 text-center">
         <span class="lead">Kudos</span>
@@ -6,6 +6,7 @@
         <small><span id="monthly_total">{{ monthly_total }}</span> this month</small>
     </div>
 </div>
+
 <ul id="kudos-ratings" class="offset1 unstyled">
 {% if can_award %}
 {% for r in ratings %}
@@ -13,6 +14,14 @@
 {% endfor %}
 {% endif %}
 </ul>
+
+
+<div class="row span2">
+  {% for k in kudos_list %}
+  <a class="award-info" href="javascript:;" data-rating="{{ k.rating }}" data-icon="{{ k.rating|rating_icon }}" data-rating_name="{{ k.rating|rating_name }}" data-comment="{{ k.comment }}" data-date_of="{{ k.date_awarded }}" data-from="{{ k.from_user.get_full_name }}" data-from_thumb="{% thumbnail k.from_user.profile.profile_picture "45x45" crop="center" as thumb %}{{ MEDIA_URL }}{{ thumb }}{% endthumbnail %}"><i class="{{ k.rating|rating_icon }}"></i></a>
+  {% endfor %}
+</div>
+
 
 <div id="modal-form" class="modal hide fade">
   <div class="modal-header">
@@ -25,20 +34,21 @@
       </form>
   </div>
   <div class="modal-footer">
-    <a href="#" class="btn">I Changed my mind</a>
+    <a href="#" class="btn" data-dismiss="modal">I Changed my mind</a>
     <a id="submit-award" href="javascript:;" class="btn btn-primary">Award Kudos</a>
   </div>
 </div>
 
 {% verbatim %}
-<script id="kudos-list" type="text/x-handlebars-template">
-<ul class="unstyled">
-{{#each kudos}}
-<li class="row">
-    <div class=""></div>
-</li>
-{{/each}}
-</ul>
+<script id="kudos-info" type="text/x-handlebars-template">
+  <div class="">from: {{from}}&nbsp;<img width="45" height="45" class="pull-right" src="{{from_thumb}}" border="0"/></div>
+  <div class="row-fluid">
+  <span class="">{{date_of}}</span><br/>
+  <span class="lead">+{{rating}} - {{ rating_name }}</span><br/>
+  {{#if comment}}
+  <blockquote>{{comment}}</blockquote>
+  {{/if}}
+  </div>
 </script>
 {% endverbatim %}
 
@@ -79,12 +89,34 @@ $(document).ready(function() {
                    modal_form.modal('show')
                 });
             })
+
+            $('a.award-info').popover({
+              trigger: 'hover'
+              ,placement: 'top'
+              ,title: function() {
+                var element = $(this)
+                return 'You got a ' + element.attr('data-rating_name') + ' Kudos'
+              }
+              ,html: true
+              ,content: function() {
+                var element = $(this)
+                var context = {
+                  rating: element.attr('data-rating')
+                  ,rating_name: element.attr('data-rating_name')
+                  ,comment: element.attr('data-comment')
+                  ,date_of: element.attr('data-date_of')
+                  ,from: element.attr('data-from')
+                  ,from_thumb: element.attr('data-from_thumb')
+                }
+                return self.options.kudos_info(context)
+              }
+            });
         }
     }
     window.kc = new KudosController({
         'element': $('#kudos-main')
         ,'ratings_element': $('#kudos-ratings')
-        ,'kudos_list': Handlebars.compile($('script#kudos-list').html())
+        ,'kudos_info': Handlebars.compile($('script#kudos-info').html())
     });
 });
 </script>

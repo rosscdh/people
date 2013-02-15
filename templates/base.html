@@ -89,7 +89,7 @@
 		<div class="row">
 		<ul class="messages">
 		    {% for message in messages %}
-		    <li{% if message.tags %} class="btn btn-danger span12 {{ message.tags }}"{% endif %}>{{ message }}</li>
+		    <li{% if message.tags %} class="btn btn-danger span12 {{ message.tags }}"{% endif %}>{{ message|safe }}</li>
 		    {% endfor %}
 		</ul>
 		</div>
