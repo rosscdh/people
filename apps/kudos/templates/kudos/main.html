@@ -1,14 +1,90 @@
-<div class="span2 badge badge-info" style="min-height:150px">
+{% load openid cloud9_tags %}{% load url from future %}
+<div id="kudos-main" class="span2 badge badge-info" style="min-height:150px">
     <div class="span2 text-center">
         <span class="lead">Kudos</span>
-        <div class="lead">{{ total }}</div>
-        <small>{{ monthly_total }} this month</small>
+        <div class="lead"><span id="total">{{ total }}</span></div>
+        <small><span id="monthly_total">{{ monthly_total }}</span> this month</small>
     </div>
 </div>
-<ul class="offset1 unstyled">
+<ul id="kudos-ratings" class="offset1 unstyled">
 {% if can_award %}
 {% for r in ratings %}
-<li class="text-center" data-toggle="tooltip" title="{{ r.name }}"><a href="" class="btn"><i class="{{ r.icon }}"></i></a></li>
+<li class="text-center" data-toggle="tooltip" title="{{ r.name }}"><a href="" data-rating="{{ r.rating }}" data-icon="{{ r.icon }}" title="{{ r.name }}" class="btn"><i class="{{ r.icon }}"></i></a></li>
 {% endfor %}
 {% endif %}
 </ul>
+
+<div id="modal-form" class="modal hide fade">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>Award <i id="award-type"></i> to {{ to_user.firstname|default:"This Person" }}</h3>
+  </div>
+  <div class="modal-body">
+      <form id="give-kudos-form" action="{% url 'kudos:award' %}" method="POST" class="form">{% csrf_token %}
+      {{ form }}
+      </form>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn">I Changed my mind</a>
+    <a id="submit-award" href="javascript:;" class="btn btn-primary">Award Kudos</a>
+  </div>
+</div>
+
+{% verbatim %}
+<script id="kudos-list" type="text/x-handlebars-template">
+<ul class="unstyled">
+{{#each kudos}}
+<li class="row">
+    <div class=""></div>
+</li>
+{{/each}}
+</ul>
+</script>
+{% endverbatim %}
+
+<script id="kudos-controls">
+$(document).ready(function() {
+    "use strict"; // jshint ;_;
+    /* KUDOS CONTROLS
+    * ================================= */
+    var KudosController = function (options) {
+        this.$element = options.element
+        this.$ratings_element = options.ratings_element
+        this.options = $.extend({}, options);
+        this.listen();
+    }
+    KudosController.prototype = {
+        constructor: KudosController
+        ,listen: function listen() {
+            var self = this;
+            var modal_form = $('#modal-form');
+            modal_form.modal({
+                backdrop: false
+                ,show: false
+            });
+            $('a#submit-award').on('click', function(event){
+               event.preventDefault();
+               $('#give-kudos-form').submit();
+            });
+            $.each(self.$ratings_element.find('li a[data-rating]'), function(i, element){
+                element = $(element);
+                element.on('click', function(event){
+                   // show form
+                   event.preventDefault();
+
+                   $('#award-type').attr('class', '')
+                   $('#award-type').addClass(element.attr('data-icon'))
+                   $('#id_rating').val(element.attr('data-rating'));
+
+                   modal_form.modal('show')
+                });
+            })
+        }
+    }
+    window.kc = new KudosController({
+        'element': $('#kudos-main')
+        ,'ratings_element': $('#kudos-ratings')
+        ,'kudos_list': Handlebars.compile($('script#kudos-list').html())
+    });
+});
+</script>

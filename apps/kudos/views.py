@@ -1,12 +1,15 @@
-from django.views.generic import CreateView
+from django.views.generic import FormView
+
+from apps.kudos.models import Kudos
+from apps.kudos.forms import AwardKudosForm
+
 from mixins import JSONResponseMixin
 
 
-class AwardKudosView(JSONResponseMixin, CreateView):
-	def post(self, request, *args, **kwargs):
-		assert False
+class AwardKudosView(FormView):
+	form_class = AwardKudosForm
+	success_url = '/'
 
 
-class UndoAwardKudosView(JSONResponseMixin, CreateView):
-	def post(self, request, *args, **kwargs):
-		assert False
+class UndoAwardKudosView(FormView):
+	pass
