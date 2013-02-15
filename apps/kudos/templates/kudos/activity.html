@@ -7,12 +7,13 @@
 <li class="row">
 	<div class="span3 pull-right">{{ i.created_at }}</div>
 	<div class="span3">
-		<a href="{{ i.user.profile.get_absolute_url }}">{{ i.content }}</a>
+		<blockquote>{{ i.content }}</blockquote>
+		<a href="{{ i.user.profile.get_absolute_url }}">view</a>
 	</div>
 	<div class="span2 well">
 		<span class="lead">+{{ i.content_object.rating }}</span>
     {% thumbnail i.user.profile.profile_picture "75x75" crop="center" as thumb %}
-        <img src="{{ MEDIA_URL }}{{ thumb }}" alt="" title="" border="0"/>
+        <a href="{{ i.user.profile.get_absolute_url }}"><img src="{{ MEDIA_URL }}{{ thumb }}" alt="" title="" border="0"/></a>
     {% endthumbnail %}
 	</div>
 </li>
