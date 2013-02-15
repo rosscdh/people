@@ -1,6 +1,7 @@
 {% extends 'cloud9/base.html' %}
 {% load kudos_tags %}
 {% load i18n openid thumbnail cloud9_tags twitter_tags orgchart_tags markup %}
+{% load url from future %}
 
 {% block title %}{% trans 'Now viewing' %} - {{ object.user.username }}{% endblock %}
 
@@ -14,18 +15,24 @@
 <div class="row span">
 	<div class="span5 well">
 		<h2>{% if object.user.get_full_name %}{{ object.user.get_full_name}}{% else %}{{ object.user.first_name }} {{ object.user.last_name }}{% endif %}</h2>
-		<formset class="">
-		{% if object.is_public %}
-		<strong class="btn btn-success">{% trans 'Is Visible on Public Homepage' %}</strong><br/>
-		{% endif %}
-		<strong>{% trans 'Title' %}</strong><br/>{{ object.title }}<br/>
-		<strong>{% trans 'Department' %}</strong><br/>{{ object.dept }}<br/>
-		<strong>{% trans 'Team' %}</strong><br/>{{ object.team_name }}<br/>
-		<strong>{% trans 'Email' %}</strong><br/><a href="mailto:{{ object.user.email }}">{{ object.user.email }}</a><br/>
-		<strong>{% trans 'Office' %}</strong><br/>{{ object.office|default:"-" }}<br/>
-		<strong>{% trans 'Skype' %}</strong><br/>{{ object.skype|default:"-" }}<br/>
-		<strong>{% trans 'Twitter' %}</strong><br/>{{ object.get_twitter_username|default:"adcloud"|twitterize }}<br/>
-		<strong>{% trans 'Contact Phone' %}</strong><br/>{{ object.contact_phone|default:"-" }}<br/>
+		<formset>
+			{% if object.is_public %}
+			<strong class="btn btn-success">{% trans 'Is Visible on Public Homepage' %}</strong><br/>
+			{% endif %}
+			<br/><strong>{% trans 'Title' %}</strong><br/>{{ object.title }}<br/>
+			<br/><strong>{% trans 'Department' %}</strong><br/>{{ object.dept }}<br/>
+			<br/><strong>{% trans 'Team' %}</strong><br/>{{ object.team_name }}<br/>
+			<br/><strong>{% trans 'Email' %}</strong><br/><a href="mailto:{{ object.user.email }}">{{ object.user.email }}</a><br/>
+			<br/><strong>{% trans 'Office' %}</strong><br/>{{ object.office|default:"-" }}<br/>
+			<br/><strong>{% trans 'Skype' %}</strong><br/>{{ object.skype|default:"-" }}<br/>
+			<br/><strong>{% trans 'Twitter' %}</strong><br/>{{ object.get_twitter_username|default:"adcloud"|twitterize }}<br/>
+			{% if object.contact_phone %}		
+			<br/><strong>{% trans 'Contact Phone' %}</strong>
+				<div class="row">
+					<div class="span1">{{ object.contact_phone }}</div>
+					<div class="span2"><img src="{% url 'cloud9:phone_qr' pk=object.pk %}" /></div>
+				</div>
+			{% endif %}
 		</formset>
 		{% if object.bio %}
 		<formset>

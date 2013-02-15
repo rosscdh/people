@@ -17,3 +17,4 @@ markdown
 #postgresql_psycopg2
 mocktest
 factory_boy
+qrcode

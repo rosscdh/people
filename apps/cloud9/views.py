@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.template.context import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render_to_response, redirect
+from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.views.generic.detail import DetailView
 from django.views.generic.base import View
@@ -170,3 +171,13 @@ class PeopleSearch(View):
               },
               context_instance=RequestContext(request)
             )
+
+
+class ContactPhoneQRCode(DetailView):
+    model = AdcloudInfo
+
+    def render_to_response(self, context, **response_kwargs):
+        image_data = context['object'].phone_qr()
+        response = HttpResponse(mimetype="image/png")
+        image_data.save(response, "PNG")
+        return response

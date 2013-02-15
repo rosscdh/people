@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 
 
 from models import AdcloudInfo
-from views import EmployeeEdit, PeopleSearch
+from views import EmployeeEdit, PeopleSearch, ContactPhoneQRCode
 
 employees_list = AdcloudInfo.objects.select_related('user').filter(user__is_superuser=False, user__is_active=True)
 
@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}, name='logout'),
     url(r'^login/$', 'apps.cloud9.views.login', name='login'),
     url(r'^people/$', login_required(PeopleSearch.as_view()), name='employee_list'),
+    url(r'^people/(?P<pk>.+)/qr/contactphone/$', login_required(ContactPhoneQRCode.as_view()), name='phone_qr'),
     url(r'^people/search/$', login_required(PeopleSearch.as_view()), name='people_search'),
     url(r'^people/(?P<slug>.*)/edit/$', login_required(EmployeeEdit.as_view()), name='employee_edit'),
     url(r'^people/(?P<slug>.*)/$', login_required(object_detail), {'queryset': employees_list, 'template_name': 'cloud9/employee_detail.html', 'slug_field': 'user__username'}, name='employee_detail'),

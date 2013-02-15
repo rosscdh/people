@@ -9,6 +9,7 @@ from taggit.managers import TaggableManager
 from annoying.fields import AutoOneToOneField
 from apps.util import get_namedtuple_choices
 
+import qrcode
 import uuid
 
 DEFAULT_PIC_PATH = 'employees/pics/'
@@ -121,6 +122,17 @@ class AdcloudInfo(models.Model):
         if len(office) == 0:
             office.append(self.OFFICES.COLOGNE)
         return u'%s' % (office[0],)
+
+    def phone_qr(self):
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            box_size=2,
+            border=2,
+        )
+        qr.add_data(self.contact_phone)
+        qr.make(fit=True)
+        return qr.make_image()
 
     def get_skills(self):
         tags = self.skills.all()
