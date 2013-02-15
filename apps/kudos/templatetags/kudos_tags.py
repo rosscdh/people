@@ -22,7 +22,7 @@ def kudos_main(context, to_user):
 		,'total': Kudos.objects.user_total(to_user)
 		,'monthly_total': Kudos.objects.user_total_by_month(to_user)
 		,'ratings': ratings
-		,'kudos_list': Kudos.objects.select_related('user').filter(to_user=to_user)
+		,'kudos_list': Kudos.objects.select_related('user').filter(to_user=to_user).order_by('-id')
 		,'icons': icons
 		,'MEDIA_URL': context.get('MEDIA_URL')
     }
