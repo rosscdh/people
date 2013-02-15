@@ -111,6 +111,17 @@ $(document).ready(function() {
                 return self.options.kudos_info(context)
               }
             });
+            $.each($('a.award-info'), function(i,element){
+                element = $(element);
+                element.on('mouseover', function(event){
+                    event.preventDefault();
+                    element.popover('show')
+                })
+                element.on('click', function(event){
+                    event.preventDefault();
+                    element.popover('hide')
+                })
+            })
         }
     }
     window.kc = new KudosController({
