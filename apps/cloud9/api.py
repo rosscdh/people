@@ -42,6 +42,7 @@ class PersonResource(ModelResource):
             "skype": ALL,
             "twitter": ALL,
         }
+        cache = SimpleCache(timeout=300)
 
     def dehydrate(self, bundle):
         bundle.data['full_name'] = bundle.obj.user.get_full_name()
@@ -93,6 +94,7 @@ class ExtendedPersonResource(PersonResource):
         resource_name = 'all/people'
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
+        cache = SimpleCache(timeout=300)
 
 
 
