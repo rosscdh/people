@@ -38,5 +38,5 @@ class KudosActivityView(TemplateView):
 		backend = user_streams.get_backend()
 		stream = backend.filter_stream()
 		return {
-			'object_list': stream.all().order_by('-created_at')
+			'object_list': stream.select_related('content_object, user, user__profile').all().order_by('-created_at')
 		}
