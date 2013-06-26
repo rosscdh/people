@@ -7,11 +7,11 @@ django-annoying
 south
 django-debug-toolbar
 django_select2
--e git+https://github.com/stard0g101/django-socialregistration.git#egg=django-socialregistration
+-e git+https://github.com/rosscdh/django-socialregistration.git#egg=django-socialregistration
 -e git+https://github.com/sorl/sorl-thumbnail.git#egg=sorl-thumbnail
 -e git+https://github.com/alex/django-taggit.git#egg=django-taggit
 -e git+https://github.com/toastdriven/django-tastypie.git#egg=django-tastypie
--e git+https://github.com/stard0g101/django-user-streams.git@extended_templates#egg=django-user-streams
+-e git+https://github.com/rosscdh/django-user-streams.git@extended_templates#egg=django-user-streams
 #https://github.com/wesnolte/jOrgChart.git
 markdown
 #postgresql_psycopg2
