@@ -13,7 +13,7 @@ Installation
 
 1. `python manage.py syncdb` 
 1. `python manage.py migrate` 
-1. `python manage.py loadfixtures` 
+1. `python manage.py loaddata c9_sites.json adcloud.json 2012-03-22.json` 
 1. `python manage.py validate` 
 1. `python manage.py runserver_plus` 
 
