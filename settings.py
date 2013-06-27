@@ -179,18 +179,6 @@ LOGGING = {
     }
 }
 
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-        'PATH': os.path.join(PROJECT_DIR, '../data/search/people_index'),
-        'STORAGE': 'file',
-        'POST_LIMIT': 128 * 1024 * 1024,
-        'INCLUDE_SPELLING': True,
-        'BATCH_SIZE': 100,
-        'SILENTLY_FAIL': True,
-    },
-}
-
 ugettext = lambda s: s
 
 LANGUAGES = (

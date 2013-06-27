@@ -15,7 +15,6 @@ from tastypie.cache import SimpleCache
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import DjangoAuthorization
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
-from haystack.query import SearchQuerySet
 
 from sorl.thumbnail import get_thumbnail
 
@@ -74,18 +73,6 @@ class ExtendedPersonResource(PersonResource):
                 filters = {}
 
             orm_filters = super(ExtendedPersonResource, self).build_filters(filters)
-
-            # if "q" in filters and settings.DATABASES['default']['ENGINE'] != 'django.db.backends.sqlite3':
-            #     q = filters.get('q')
-
-            #     sqs = SearchQuerySet().filter(
-            #         Q(user__get_full_name__icontains=q) | \
-            #         Q(title__icontains=q) | \
-            #         Q(skype__icontains=q) | \
-            #         Q(twitter__icontains=q)
-            #     )
-
-            #     orm_filters["pk__in"] = [i.pk for i in sqs]
 
             return orm_filters
 

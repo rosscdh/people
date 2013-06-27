@@ -10,8 +10,6 @@ from django.views.generic.base import View
 from django.http import Http404
 from django.contrib.auth.models import User
 
-from haystack.query import SearchQuerySet
-from haystack.inputs import AutoQuery
 from socialregistration.views import Setup
 
 from forms import AccountEditForm
@@ -140,37 +138,6 @@ class EmployeeEdit(Setup):
         profile.authenticate()
 
         return redirect(reverse('cloud9:employee_detail', kwargs={'slug':user.username}))
-
-
-class PeopleSearch(View):
-    """
-    Search for people, makes use of the django-haystack app
-    is basically a modified custom view of the GenericList.employee_list in cloud9.urls
-    """
-    template_name = 'cloud9/employee_list.html'
-
-    def get(self, request):
-        query = request.GET.get('q', None)
-
-        if query is not None:
-            queryset = SearchQuerySet().using('default').filter(content__contains=query).order_by('last_name','first_name','office','department')
-        else:
-            queryset = SearchQuerySet().using('default').all().order_by('last_name','first_name','office','department')
-
-
-        # If there is only 1 returned result, then automatically redirect to 
-        # the lucky user
-        if 1==2 and queryset.count() == 1:
-            person = queryset[0]
-            return redirect(reverse('cloud9:employee_detail', kwargs={ 'slug': person.username }))
-        else:
-            return render_to_response(
-              'cloud9/employee_list.html', {
-                'query': query,
-                'object_list': queryset,
-              },
-              context_instance=RequestContext(request)
-            )
 
 
 class ContactPhoneQRCode(DetailView):

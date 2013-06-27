@@ -10,9 +10,6 @@ from django.views.generic.base import TemplateView
 from django.http import Http404
 from django.contrib.auth.models import User
 
-from haystack.query import SearchQuerySet
-from haystack.inputs import AutoQuery
-
 from apps.cloud9.models import AdcloudInfo
 
 import math

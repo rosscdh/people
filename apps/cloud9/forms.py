@@ -10,7 +10,7 @@ from models import DEFAULT_PIC
 
 class SimpleSearchForm(forms.Form):
     """
-    Provides a basic query form to search the haystack with
+    Provides a basic query form to search for people
     """
     q = forms.CharField(label='', required=True, initial=_('Search'))
 

@@ -22,7 +22,7 @@ def user_can_edit(context):
 @register.inclusion_tag('cloud9/search/form.html', takes_context=True)
 def people_search_form(context):
     """
-    Provide the Haystack Search Form
+    Provide the Search Form
     """
     form = SimpleSearchForm()
     return dict({
