@@ -31,18 +31,18 @@ DATABASES = {
 }
 
 # setup for webfaction paths
-MEDIA_ROOT = os.path.join(PROJECT_DIR, '../media')
-STATIC_ROOT = os.path.join(PROJECT_DIR, '../static')
+MEDIA_ROOT = '/home/adcloud/webapps/people/media'
+STATIC_ROOT = '/home/adcloud/webapps/people/static'
 
 
 STATICFILES_DIRS = (
-    ("base", os.path.join(PROJECT_DIR, '../static/base/')),
-    ("cloud9", os.path.join(PROJECT_DIR, '../static/cloud9/')),
+    ("base", '/home/adcloud/webapps/people/static/base/'),
+    ("cloud9", '/home/adcloud/webapps/people/static/cloud9/'),
 )
 
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': os.path.join(PROJECT_DIR, '../data/people_cache'),
+        'LOCATION': '/home/adcloud/webapps/people/data/people_cache',
     }
 }
